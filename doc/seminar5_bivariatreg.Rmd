@@ -1,13 +1,8 @@
 ---
 title: 'Seminar 5: univariat regresjon'
 author: "Lise Rødland"
-date: "11 2 2021"
-output: html_document
+output: github_document 
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 I dag skal vi se på fem ting:
 
