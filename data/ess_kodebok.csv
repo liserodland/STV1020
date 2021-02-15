@@ -1,0 +1,41 @@
+Variabel;Spørsmål;Label;Verdi
+influence;Political system allows people to have influence on politics;Not at all;1
+;;Very little;2
+;;Some;3
+;;A lot;4
+;;A great deal;5
+;;NA;NA(b)
+;;NA;NA(c)
+;;NA;NA(d)
+vote;Voted last national election;Yes;1
+;;No;2
+;;Not eligible to vote;3
+;;NA;NA(b)
+;;NA;NA(c)
+;;NA;NA(d)
+polintr;How interested in politics;Very interested;1
+;;Quite interested;2
+;;Hardly interested;3
+;;Not at all interested;4
+;;NA;NA(b)
+;;NA;NA(c)
+;;NA;NA(d)
+happy;How happy are you;Extremely unhappy;0
+;;1;1
+;;2;2
+;;3;3
+;;4;4
+;;5;5
+;;6;6
+;;7;7
+;;8;8
+;;9;9
+;;Extremely happy;10
+;;NA;NA(b)
+;;NA;NA(c)
+;;NA;NA(d)
+age;Age of respondent, calculated;;
+gender;Gender;Male;1
+;;Female;2
+;;NA;NA(d)
+idno;Respondent's identification number;;
