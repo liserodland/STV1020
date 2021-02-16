@@ -1,5 +1,6 @@
 ---
 title: 'Seminar 5: Regresjon med to variabler'
+output: github_document 
 ---
 
 I dag skal vi se på fem ting:
@@ -205,7 +206,6 @@ Et alternativ til tabeller er å plotte resultatene fra regresjonen. Nå skal vi
 lage figur 9.4 i kapittel ni ved hjelp av `ggplot()`. 
 
 Først lager vi et plott med de observerte verdiene (dette er det samme plottet som vi lagde tidligere): 
-
 ```{r}
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +

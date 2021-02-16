@@ -1,4 +1,4 @@
-Seminar 5: Univariat regresjon
+Seminar 5: Regresjon med to variabler
 ================
 
 I dag skal vi se på fem ting:
@@ -6,14 +6,14 @@ I dag skal vi se på fem ting:
 1.  Laste inn data (repetisjon)
 2.  Omkoding av variabler (repetisjon)
 3.  Plotting (repetisjon)
-4.  Kjøre univariate regresjonsmodeller (nytt)
+4.  Kjøre en regresjonsmodell med en uavhengig variabel (nytt)
 5.  Tolkning og fremstilling av regresjonsresultater (nytt)
 
 Datasettet vi skal bruke er det samme som det som omtales i kapittel ni
 i The Fundamentals of Political Science Research. I likhet med kapittel
-ni så skal vi kjøre en univariat regresjon der vi ser på effekten av
-økonomisk vekst (`growth`) på andel stemmer partiet til den sittende
-kandidaten får (`inc_vote`). Det første vi skal gjøre er å sette working
+ni så skal vi kjøre en regresjon der vi ser på effekten av økonomisk
+vekst (`growth`) på andel stemmer partiet til den sittende kandidaten
+får (`inc_vote`). Det første vi skal gjøre er å sette working
 directory, laste inn pakker og laste inn datasettet:
 
 ``` r
@@ -175,11 +175,11 @@ under Plots eller vi kan bruke funksjonen `ggsave()`.
 
 ## Litt plotting før regresjon
 
-Før du kjører en univariat regresjon så kan det være lurt å plotte den
-avhengige og den uavhengige variabelen din. I kapittel ni bruker
-Kellstedt og Whitten. I vårt tilfelle er dette variabelene `inc_vote`
-(avhengig variabel) og `growth` (uavhengig variabel). For å få til dette
-bruker vi `ggplot`.
+Før du kjører en regresjon så kan det være lurt å plotte den avhengige
+og den uavhengige variabelen din. I kapittel ni bruker Kellstedt og
+Whitten. I vårt tilfelle er dette variabelene `inc_vote` (avhengig
+variabel) og `growth` (uavhengig variabel). For å få til dette bruker vi
+`ggplot`.
 
 ``` r
 ggplot(data = FairFPSR3) +
@@ -193,10 +193,10 @@ ggplot(data = FairFPSR3) +
 
 ![](seminar5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-## Univariat regresjon med numerisk uavhengig variabel
+## Regresjon med numerisk uavhengig variabel
 
-For å kjøre en univariat lineær regresjon i R så bruker vi funksjonen
-`lm()`. `lm()` har følgende syntaks:
+For å kjøre en lineær regresjon i R så bruker vi funksjonen `lm()`.
+`lm()` har følgende syntaks:
 
 ``` r
 lm(avhengig_variabel ~ uavhengig_variabel, data = mitt_datasett)
@@ -637,7 +637,7 @@ confint(model)
     ## (Intercept) 49.7957308 53.1015677
     ## growth       0.3098843  0.9397437
 
-## Univariat regresjon med dikotom uavhengig variabel
+## Regresjon med dikotom uavhengig variabel
 
 For å øve oss på tolkning skal vi nå kjøre en modell med `inc_vote` som
 avhengig variabel og den dikotome vekst-variabelen vi lagde tidligere
