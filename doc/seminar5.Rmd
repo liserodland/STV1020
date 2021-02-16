@@ -1,5 +1,5 @@
 ---
-title: 'Seminar 5: univariat regresjon'
+title: 'Seminar 5: Univariat regresjon'
 output: github_document 
 ---
 

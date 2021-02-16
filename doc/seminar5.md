@@ -1,4 +1,4 @@
-Seminar 5: univariat regresjon
+Seminar 5: Univariat regresjon
 ================
 
 I dag skal vi se på fem ting:
@@ -168,7 +168,7 @@ ggplot(data = FairFPSR3) +
   ylab("No. of observations")
 ```
 
-![](seminar5_bivariatreg_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](seminar5_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 For å lagre plottet lokalt på pc-en så kan bruker export og save as
 under Plots eller vi kan bruke funksjonen `ggsave()`.
@@ -191,7 +191,7 @@ ggplot(data = FairFPSR3) +
   xlab("Percentage change in Real GDP Per Capita") 
 ```
 
-![](seminar5_bivariatreg_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](seminar5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ## Univariat regresjon med numerisk uavhengig variabel
 
@@ -571,7 +571,7 @@ ggplot(data = FairFPSR3) +
   xlab("Percentage change in Real GDP Per Capita") 
 ```
 
-![](seminar5_bivariatreg_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](seminar5_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 Det neste vi skal gjøre er å legge til regresjonslinjen i plottet. For å
 gjøre det skal vi først løse regresjonslikningen for alle observasjonene
@@ -601,7 +601,7 @@ ggplot(data = FairFPSR3) +
   geom_line(aes(x = growth, y = fitted))
 ```
 
-![](seminar5_bivariatreg_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](seminar5_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 I kapittel ni viser Kellstedt og Whitten at regresjonslinjen krysser
 utvalgets gjennomsnittsverdier på uavhengig og avhengig variabel. Det
@@ -620,7 +620,7 @@ ggplot(data = FairFPSR3) +
   geom_vline(xintercept=mean(FairFPSR3$growth), linetype = "dashed")
 ```
 
-![](seminar5_bivariatreg_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](seminar5_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 I kapittel ni er det flere eksempler på hvordan vi kan sjekke om en
 modell er god eller ikke. Noe av det gikk vi gjennom når vi så på
