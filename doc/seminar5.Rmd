@@ -1,6 +1,6 @@
 ---
 title: 'Seminar 5: Regresjon med to variabler'
-output: github_document 
+output: github_document
 ---
 
 I dag skal vi se på fem ting:
