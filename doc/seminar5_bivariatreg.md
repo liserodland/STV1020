@@ -1,6 +1,5 @@
 Seminar 5: univariat regresjon
 ================
-Lise Rødland
 
 I dag skal vi se på fem ting:
 
@@ -13,9 +12,9 @@ I dag skal vi se på fem ting:
 Datasettet vi skal bruke er det samme som det som omtales i kapittel ni
 i The Fundamentals of Political Science Research. I likhet med kapittel
 ni så skal vi kjøre en univariat regresjon der vi ser på effekten av
-økonomisk vekst (`growth`) på andel stemmer den sittende kandidaten får
-(`inc_vote`). Det første vi skal gjøre er å sette working directory,
-laste inn pakker og laste inn datasettet:
+økonomisk vekst (`growth`) på andel stemmer partiet til den sittende
+kandidaten får (`inc_vote`). Det første vi skal gjøre er å sette working
+directory, laste inn pakker og laste inn datasettet:
 
 ``` r
 # Bestemmer working directory
@@ -116,19 +115,6 @@ FairFPSR3 <- FairFPSR3 %>%
 Bruk `view()` eller klikk på datasettet ditt for å se hvordan de nye
 variablene ser ut. Hva betyr `TRUE` og `FALSE` i de to kolonnene?
 
-**SETT INN MER OM PLOTTING HER** (inkl. hvordan lagre plot)
-
-``` r
-ggplot(data = FairFPSR3) +
-  geom_point(aes(y = inc_vote, x=growth))+
-  theme_bw() +
-  theme(legend.title=element_blank()) +
-  ylab("Incumbent vote share") +
-  xlab("Growth rate")
-```
-
-![](seminar5_bivariatreg_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
 ## Omkoding av variabler
 
 Etter at vi har kartlagt datastrukturen og hvilke variabler vi har så må
@@ -163,21 +149,46 @@ table(FairFPSR3$growth_dich, useNA = "always")
     ## No growth    Growth      <NA> 
     ##        11        25         0
 
-Når du lager en faktor-variabel så setter tar R utgangspunkt i alfabetet
-når referansekategorien bestemmes. I dette tilfellet ville
+Når du lager en faktor-variabel så tar R utgangspunkt i alfabetet når
+referansekategorien bestemmes. I dette tilfellet ville
 referansekateogrien blitt “Growth”, men vi bruker `factor()` til å endre
 referansekategorien til “No growth”. Når en omkoder numeriske variabler
 så kan det være nyttig å lage et plott for å sjekke at det ble riktig.
-Her bruker vi `color` argumentet til å gi ulik farge til observasjonene
-vi plottet tidligere.
+Her bruker vi `color` argumentet til å gi ulik farge til observasjonene.
+
+``` r
+# Eksempel på plott. Kan byttes ut med andre plott i f.eks. Healy 
+# (har ikke fått boka enda så vet ikke hva de vektlegger der)
+ggplot(data = FairFPSR3) +
+  geom_histogram(aes(x=growth, fill = growth_dich),
+               binwidth = 1) +
+  theme_bw() +
+  theme(legend.title=element_blank()) +
+  xlab("Growth rate") +
+  ylab("No. of observations")
+```
+
+![](seminar5_bivariatreg_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+For å lagre plottet lokalt på pc-en så kan bruker export og save as
+under Plots eller vi kan bruke funksjonen `ggsave()`.
+
+## Litt plotting før regresjon
+
+Før du kjører en univariat regresjon så kan det være lurt å plotte den
+avhengige og den uavhengige variabelen din. I kapittel ni bruker
+Kellstedt og Whitten. I vårt tilfelle er dette variabelene `inc_vote`
+(avhengig variabel) og `growth` (uavhengig variabel). For å få til dette
+bruker vi `ggplot`.
 
 ``` r
 ggplot(data = FairFPSR3) +
-  geom_point(aes(x=growth, y = inc_vote, col = growth_dich)) +
-  theme_bw() +
-  theme(legend.title=element_blank()) +
-  ylab("Incumbent vote share") +
-  xlab("Growth rate") 
+  geom_point(aes(x = growth, y = inc_vote)) +
+  theme_classic() +
+  theme(axis.line = element_line(colour = "black"),
+        panel.border = element_rect(colour = "black", fill=NA, size=1)) +
+  ylab("Incumbent-Party Vote Percentage") +
+  xlab("Percentage change in Real GDP Per Capita") 
 ```
 
 ![](seminar5_bivariatreg_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
@@ -547,7 +558,8 @@ tid på å tolke disse tabellene.
 Et alternativ til tabeller er å plotte resultatene fra regresjonen. Nå
 skal vi lage figur 9.4 i kapittel ni ved hjelp av `ggplot()`.
 
-Først lager vi et plott med de observerte verdiene:
+Først lager vi et plott med de observerte verdiene (dette er det samme
+plottet som vi lagde tidligere):
 
 ``` r
 ggplot(data = FairFPSR3) +
@@ -661,16 +673,47 @@ stargazer(model_dich,
 
 ## Oppgaver
 
-1.  Last inn datasettet ess\_no.  
-2.  Finn navn på variablene.
-3.  Google noe\!
-4.  Plot
-5.  Kjør en regresjonsmodell med hvor lykkelig en person er (happy) som
-    avhengig variabel og i hvilken grad en opplever å ha innflytelse på
-    det myndighetene gjør (influence) som uavhengig variabel.
-6.  Tolk koeffisienten til influence.
-7.  Print resultatet av regresjonen i en tabell ved hjelp av
-    `stargazer()`. Lagre tabellen lokalt på pc-en din og åpne den i
-    f.eks. word eller en nettleser.
-8.  Lag et plott med de predikerte y-verdiene på y-aksen og verdiene av
+Du skal bruke datasettet ess\_nor og lineær regresjon for å undersøke
+relasjonen mellom AV og UV.
+
+| Variabel  |                            Beskrivelse                             |
+| :-------- | :----------------------------------------------------------------: |
+| influence | Political system allows people to have influence on politics (1-5) |
+|           |                           1 (not at all)                           |
+|           |                          5 (a great deal)                          |
+| vote      |                    Voted last national election                    |
+|           |                              1 (yes)                               |
+|           |                               2 (no)                               |
+|           |                      3 (not eligible to vote)                      |
+| polintr   |                  How interested in politics (1-4)                  |
+|           |                        1 (Very interested)                         |
+|           |                     4 (Not at all interested)                      |
+| happy     |                      How happy are you (0-10)                      |
+|           |                       0 (Extremely unhappy)                        |
+|           |                        10 (Extremely happy)                        |
+| age       |                         Age of respondent                          |
+| gender    |                        Gender of respondent                        |
+|           |                              1 (Male)                              |
+|           |                             2 (Female)                             |
+| idnr      |                 Respondents identification number                  |
+
+1.  Last ned datasettet ess\_nor og oppgi antall enheter og variabler i
+    datasettet.
+2.  Finn navn på variablene i datasettet.
+3.  Opprett en nytt datasett ess2 med kun variablene influence, happy og
+    age. Pass på at klassen til variablene er numeric.
+4.  Vis hvordan du fjerner enheter som mangler opplysninger fra
+    datasettet ess\_nor. Oppgi antall enheter i datasettet etter at du
+    har fjernet enhetene.
+5.  Lag et spredningsplott av sammenhengen mellom happy (AV) og
+    influence (UV).
+6.  Kjør en lineær regresjonsmodell med happy som avhengig variabel og
+    influence som uavhengig variabel.
+7.  Tolk koeffisienten til influence.
+8.  Print resultatet av regresjonen i en tabell ved hjelp av
+    stargazer(). Lagre tabellen lokalt på pc-en din og åpne den i f.eks.
+    word eller en nettleser.
+9.  Lag et plott med de predikerte y-verdiene på y-aksen og verdiene av
     x på x-aksen. Lagre plottet lokalt på pc-en din.
+10. Estimer en ny modell hvor du legger til age som uavhengig variabel.
+    Hva skjer? Tips: google hvordan du legger til flere variabler.
