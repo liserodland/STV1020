@@ -645,7 +645,9 @@ som forklaringsvariabel. Hvilken verdi representerer konstantleddet i
 denne regresjonen?
 
 ``` r
-model_dich <- lm(inc_vote ~ growth_dich, data = FairFPSR3)
+model_dich <- lm(inc_vote ~ growth_dich, 
+                 data = FairFPSR3,
+                 na.action = "na.exclude")
 stargazer(model_dich, 
           type = "text")
 ```
