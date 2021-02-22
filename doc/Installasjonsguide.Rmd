@@ -2,13 +2,23 @@
 title: "Installasjonsguide"
 author: "Lise Rødland"
 date: "22.2.2021"
-output: github_document
+output: 
+  pdf_document: 
+      keep_md: yes
+  github_document:
+    toc: FALSE
+      
 ---
 #### Hvordan innstallere og oppdatere R og Rstudio? 
 
 Du må innstallere R og Rstudio før første seminar. Dersom du allerede har installert R og Rstudio så er det fint om du oppdaterer til siste versjon før seminar. Om alle har samme versjon så vil seminarene gå mye smidigere. 
 
-##### Installere R 
+Har du R og Rstudio installert? 
+
+* Ja - følg instruksjonene under "Hvordan oppdatere R og Rstudio".
+* Nei - følg instruksjonene under "Hvordan installere R og Rstudio". 
+
+##### Hvordan installere R og Rstudio\
 
 *Windows*:
 
@@ -40,7 +50,7 @@ Du må innstallere R og Rstudio før første seminar. Dersom du allerede har ins
 
 Nå er du klar for første R-seminar!
 
-#### Hvordan oppdatere R og Rstudio?
+#### Hvordan oppdatere R og Rstudio
 Seminarene går smidigere om alle bruker samme versjon av R. Dersom du har R og Rstudio installert fra før så kan du følge denne oppskriften for å sjekke hvilken versjon du har og eventuelt oppdatere dersom nødvendig.   
 
 ###### Verifiser R versjon
