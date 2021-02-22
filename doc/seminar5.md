@@ -13,8 +13,8 @@ Datasettet vi skal bruke er det samme som det som omtales i kapittel ni
 i The Fundamentals of Political Science Research. I likhet med kapittel
 ni så skal vi kjøre en regresjon der vi ser på effekten av økonomisk
 vekst (`growth`) på andel stemmer partiet til den sittende kandidaten
-får (`inc_vote`). Det første vi skal gjøre er å sette working
-directory, laste inn pakker og laste inn datasettet:
+får (`inc_vote`). Det første vi skal gjøre er å sette working directory,
+laste inn pakker og laste inn datasettet:
 
 ``` r
 # Bestemmer working directory
@@ -205,9 +205,9 @@ lm(avhengig_variabel ~ uavhengig_variabel, data = mitt_datasett)
 
 Dersom datasettet ditt har manglende informasjon (missing/NA) så må du
 legge til et element som sier hvordan regresjonen skal forholde seg til
-dette. Ved å legge til `na.action = "na.exclude" i`lm()`så beholder R
-informasjon om hvilke observasjoner som mangler data slik at vi kan
-bruke`fitted()\` som vi skal snakke mer om senere.
+dette. Ved å legge til
+`na.action = "na.exclude" i`lm()`så beholder R informasjon om hvilke  observasjoner som mangler data slik at vi kan bruke`fitted()\`
+som vi skal snakke mer om senere.
 
 I eksempelet fra kapittel ni i Kellsted og Whitten er vi interessert i
 effekten av den uavengige variabelen `growth` på den avhengige
@@ -291,263 +291,134 @@ stargazer(model,
 ```
 
 <!--html_preserve-->
-
 <table style="text-align:center">
-
 <tr>
-
 <td colspan="2" style="border-bottom: 1px solid black">
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 </td>
-
 <td>
-
 <em>Dependent variable:</em>
-
 </td>
-
 </tr>
-
 <tr>
-
 <td>
-
 </td>
-
 <td colspan="1" style="border-bottom: 1px solid black">
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 </td>
-
 <td>
-
 inc\_vote
-
 </td>
-
 </tr>
-
 <tr>
-
 <td colspan="2" style="border-bottom: 1px solid black">
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 growth
-
 </td>
-
 <td>
-
 0.625<sup>\*\*\*</sup>
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 </td>
-
 <td>
-
 (0.155)
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 </td>
-
 <td>
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 Constant
-
 </td>
-
 <td>
-
 51.449<sup>\*\*\*</sup>
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 </td>
-
 <td>
-
 (0.813)
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 </td>
-
 <td>
-
 </td>
-
 </tr>
-
 <tr>
-
 <td colspan="2" style="border-bottom: 1px solid black">
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 Observations
-
 </td>
-
 <td>
-
 36
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 R<sup>2</sup>
-
 </td>
-
 <td>
-
 0.323
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 Adjusted R<sup>2</sup>
-
 </td>
-
 <td>
-
 0.304
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 Residual Std. Error
-
 </td>
-
 <td>
-
 4.828 (df = 34)
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 F Statistic
-
 </td>
-
 <td>
-
 16.256<sup>\*\*\*</sup> (df = 1; 34)
-
 </td>
-
 </tr>
-
 <tr>
-
 <td colspan="2" style="border-bottom: 1px solid black">
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left">
-
 <em>Note:</em>
-
 </td>
-
 <td style="text-align:right">
-
-<sup>*</sup>p\<0.1; <sup>**</sup>p\<0.05; <sup>***</sup>p\<0.01
-
+<sup>*</sup>p&lt;0.1; <sup>**</sup>p&lt;0.05; <sup>***</sup>p&lt;0.01
 </td>
-
 </tr>
-
 </table>
-
 <!--/html_preserve-->
 
 Informasjonen vi får ved hjelp av `summary()` og `stargazer()` er veldig
@@ -679,7 +550,7 @@ Du skal bruke datasettet ess\_nor og lineær regresjon for å undersøke
 relasjonen mellom AV og UV.
 
 | Variabel  |                            Beskrivelse                             |
-| :-------- | :----------------------------------------------------------------: |
+|:----------|:------------------------------------------------------------------:|
 | influence | Political system allows people to have influence on politics (1-5) |
 |           |                           1 (not at all)                           |
 |           |                          5 (a great deal)                          |
