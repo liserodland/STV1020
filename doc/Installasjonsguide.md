@@ -5,9 +5,8 @@ date: "22.2.2021"
 output: 
   pdf_document: 
       keep_md: yes
-  github_document:
-    toc: FALSE
-      
+  github_document: default
+    
 ---
 #### Hvordan innstallere og oppdatere R og Rstudio? 
 
@@ -22,7 +21,7 @@ Har du R og Rstudio installert?
 
 *Windows*:
 
-1. Åpne en nettleser og gå til [www.r-project.org](www.r-project.org). 
+1. Åpne en nettleser og gå til [www.r-project.org](https://www.r-project.org). 
 2. Klikk på "download R" lenken. Den er i første avsnitt under "Getting started". 
 3. Velg CRAN location. Her burde du gå for Norway. Klikk på lenken.  
 4. Klikk på "Download R for Windows" på toppen av siden. 
@@ -32,7 +31,7 @@ Har du R og Rstudio installert?
 
 *Mac*: 
 
-1. Åpne en nettleser og gå til [www.r-project.org](www.r-project.org). 
+1. Åpne en nettleser og gå til [www.r-project.org](https://www.r-project.org). 
 2. Klikk på "download R" lenken. Den finner du i første avsnitt under "Getting started". 
 3. Velg CRAN location. Her burde du gå for Norway. Klikk på lenken. 
 4. Klikk på "Download R for (Mac) OS X" på toppen av siden. Du må lese det som står på siden du kommer til nå nøye dersom du har Mac. 
@@ -42,7 +41,7 @@ Har du R og Rstudio installert?
 
 ##### Installere Rstudio
 
-1. Gå til [www.rstudio.com](www.rstudio.com). 
+1. Gå til [www.rstudio.com](https://www.rstudio.com). 
 2. Trykk på "Download".
 3. Trykk "Download" knappen under gratisversjonen av Rstudio Desktop. 
 4. Finn den versjonen som er anbefalt for operativsystemet ditt. Klikk på lenken i kolonnen "Download" for å laste ned installasjonsfilen. 
