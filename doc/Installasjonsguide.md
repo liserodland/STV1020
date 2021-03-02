@@ -10,7 +10,7 @@ output:
 ---
 #### Hvordan innstallere og oppdatere R og Rstudio? 
 
-Du må innstallere R og Rstudio før første seminar. Dersom du allerede har installert R og Rstudio så er det fint om du oppdaterer til siste versjon før seminar. Om alle har samme versjon så vil seminarene gå mye smidigere. 
+Du må installere R og Rstudio før første seminar. Dersom du allerede har installert R og Rstudio så er det fint om du oppdaterer til siste versjon før seminar. Om alle har samme versjon så vil seminarene gå mye smidigere. 
 
 Har du R og Rstudio installert? 
 
