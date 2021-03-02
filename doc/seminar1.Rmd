@@ -3,7 +3,6 @@ title: "Seminar 1"
 output:
   pdf_document: 
     keep_md: true
-  github_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -76,7 +75,7 @@ fort gi gode svar! Det er også mulig å spørre i [facebookgruppen R for statsv
 
 Når vi går igjennom kode vil vi fort få en del feil. Det er helt vanlig, og noe som er helt uungåelig! Dere vil nok fort merke at jeg gjør en hel del feil når jeg skal vise dere i seminaret. En type feil kan likevel være grei å merke seg med en gang - mest fordi jeg gjør den hver gang jeg skal skrive noe kode. "Syntax-feil" er skrivefeil vi gjør når vi skriver kode. F.eks. kan det være å skrive men() istedenfor mean(), glemme å lukke en parantes sånn at vi skriver mean( og liknende. Noe av det fine med RStudio er at den markere sånne feil for oss! Dette skal vi se nærmere på i seminar. 
 
-![test](C:/Users/liserod/OneDrive - Universitetet i Oslo/Projects/Undervisning/bilder/skjermdump_feilmld.JPG)
+![Eksempler på feil kode og feilmeldinger](C:/Users/liserod/OneDrive - Universitetet i Oslo/Projects/Undervisning/bilder/skjermdump_feilmld.png)
 
 Når vi skriver feil så vil dere se på siden at vi får flere røde kryss ved siden av linjenummerene. Dette er steder hvor RStudio mener jeg har gjort feil, og holder jeg musen over dem får jeg opp hva som er feilen. "Unexpected token ')'" betyr at RStudio mener det er en parantes der som ikke skulle vært der. I tilegg er det røde streker under de delene av koden som RStudio mener er feil. Jeg vil hevde, hvertfall etter min egen erfaring, at 90 % av feilene vi gjør i R er enkle skrivefeil/syntax-feil som dette. Derfor er det veldig nyttig at RStudio viser det på denne måten! 
 
