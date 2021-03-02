@@ -164,7 +164,7 @@ det fine med RStudio er at den markere sånne feil for oss! Dette skal vi
 se nærmere på i seminar.
 
 ![Eksempler på feil kode og
-feilmeldinger](C:/Users/liserod/OneDrive%20-%20Universitetet%20i%20Oslo/Projects/Undervisning/bilder/skjermdump_feilmld.png)
+feilmeldinger](../bilder/skjermdump_feilmld.JPG)
 
 Når vi skriver feil så vil dere se på siden at vi får flere røde kryss
 ved siden av linjenummerene. Dette er steder hvor RStudio mener jeg har
