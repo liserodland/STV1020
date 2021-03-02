@@ -138,12 +138,12 @@ class(__)
 # vektorer til et datasett. Først lager vi en del ulike
 # objekter. Kjør koden under
 
-navn <- c("Mohammed", "Jakob", "Olav", 
-          "Maja", "Sofia", "Iben")
-antall <- c(94, 76, 68, 65, 64, 60)
-per_tusen <- c(19, 16, 14, 14, 14, 13)
-kjonn <- c("Mann", "Mann", "Mann", 
-           "Kvinne", "Kvinne", "Kvinne")
+navn <- c("Mohammed", "Jakob", "Olav", "Martin", 
+          "Maja", "Sofia", "Iben", "Therese")
+antall <- c(94, 76, 68, NA, 65, 64, 60, NA)
+per_tusen <- c(19, 16, 14, NA, 14, 14, 13, NA)
+kjonn <- c("Mann", "Mann", "Mann", "Mann",
+           "Kvinne", "Kvinne", "Kvinne" "Kvinne")
 by <- c("Oslo")
 
 # Vi har nå laget fem ulike vektorer med ulik informasjon
@@ -190,6 +190,17 @@ median(__$per_tusen, na.rm = TRUE)
 summary(__$per_tusen)
 
 
+# Syntaks feil --------------------------- 
+
+feil1 <- c(1 2, 3, 4)
+
+feil2 <- c1, 2, 3, 4)
+
+feil3 < c(1, 2, 3, 4)
+
+feil4 <- c(1, 2, 3, 4
+           
+
 # Pakker ---------------------------
 
 # Til nå har vi bare brukt funksjoner som er innebygd i
@@ -215,5 +226,5 @@ library(tidyverse)
 # Helt til slutt så skal vi bare se på et eksempel på
 # hvordan vi kan lage et plot med funksjonen ggplot()
 
-ggplot(test, aes(per_tusen)) + 
+ggplot(data = __, aes(x = __)) + 
   geom_bar() 

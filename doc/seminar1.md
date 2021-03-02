@@ -7,15 +7,27 @@ March 3, 2021
 
 Gjennom 6 seminarganger skal vi nå gå igjennom alt fra hva R og Rstudio
 er og hvordan det fungerer, til å kjøre våre helt egne
-regresjonsanalyser. Jeg gleder meg! Før hvert seminar kommer jeg til å
-legge ut et dokument som dette. Om noen av dere har least kapittel 2 i
-Healy så vil dere kanskje huske at han omtaler RMarkdown-dokumenter.
-Dette er skrevet som et RMarkdown-dokument i R.
+regresjonsanalyser. Jeg gleder meg!
+
+Før hvert seminar kommer jeg til å legge ut lenke til fire ting på
+Canvas:
+
+-   R-script
+-   En fil som forklarer litt mer av scriptet
+-   Oppgavesett
+-   Datasett
+
+Det dokumentet du leser nå er det som forklarer litt mer av scriptet.
+Dette dokumentet legger jeg ut som .pdf-, .md- og .Rmd-fil. Jeg vil
+anbefale dere å bruke .md-filen fordi det er ikke alltid hele kodelinjen
+kommer med i .pdf-filene. Om noen av dere har least kapittel 2 i Healy
+så vil dere kanskje huske at han omtaler RMarkdown-dokumenter. Dette
+dokumentet er skrevet ved hjelp av RMarkdown i R. Dersom dere vil kikke
+nærmere på koden så kan dere kikke på .Rmd-filen.
 
 I disse dokumentene vil dere finne noe tekst, noen figurer og tabeller,
 og noe kode. Innholdet reflekterer det jeg har planlagt at vi skal gå
-gjennom på seminaret. Koden vil ha en egen grå bakgrunn som jeg viser i
-et eksempel under.
+gjennom på seminaret. Koden vil ha en egen grå bakgrunn som her:
 
 ``` r
 # Dette er kode.  
@@ -25,7 +37,9 @@ Alt som er skrevet i grått kan dere kopiere inn i et R-script og kjøre
 for å se hva som skjer. Når jeg har \# foran en tekstlinje så betyr det
 at jeg skriver en kommentar i scriptet mitt. Når vi setter en \# foran
 teksten så skjønner R at dette ikke er vanlig kode, men en kommentar.
-Resultatene av faktisk kode vil komme som tekst under det grå feltet.
+Resultatene av faktisk kode vil komme i et eget felt med grå bakgrunn
+under. R sin respons kjennetegnes ved at linjene starter med \#\#. Se
+for eksempel her:
 
 ``` r
 # Dette er en kommentar. 
@@ -40,9 +54,9 @@ Resultatene av faktisk kode vil komme som tekst under det grå feltet.
 
 Før vi begynner med R så skal vi se litt nærmere på mapper, filbaner og
 prosjekter. Når vi skal jobbe med R er det viktig at du er klar over hva
-mapper og filbaner er. Vi kommer til å lagre script og datasett i mapper
-som vi vil finne igjen senere. I tillegg trenger vi filbanene for å
-fortelle R hvor datasettet vi ønsker å laste inn befinner seg.
+mapper og filbaner er. Vi kommer til å lagre script, figurer og datasett
+i mapper som vi vil finne igjen senere. I tillegg trenger vi filbanene
+for å fortelle R hvor datasettet vi ønsker å laste inn befinner seg.
 
 For å åpne mapper bruker vi Filutforsker (Windows) og Finder (Mac). Ofte
 ligger mapper inne i andre mapper, under en harddisk (for eksempel C:).
@@ -121,14 +135,14 @@ spørsmålstegn til og kjøre kode `??vif`.
     ## No documentation for 'vif' in specified packages and libraries:
     ## you could try '??vif'
 
-I hjelpefilen kan vi se at vi får en del informasjon om funksjoner. Noe
-av poenget med R er å hente ut noe *informasjon* fra data. Et eksempel
-på data kan være en tallrekke fra 1 til 10. Informasjonen vi ønsker å
-hente ut kan for eksempel være gjennomsnittet eller standardavvviket. Vi
-kan bruke funksjoner til å få R til å hente ut denne informasjonen for
-oss. Alle funksjoner har til felles at de tar noe data, f.eks. tall, og
-skaper et resultat. I tilegg har noen argumenter som gjør at vi kan
-endre på hvordan funksjonen lager resultatet, hva vi får opp i consol og
+I hjelpefilen får vi en del informasjon om funksjonen. Funksjoner
+hjelper oss å hente ut *informasjon* fra data. Et eksempel på data kan
+være en tallrekke fra 1 til 10. Informasjonen vi ønsker å hente ut kan
+for eksempel være gjennomsnittet eller standardavviket. Vi kan bruke
+funksjoner til å få R til å hente ut denne informasjonen for oss. Alle
+funksjoner har til felles at de tar noe data, f.eks. tall, og skaper et
+resultat. I tilegg har noen argumenter som gjør at vi kan endre på
+hvordan funksjonen lager resultatet, hva vi får opp i consol og
 liknende.
 
 Leser vi hjelpefilen til funksjonen `mean()` så ser vi at den øverst gir
@@ -153,46 +167,49 @@ UiO](https://www.facebook.com/groups/427792970608618).
 
 ## Syntax-feil
 
-Når vi går igjennom kode vil vi fort få en del feil. Det er helt vanlig,
-og noe som er helt uungåelig! Dere vil nok fort merke at jeg gjør en hel
+Når vi skriver kode vil vi fort gjøre en del feil. Det er helt vanlig og
+noe som er helt uungåelig! Dere vil nok fort merke at jeg gjør en hel
 del feil når jeg skal vise dere i seminaret. En type feil kan likevel
 være grei å merke seg med en gang - mest fordi jeg gjør den hver gang
 jeg skal skrive noe kode. “Syntax-feil” er skrivefeil vi gjør når vi
 skriver kode. F.eks. kan det være å skrive men() istedenfor mean(),
 glemme å lukke en parantes sånn at vi skriver mean( og liknende. Noe av
-det fine med RStudio er at den markere sånne feil for oss! Dette skal vi
-se nærmere på i seminar.
+det fine med RStudio er at den markere sånne feil for oss!
 
 ![Eksempler på feil kode og
 feilmeldinger](../bilder/skjermdump_feilmld.JPG)
 
-Når vi skriver feil så vil dere se på siden at vi får flere røde kryss
-ved siden av linjenummerene. Dette er steder hvor RStudio mener jeg har
-gjort feil, og holder jeg musen over dem får jeg opp hva som er feilen.
-“Unexpected token ‘)’” betyr at RStudio mener det er en parantes der som
-ikke skulle vært der. I tilegg er det røde streker under de delene av
-koden som RStudio mener er feil. Jeg vil hevde, hvertfall etter min egen
-erfaring, at 90 % av feilene vi gjør i R er enkle skrivefeil/syntax-feil
-som dette. Derfor er det veldig nyttig at RStudio viser det på denne
-måten!
+Bildet over viser eksempler på feilskrevet kode samt hvordan Rstudio
+markerer dette og hvilke feilmeldinger vi får når vi prøver å kjøre
+koden. Dere kan se at R har markert tre av fire linjenummer med en rød
+X. Dette er steder hvor RStudio mener jeg har gjort feil. Hvis jeg
+holder musepekeren over kryssene får jeg opp forslag til hva som kan
+være feilen. “Unexpected token ‘)’” betyr at RStudio mener det er en
+parantes der som ikke skulle vært der. I tilegg er det røde streker
+under de delene av koden som RStudio mener er feil. Jeg vil hevde, i
+hvertfall etter min egen erfaring, at 90 % av feilene vi gjør i R er
+enkle skrivefeil/syntax-feil som dette. Derfor er det veldig nyttig at
+RStudio viser det på denne måten!
 
 # Objekter, funksjoner, og klasser
 
 Vi har allerede sett på litt enkel kode, men framover skal vi gått litt
-dypere inn i hvordan kode faktisk fungerer. Logisk nok er koding en måte
-fortelle pc’n hva vi vil den skal gjøre gjennom tekst. Sånn sett er det
-nærmest det samme som når du klikker på noe, bare at dette er mer
-effektivt. Når vi skriver kode må vi vite hva vi skal skrive for at
-pc-en skal forstå det. All den tid det ikke finnes noen enorm ordbok som
-forteller alt vi kan skrive i R er dette noe vi må lære oss, og kanskje
-pugge, eller bare søke etter når vi trenger det. Den vanligste måten å
-lære nye koder på er å google etter spesifikke ting du ønsker å gjøre.
+dypere inn i hvordan kode faktisk fungerer. Koding er en måte å fortelle
+pc-en hva vi vil den skal gjøre gjennom tekst. Sånn sett er det nærmest
+det samme som når du klikker på noe, bare at koding er mer effektivt
+(etter hvert som en lærer seg det). Når vi skriver kode må vi vite hva
+vi skal skrive for at pc-en skal forstå det. All den tid det ikke finnes
+noen enorm ordbok som forteller alt vi kan skrive i R er dette noe vi må
+lære oss, og kanskje pugge, eller bare søke etter når vi trenger det.
+Den vanligste måten å lære nye koder på er å google etter spesifikke
+ting du ønsker å gjøre.
 
-Det første vi skal se på nå er objekter. Objekter er i alle “ting” i R
-som kan inneholde noe annet. Noen objekter laster vi inn ved hjelp av
+Det første vi skal se på er objekter. Objekter er i alle “ting” i R som
+kan inneholde noe annet. Noen objekter laster vi inn ved hjelp av
 pakker, noen er bygd inn i R og andre kommer vi til å lage selv. Dere
-kan tenke på datasett, funksjoner og modellresultater som mulige
-objekter. Vi lager objekter ved å bruke R sin assignment operator `<-`.
+kan tenke på for eksempel datasett, funksjoner og modellresultater som
+mulige objekter. Vi lager nye objekter ved å bruke R sin assignment
+operator `<-`.
 
 Vi skal i hovedsak forholde oss til to typer objekter; vektorer og
 funksjoner. Hva disse er nok lettere å vise ved eksempel. La oss lage et
@@ -211,14 +228,29 @@ To <- 2
 
 Som dere ser kan jeg nå skrive `2 + To`, kjøre koden og få ut resultatet
 fire. Når vi nå skriver “To” vet R at vi *egentlig* mener tallet 2 som
-er lagret i objektet. For så enkle ting som dette er sikkert enklere å
-bare skrive 2, eller bare bruke en kalkulator for den saks skyld. Det
-fine med objekter er at de kan inneholde veldig mye informasjon! I
-første omgang kan vi prøve å lagre flere tall i et objekt. Det er flere
-måter vi kan gjøre dette på, f.eks. kan vi skrive 1:10 for å få alle
-heltallene mellom 1 og 10, eller skrive c(1,22,5,2,1) for å lage en
-rekke tall. I det siste skiller jeg tallene med komma. Objektene kan
-hete hva du vil forøvrig.
+er lagret i objektet. For så enkle ting som dette så er det nok enklere
+å bare skrive 2, eller bruke en kalkulator for den saks skyld. Det fine
+med objekter er at de kan inneholde veldig mye informasjon!
+
+I første omgang kan vi prøve å lagre flere tall i et objekt. Det er
+flere måter vi kan gjøre dette på, for eksempel så kan vi skrive 1:10
+for å få alle heltallene mellom 1 og 10, eller skrive c(1, 22, 5, 2, 1)
+for å lage en tallrekke. I det siste skiller jeg tallene med komma.
+Objektene kan du kalle akkurat hva du vil, men som vi skal se på senere
+er det noen retningslinjer som er lure å følge:
+
+-   Navn bør bare inneholde små bokstaver, tall og \_.
+
+-   Ikke bruk et tall som første tegn.
+
+-   Ikke bruk æ/ø/å.
+
+-   Ikke bruk mellomrom.
+
+-   Ikke bruk FALSE, TRUE, Inf, for, else, break, function eller andre
+    funksjonsnavn
+
+La oss nå lage noen flere objekter:
 
 ``` r
 en_til_hundre <- 1:100
@@ -229,24 +261,11 @@ tall
 
     ## [1]  1  4 56  8  4  2  4
 
-Det er noen regler for objektnavn som er lure å følge:
-
--   Navn bør bare inneholde små bokstaver, tall og \_.
-
--   Ikke bruk et tall som første tegn.
-
--   Ikke bruk æ/ø/å.
-
--   Ikke bruk mellomrom.
-
--   Ikke bruk FALSE, TRUE, Inf, for, else, break, function,
-    funksjonsnavn
-
 Nå som vi har et script med flere elementer kan vi prøve å kjøre noen
 funksjoner på dem. Det kan nevnes at funksjoner faktisk er objekter de
-og, men det blir først innteresant når du holder på med litt mer
+og, men det blir først interessant når du holder på med litt mer
 avansert kode. La oss se om vi kan finne gjennomsnittet av disse
-vektorene.
+vektorene:
 
 ``` r
 mean(en_til_hundre)
@@ -260,17 +279,20 @@ mean(tall)
 
     ## [1] 11.28571
 
-Med mean funksjonen her ser vi at vi får gjennomsnittet for hele
-vektoren/objektet. Som oftest er det det vi ønsker, men hva hvis vi kun
-ønsket gjennomsnittet av noen tall? Om dere ser tilbake til environment
-vil dere merke at etter navnet på vektoren står det først “num” og så
-\[1:7\]. Den første teksen sier at dette er et numerisk objekt. Klasser
-skal vi straks gå inn på. Det neste viser lengden på vektoren vår.
-`tall` har sitt første tall i plassen 1, og siste i 7. Altså er det 7
-ellementer. Om vi ser på `en_til_hundre` ser vi at det står 1:100, og
-denne har altså 100 elementer. For å få tak i et spesifikt element kan
-vi bruke disse klammeparantesene.
+Med funksjonen `mean()` får vi gjennomsnittet for hele
+vektoren/objektet. Som oftest er det det vi ønsker, men om vi kun ønsket
+gjennomsnittet av noen utvalgte tall så er det også mulig ved hjelp av
+indeksering eller filtrering. Dette skal vi se mer på senere.
 
+Om dere ser i environment så vil dere merke at etter navnet på vektoren
+`tall` så står det først “num” og deretter \[1:7\]. Den første teksten
+sier at dette er et numerisk objekt. Klasser skal vi straks gå inn på.
+Det neste viser lengden på vektoren vår. `tall` har sitt første tall i
+plassen 1, og siste i 7. Altså er det 7 elementer. Om vi ser på
+`en_til_hundre` ser vi at det står 1:100, og denne har altså 100
+elementer.
+
+For å få tak i et spesifikt element kan vi bruke disse klammeparanteser.
 La oss si at vi vil ha element nr. 5 i vektoren tall:
 
 ``` r
@@ -317,10 +339,10 @@ Ny_Vektor <- tall[c(3,5,3,6)]
 Så langt har vi kun jobbet med tallverdier. Ofte har vi variabler som
 ikke er tall, men f.eks. tekst eller ordinalverdier. I R vil vi også se
 at visse funksjoner krever at dataene er i visse klasser. Hovedklassene
-vi kommer til å bruke er; numeric, character, logical, og factor.
-Numeric er tall (logisk nok). De fleste mattefunksjoner krever at
-dataene er numeric. \#For å sjekke om noe er numeric kan vi bruke
-funksjonen `is.numeric()`.
+vi kommer til å bruke er; numeric, character, logical og factor. Numeric
+er tall (logisk nok). De fleste mattefunksjoner krever at dataene er
+numeric. For å sjekke om noe er numeric kan vi bruke funksjonen
+`is.numeric()`.
 
 ``` r
 is.numeric(en_til_hundre)
@@ -329,7 +351,7 @@ is.numeric(en_til_hundre)
     ## [1] TRUE
 
 ``` r
-#Her ser vi at vi får opp "TRUE" som betyr at en_til_hundre er et numerisk objekt
+# Her ser vi at vi får opp "TRUE" som betyr at en_til_hundre er et numerisk objekt
 ```
 
 Vi kan også bruke funksjonen `class()` til å hente ut informasjon om
@@ -343,11 +365,11 @@ class(en_til_hundre)
 
 Dere vil noen ganger se at det skilles mellom “numeric” og “integer”.
 Forskjellen er at integer kun kan inneholde heltall, mens numeric kan ha
-desimaler. Dette er noe som henger igjen fra gammelt av, og er svært
-sjeldent interessant for vår del.
+desimaler. Dette er svært sjeldent interessant for vår del.
 
 Når vi vil skrive tekst bruker vi klassen “character”. En tekststring må
-alltid ha "" rundt seg, men ellers definerer vi den som vanlig.
+alltid ha hermetegn ("") rundt seg, men ellers definerer vi den som
+vanlig:
 
 ``` r
 Tekst <- "Hei, jeg elsker R! <3"
@@ -365,15 +387,16 @@ numerisk eller logisk. Funksjonen gir oss derfor resultatet NA, som
 betyr missing, altså at det ikke eksisterer et resultat.
 
 Vi kan også kreve at et objekt skal ha en viss klasse. Det gjør vi med
-funksjonen `ac."klassenavn"`. Det kan føre til noen uforventede
-resultater. Si hvis gjør tall om til character.
+funksjonen `as."klassenavn"` (bytt ut “klassenavn” med for eksempel
+numeric eller character). Det kan føre til noen uforventede resultater.
+La oss gjøre om objektet tall til character:
 
 ``` r
-tall <- as.character(tall)
-mean(tall)
+tall_ch <- as.character(tall)
+mean(tall_ch)
 ```
 
-    ## Warning in mean.default(tall): argument is not numeric or
+    ## Warning in mean.default(tall_ch): argument is not numeric or
     ## logical: returning NA
 
     ## [1] NA
@@ -383,18 +406,14 @@ gjenomsnittet av tekst. Om dere ser i environment står det også nå at
 tall er chr (charater) og det "" rundt alle tegnene.
 
 Den siste klassen vi kommer til å bruke ofte (men det finnes flere) er
-“factor.” Faktor er en variabel som kan ha flere forhåndsdefinerte
-nivåer, og brukes ofte når vi skal kjøre statistiske modeller. En lett
-måte å forstå factorer på er å tenke på dem som ordinale variabler, hvor
-vi kan vite rekkefølgen på nivåene men ikke avstanden, f.eks.
-Barneskole, Ungdomskole, vgs.
+“factor.” En faktor er en variabel som kan ha flere forhåndsdefinerte
+nivåer og brukes ofte når vi skal kjøre statistiske modeller. En lett
+måte å forstå faktorer på er å tenke på dem som ordinale variabler, hvor
+vi kan vite rekkefølgen på nivåene men ikke avstanden, som for eksempel
+utdanningsnivåene barneskole, ungdomskole, videregående skole.
 
-For å lage en faktor bruker vi funksjonen `factor()`. I eksempelet her
-kan vi se at vi først definerer de forskjellige verdiene som er i
-variabelen. Så skriver vi hvilke nivåer den kan ha, i den rekkefølgen vi
-ønsker dem i. Om vi ikke hadde definert nivåene ville R gjort det
-automatisk i alfabetisk rekkefølge, som oftest går det greit men noen
-ganger ønsker vi det annerledes.
+For å lage en faktor bruker vi funksjonen `factor()`. La oss først lage
+en faktor med ulike utdanningsnivåer:
 
 ``` r
 # Lager en faktorvariabel uten å sette nivåer
@@ -423,7 +442,15 @@ levels(skolenivaer)
 
 ``` r
 # Er det noe som skurrer her?
+```
 
+I eksempelet her kan vi se at vi først definerer de forskjellige
+verdiene som er i variabelen. Vi har ikke spesifisert hvilken rekkefølge
+nivåene har. Når vi ikke gjør det så baserer R rekkefølgen på alfabetet.
+Derfor få vi rekkefølgen “Barneskole” “Ungdomskole” “Universitet”
+“Videregaende”. For å unngå dette så kan vi spesifisere faktornivåene:
+
+``` r
 # Endrer faktornivåene
 skolenivaer <- factor(skolenivaer,
                       levels = c("Barneskole",
@@ -443,30 +470,31 @@ levels(skolenivaer)
 
     ## [1] "Barneskole"   "Ungdomskole"  "Videregaende" "Universitet"
 
-Vi kan også se hvilke nivåer som er i variabelen
-
-``` r
-levels(skolenivaer) #Og får ut de tre nivåene
-```
-
-    ## [1] "Barneskole"   "Ungdomskole"  "Videregaende" "Universitet"
-
 I toppen her sa jeg at en vektor var et objekt som inneholdt elementer
-av *samme* klasse. Så langt har vi også holdt oss til det gjennom å kune
-lage objekter med tekst eller tall. Hva skjer da om vi prøver å blande?
-Vi kan lage et objekt som inneholder både tekst og tall:
+av *samme* klasse. Så langt har vi også holdt oss til det gjennom å
+kunne lage objekter med tekst eller tall. Hva skjer da om vi prøver å
+blande? Vi kan lage et objekt som inneholder både tekst og tall:
 
 ``` r
-TekstTall <- c(1,4,0,4, "Bamse", "R", "R Seminarer er de BESTE seminarer", 42, "the answer")
+teksttall <- c(1,4,0,4, "Bamse", "R", "R Seminarer er de BESTE seminarer", 42, "the answer")
 
-class(TekstTall)
+class(teksttall)
 ```
 
     ## [1] "character"
 
+``` r
+mean(teksttall[1:4])
+```
+
+    ## Warning in mean.default(teksttall[1:4]): argument is not numeric
+    ## or logical: returning NA
+
+    ## [1] NA
+
 Som vi kan se er her klassen blitt character, også for tallene! Det er
-fordi at hvis vi definerer en vektor som har flere klasser, blir det
-slått sammen til den klassen som har minst informasjon. Dette kalles
+fordi at når vi definerer en vektor som inneholder flere klasser, blir
+det slått sammen til den klassen som har minst informasjon. Dette kalles
 “implicit coercion”, og rekkefølgen går: logical -&gt; integer -&gt;
 numeric -&gt; complex -&gt; character.
 
@@ -474,11 +502,11 @@ numeric -&gt; complex -&gt; character.
 
 Noen ganger har vi lyst til å slå sammen data som er av forskjellige
 typer. F.eks. kan det være at vi har data om alder, navn, fylke og vil
-ha dette som et objekt. For å gjøre dette bruker vi data.frames. En
-dataframe består av flere kolonner, hvor hver kolonne er en vektor.
-Vektorene kan ha ulik klasse, og det kan for eksempel være en character
-vektor og en numerisk vektor. Vi kan tenke på disse kolonnene som
-variabler.
+ha dette som et objekt eller datasett. For å gjøre dette bruker vi
+data.frames. En dataframe består av flere kolonner, hvor hver kolonne er
+en vektor. Vektorene kan ha ulik klasse, og det kan for eksempel være en
+character vektor og en numerisk vektor. Vi kan tenke på disse kolonnene
+som variabler.
 
 Vi kan tenke på hver rad i en dataframe som en observasjon. En
 observasjon kan for eksempel være en person, et land i et gitt år eller
@@ -537,8 +565,8 @@ navnestat <- data.frame(navn, antall, per_tusen, kjonn, by)
 I environment vil dere nå se at det dukker opp en ny rad under “Data”
 som heter `navnestat`. Når det står 8 obs (observasjoner) av 5 variabler
 betyr dette at vi har et datasett/dataframe med 8 rader og 5 kolonner.
-Klikker dere på den vil dere se dette. Vi kan utforske datasettet
-nærmere ved å bruke `View()` (obs! stor V):
+Klikker dere på objektet så vil dere se dette. Vi kan utforske
+datasettet nærmere ved å bruke `View()` (obs! stor V):
 
 ``` r
 View(navnestat)
@@ -547,10 +575,11 @@ View(navnestat)
 Første observasjonen her er rad 1. Det er navnet Mohammed. Det viktigste
 med en dataframe er at vi nå kan kombinere ulik informasjon om samme
 observasjon på en gang. Det er flere måter vi kan bruke dette på. La oss
-først se på hvordan vi kan gjøre enkle analyser av en kolonne. Til nå så
-har vi bare skrevet navnet på vektoren for å hente ut informasjon. Nå
-som vi har det i en dataframe, må vi først velge denne, og så kolonnen.
-Det er to måter vi kan gjøre dette på:
+først se på hvordan vi kan gjøre enkle analyser av en kolonne.
+
+Til nå så har vi bare skrevet navnet på vektoren for å hente ut
+informasjon. Nå som vi har det i en dataframe, må vi først velge denne,
+og så kolonnen. Det er to måter vi kan gjøre dette på:
 
 ``` r
 # Med klammeparanteser kan vi velge rad og kolonne. Rad kommer først, og så kolonnen: 
@@ -612,9 +641,10 @@ median(navnestat$antall, na.rm = TRUE)
 
     ## [1] 66.5
 
-En lettere måte å få ut alle disse på er ved å bruke summary()
+En lettere måte å få ut alle disse på er ved å bruke `summary()`
 funksjonen. Da trenger vi heller ikke bruke na.rm, fordi den heller sier
-hvor mange NA det er i vektoren.
+hvor mange NA det er i vektoren. `summary()` kan også brukes for å hente
+ut informasjon om et helt datasett.
 
 ``` r
 summary(navnestat$antall)
@@ -646,18 +676,20 @@ summary(navnestat)
 
 # Visualisering
 
-Det siste vi skal på idag er en kort intro til hvordan vi kan
-visualisere data. For å gjøre dette må vi først laste ned en pakke som
-heter Tidyverse. Pakker er tilegg til R som gjør at du kan laste ned
-flere funksjoner, og ofte gjør visse ting enklere. R i den formen den
-lastes ned kalles “base R.” Om noe er vanskelig i base R, finnes det
-høyst sansynelig en pakke som gjør det lettere! Tidyverse, som vi vil
-bruke mye, er et sett med pakker som gjør databehandling mye, mye
-enklere. For å bruke denne må vi først innstallere pakken. Om dere har
-gjort dette på forhånd trenger dere ikke gjøre dette på nytt. Å
-installere gjør vi kun en gang, og så evt. på nytt om det kommer en
-oppdatering. Vi installerer pakker ved hjelp av funksjonen
-`install.packages("pakkenavn")`:
+Det siste vi skal gjøre i dag er å lage en veldig enkel figur - vi skal
+visualisere. For å gjøre dette må vi først laste ned en pakke som heter
+Tidyverse. Pakker er tilegg til R som gjør at du kan anvende flere
+funksjoner som ofte gjør ting enklere eller lar deg gjøre nye typer
+analyser. R i den formen den lastes ned kalles “base R”. Om noe er
+vanskelig i base R, finnes det høyst sannsynlig en pakke som gjør det
+lettere!
+
+Tidyverse, som vi vil bruke mye, er et sett med pakker som gjør
+databehandling mye, mye enklere. For å bruke denne må vi først
+installere pakken. Om dere har gjort dette på forhånd trenger dere ikke
+gjøre dette på nytt. Å installere gjør vi kun en gang, og så evt. på
+nytt om det kommer en oppdatering. Vi installerer pakker ved hjelp av
+funksjonen `install.packages("pakkenavn")`:
 
 ``` r
 install.packages("tidyverse")
@@ -673,26 +705,28 @@ library(tidyverse)
 
 Merk at pakkenavnet ikke står i hermetegn når vi bruker `library()`.
 Hermetegn rundt pakkenavnet er bare nødvendig når vi bruker
-`install.packages()`.
-
-Tidyverse skal vi bruke masse tid på nesten gang, men akkurat nå skal vi
-se på den delen som heter ggplot. GGplot er en måte å lage grafikk i R
-på.
+`install.packages()`. Tidyverse skal vi bruke masse tid på nesten gang,
+men akkurat nå skal vi se på den delen som heter `ggplot`. GGplot er en
+pakke for å lage grafikk i R på. La oss lage et enkelt barplot:
 
 ``` r
-#For å lage en figur starter vi alltid med å definere datasettet, og kan velge
-#å definere variabler
-ggplot(navnestat, aes((antall))) + #Første argument er navnet på datasettet, så skriver jeg aes()
-                                 #som står for aesthetic. Der kan vi skrive navnet på variabelen
-                                 #Jeg skriver også en + fordi jeg skal legge til mer på neste linje
-  geom_histogram() #Her velger jeg hva slags type plott jeg vil ha, denne gangen et histogram
-```
+# I første argument spesifiserer vi datasettet
+# og hvilken variabel vi vil plotte
+# Vi legger til en + på slutten av linjen for
+# å fortelle R at vi vil legge til flere lag
+# Etter + skrive vi hva slags plot vi vil ha. 
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with
-    ## `binwidth`.
+ggplot(data = navnestat, aes(x = per_tusen)) + 
+  geom_bar(bins = 30) 
+```
 
 ![](seminar1_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
+Dette var bare en kort introduksjon. Som vi skal se på senere så finnes
+det utallige måter å fikse på plot på.
+
 Det var det for denne gang! På Canvas kommer det til å ligge noen
 oppgaver dere kan jobbe med, og bare send spørsmål på Canvas om dere har
-noen! Gleder meg til neste seminar!
+noen!
+
+Gleder meg til neste seminar!
