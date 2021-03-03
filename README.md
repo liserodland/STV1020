@@ -19,3 +19,4 @@ Her finner du undervisningsmateriell til R-seminarer i STV1020. Her finner du fl
 - [The tidyverse style guide for R](https://style.tidyverse.org/) inneholder mange tips for å skrive forståelig og god kode. 
 - [R for Data Science](https://r4ds.had.co.nz/) er en veldig god bok for dere som vil fordype dere videre. 
 - [RStudio Cheatsheets](https://rstudio.com/resources/cheatsheets/) oppsummerer pakker eller oppgaver i R som for eksempel ggplot2. Gevinsten i disse juksearkene er størst når en har litt forståelse for hva pakken gjør.
+- [Oslo UseR! group](https://www.meetup.com/Oslo-useR-Group/) og [R-Ladies Oslo](https://www.meetup.com/rladies-oslo/) arrangerer jevnlig interessante foredrag og workshops om R. 
