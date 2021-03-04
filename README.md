@@ -11,7 +11,7 @@ Her finner du undervisningsmateriell til R-seminarer i STV1020. Her finner du fl
 #### Noen nyttige lenker
 
 - Bli med i facebookgruppen [R for statsvitenskap ved UiO](https://www.facebook.com/groups/427792970608618).
-- [RStudio Keyboard Shortcuts for Windows, Linux and Mac](https://support.rstudio.com/hc/en-us/articles/200711853- Keyboard-Shortcuts) hjelper deg å kode raskere.
+- [RStudio Keyboard Shortcuts for Windows, Linux and Mac](https://support.rstudio.com/hc/en-us/articles/200711853- Keyboard-Shortcuts)  hjelper deg å kode raskere.
 - [Stack overflow](https://stackoverflow.com/questions/tagged/r) er et forum hvor folk stiller spørsmål og får hjelp til ulike utfordringer med R. Om du lurer på noe så vil du som regel finne svar her. 
 - [Rstudio community forum](https://community.rstudio.com/) er litt i samme gate som Stack overflow. 
 - [Using projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) gir en introduksjon til hvordan dere kan bruke prosjekter i Rstudio. 
