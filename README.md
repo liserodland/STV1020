@@ -5,7 +5,8 @@ Her finner du undervisningsmateriell til R-seminarer i STV1020. Her finner du fl
 * mappen *data* inneholder datasett vi skal jobbe med på seminar og når dere løser oppgaver. 
 * mappen *doc* inneholder dokumenter med beskrivelse av koden vi skal bruke i hvert seminar. Hver beskrivelse finnes i tre versjoner: en pdf-fil, en Rmd-fil og en md-fil. Jeg vil anbefale å bruke md-filen, men dersom du vil se på koden bak er det også fint å ta en kikk på Rmd-filen. I pdf-filene kan det hende at hele kodelinjen ikke kommer med.
 * mappen *script* inneholder R-scriptene vi skal jobbe med i seminar. 
-* mappen *oppgaver* inneholder oppgaver dere skal jobbe med i seminar. Her kommer jeg etter hvert til å laste opp løsningsforslag. 
+* mappen *oppgaver* inneholder oppgaver dere skal jobbe med i og etter seminar. 
+* mappen *fasit* inneholder løsningsforslag til seminaroppgaver. Disse prøver jeg å laste opp mandag etter seminar. Merk at det er mange måter å løse ting på i R så selv om du ikke har gjort det på samme måte som i løsningsforslaget så kan det forsatt være riktig.  
 * mappen *output* inneholder figurer, tabeller o.l. som jeg har laget i R på seminarene. 
 
 #### Noen nyttige lenker
