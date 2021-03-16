@@ -441,7 +441,11 @@ ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
 ggsave("../../output/sem2_hist4.png")
 ```
 
+<<<<<<< HEAD
 !(../../output/sem2_hist4.png)
+=======
+!("../../output/sem2_hist4.png")
+>>>>>>> 6f7ba0fdb52262948701889f46ec1f226fe844ca
 
 ### Boksplott
 
@@ -461,6 +465,10 @@ ggplot(data = ess_subset, aes(x = news)) +
 ggsave("../../output/sem2_box.png")
 ```
 
+<<<<<<< HEAD
 !(../../output/sem2_box.png)
+=======
+!("../../output/sem2_box.png")
+>>>>>>> 6f7ba0fdb52262948701889f46ec1f226fe844ca
 
 Hvis dere vil utforske hvordan man kan tilpasse de ulike diagrammene vi har sett på og mange andre, kan denne siden være nyttig: https://www.r-graph-gallery.com/index.html
