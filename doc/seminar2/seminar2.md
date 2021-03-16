@@ -113,7 +113,6 @@ list.files()
 
 ```
 ## [1] "seminar2.md"    "seminar2.pdf"   "seminar2.Rmd"   "seminar2_files"
-## [5] "soyle1.png"
 ```
 Datasett kommer i mange ulike filformater. Noen vanlige formater er csv, dta (Stata-datasett), sav (SPSS-datasett) og Rdata. Hvilket format dataene dine har bestemmer hvilken funksjon du må bruke for å laste inn datasettet. For det meste så følger funksjonene dette formatet: 
 
@@ -614,8 +613,7 @@ ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
 
 
 
-
-\includegraphics[width=27.08in]{../../output/sem2_hist4} 
+!(../../output/sem2_hist4.png)
 
 ### Boksplott
 
@@ -630,6 +628,6 @@ ggplot(data = ess_subset, aes(x = news)) +
 
 
 
+!(../../output/sem2_box.png)
 
-\includegraphics[width=27.08in]{../../output/sem2_box} 
 Hvis dere vil utforske hvordan man kan tilpasse de ulike diagrammene vi har sett på og mange andre, kan denne siden være nyttig: https://www.r-graph-gallery.com/index.html
