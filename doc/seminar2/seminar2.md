@@ -27,9 +27,9 @@ Når vi jobber R så kan vi organisere arbeidet vårt på to måter:
 1. Bruke prosjekter 
 2. Sette working directory
 
-Working directory angir den mappen vi ønsker å hente og lagre filer til. Du kan tenke på det som den mappen du lagret prosjektfilen din i på første seminar. Når du åpner prosjektfilen din så husker R hvilken mappe dette er, men dersom du åpner et vanlig script må du fortelle R det. 
+Working directory angir den mappen vi ønsker å hente og lagre filer til. Du kan tenke på det som den mappen du lagret prosjektfilen din i på første seminar. Når du åpner prosjektfilen din så husker R hvilken mappe dette er, men dersom du ikke jobber i prosjekt må du fortelle R hvilken mappe du vil hente og lagre filer i.  
 
-Her kan man enten bruke `setwd("filbane")` eller så kan man trykke seg frem via verktøylinjen. Da velger du Session -> Set Working Directory -> Choose Directory og klikker deg frem til mappen din. 
+Om du ikke jobber i prosjekt så kan du enten bruke `setwd("filbane")` eller trykke deg frem via verktøylinjen. Da velger du Session -> Set Working Directory -> Choose Directory og klikker deg frem til mappen din. 
 
 Her er et eksempel på bruk av `setwd()`:
 
@@ -37,9 +37,9 @@ Her er et eksempel på bruk av `setwd()`:
 setwd("~/Dokumenter/STV1020")
 ```
 
-I dette seminaret skal vi bruke et datasett fra European Social Survey Round 9 (2018), og dettedatasettet inneholder svarene fra norske respondenter. Filen heter "ESS9NO.dta" og ligger i Canvas.
+I dette seminaret skal vi bruke et datasett fra European Social Survey Round 9 (2018). Dette datasettet inneholder svarene fra norske respondenter. Filen heter "ESS9NO.dta" og ligger i Canvas.
 
-Pass på at du har lagret datasettet vi skal bruke i dag i samme mappe som den du har satt som working directory.
+Pass på at du har lagret datasettet vi skal bruke i dag i samme mappe som du har prosjektfilen din i eller mappen som du setter som working directory.
 
 
 ## Overskrifter og tekst
@@ -74,7 +74,7 @@ library(tidyverse)
 ```
 
 ```
-## -- Attaching packages ---------- tidyverse 1.3.0 --
+## -- Attaching packages --------------------------------------------------------------------------------------------------------- tidyverse 1.3.0 --
 ```
 
 ```
@@ -85,7 +85,7 @@ library(tidyverse)
 ```
 
 ```
-## -- Conflicts ------------- tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -94,9 +94,9 @@ Merk at pakkenavnet ikke står i hermetegn når vi bruker `library()`. Hermetegn
 
 # Laste inn data 
 
-Dersom dere skal gjøre statistisk analyse, er som regel den første seksjonen import og forberedelse av data. En styrke ved R, er at det er mulig å importere mange ulike filtyper, både fra en mappe på pcen din og fra en url på internett. Det er også mulig å ha flere datasett oppe i R samtidig. Jeg går gjennom import av filer fra excel, stata, spss og R, men vit at det finnes mange andre muligheter. Hvis man lurer på hvordan man skal laste inn en bestemt filtype og har glemt hvordan man gjør det så er dette veldig lett å finne på internett 
+Dersom dere skal gjøre statistisk analyse, er som regel den første seksjonen import og forberedelse av data. En styrke ved R, er at det er mulig å importere mange ulike filtyper, både fra en mappe på pcen din og fra en url på internett. Det er også mulig å ha flere datasett oppe i R samtidig. Jeg går gjennom import av filer fra excel, stata, spss og R i dette dokumentet, men vit at det finnes mange andre muligheter. Hvis man lurer på hvordan man skal laste inn en bestemt filtype og har glemt hvordan man gjør det så er dette veldig lett å finne på internett. 
 
-Når du skal laste inn eller lagre noe lokalt på pc-en så vil R til enhver tid forvente at filnavn du refererer til befinner seg i working directory. Som vi husker så er working directory en mappe på pcen din; enten den du har lagret prosjektet ditt i eller den du har satt som working directory ved hjelp av `setwd()`. For å sjekke hva nåværende working directory er, og hvilke filer som finnes i den mappen, kan du skrive følgende kode (jeg har gjemt egen output):
+Når du skal laste inn eller lagre noe lokalt på pc-en så vil R til enhver tid forvente at filen du refererer til befinner seg i working directory. Som vi husker så er working directory en mappe på pcen din; enten den du har lagret prosjektet ditt i eller den du har satt som working directory ved hjelp av `setwd()`. For å sjekke hva nåværende working directory er, og hvilke filer som finnes i den mappen, kan du skrive følgende kode:
 
 
 ```r
@@ -162,7 +162,7 @@ df <- read_excel("data/filnavn.xlsx")
 
 Når man bruker større datasett som ESS, så inneholder datasettet ofte mange flere variabler enn de vi ønsker å bruke i våre analyser og variablene har navn som kan være vanskelig å huske, f.eks. nwspol. For å finne ut hvilken informasjon variablene inneholder så kan vi slå opp i kodeboken. Kodeboken til ESS finner dere [her](https://www.europeansocialsurvey.org/docs/round9/survey/ESS9_appendix_a7_e03_1.pdf). ESS inneholder også mange landspesisifkke variabler og kodeboken er derfor veldig lang.
 
-Når vi skal jobbe videre med data så kan det være lurt å fjerne de variablene vi ikke skal bruke og gi variablene navn som er lette for oss å forstå og huske. For å gjøre dette skal vi benytte oss av funksjoner i `tidyverse`. Først bruker vi `select()` til å velge de variablene vi vil beholde og så bruker vi `rename` til å endre navnene. Vi bruker en pipe `%>%` mellom funksjonene, som tar outputen til et utsagn og gjør det til inputen til det neste utsagnet. Pipen kan sees på som ordet "så". Rename-funksjonen lar oss forandre navnet til variabler og bruker syntaksen nytt_navn = gammelt_navn.
+Når vi skal jobbe videre med data så kan det være lurt å fjerne de variablene vi ikke skal bruke og gi variablene navn som er lette for oss å forstå og huske. For å gjøre dette skal vi benytte oss av funksjoner i `tidyverse`. Først bruker vi `select()` til å velge de variablene vi vil beholde og så bruker vi `rename()` til å endre navnene. Vi bruker en pipe `%>%` mellom funksjonene, som tar outputen til et utsagn og gjør det til inputen til det neste utsagnet. Pipen kan sees på som ordet "så". `rename()` lar oss forandre navnet til variabler og bruker syntaksen `rename(nytt_navn = gammelt_navn)`.
 
 
 ```r
@@ -234,6 +234,8 @@ Når variabler er på ordinalnivå kan de deles i to eller flere gjensidig utelu
 
 ![Utdrag fra ESS sin kodebok for variabelen interest (opprinnelig navn polintr)](../../bilder/interest_skjermdump.jpg)
 
+Vi kan sjekke klasse til denne variabelen også:
+
 
 ```r
 class(ess_subset$interest)
@@ -241,14 +243,6 @@ class(ess_subset$interest)
 
 ```
 ## [1] "factor"
-```
-
-```r
-is.numeric(ess_subset$interest)
-```
-
-```
-## [1] FALSE
 ```
 Som vi ser er også denne variabelen registrert som en faktor av R. Igjen så kan vi bruke levels: 
 
@@ -291,10 +285,10 @@ is.numeric(ess_subset$news)
 
 Denne variabelen er numerisk og skal være det så her er alt i orden. 
 
-Jeg vil oppfordre dere til å være obs og alltid sjekke at klassen på en variabel dere skal bruke stemmer overens med målenivået. I mange datasett får kategorisk variabler ofte tall istedenfor kategorinavn som verdier og lastes inn som klassen numeric. Dette gjør at kategoriske variabler kan fremstå som at de har et høyere målenivå enn de faktisk har i R. Derfor er det alltid viktig å også sjekke kodeboken for å se hvilket målenivå variabelen faktisk har. Det kommer ikke til å stå "denne variabelen har kategorisk målenivå" så dere må gjøre en selvstendig vurdering basert på hvilke verdier variabelen har. 
+Jeg vil oppfordre dere til å være obs og alltid sjekke at klassen på en variabel dere skal bruke stemmer overens med målenivået. I mange datasett får kategoriske og ordinale variabler ofte tall istedenfor kategorinavn som verdier og lastes inn som klassen numeric. Dette gjør at kategoriske variabler kan fremstå som at de har et høyere målenivå enn de faktisk har i R. Derfor er det alltid viktig å også sjekke kodeboken for å se hvilket målenivå variabelen faktisk har. Det kommer ikke til å stå "denne variabelen har kategorisk målenivå" så dere må gjøre en selvstendig vurdering basert på hvilke verdier variabelen har. 
 
 # Utforske data
-Det er mange ulike måter å utforske datasett og variabler på. Vi skal se på funksjonene: `summary()`, `str()`, `head()` og `tail()`. 
+Vi skal nå bli litt bedre kjent med dataene våre. Det er mange ulike måter å utforske datasett og variabler på. Vi skal se på funksjonene `summary()`, `str()`, `head()` og `tail()`. 
 
 For å få et deskriptivt sammendrag av et objekt kan vi bruke `summary()` eller str().
 
@@ -334,7 +328,7 @@ str(ess_subset)
 ##  $ age      : num  57 58 62 51 46 54 59 18 68 43 ...
 ```
 
-Hvis man vil se de første eller siste radene i et datasett, kan man bruke henholdsvis head- og tail-funksjonene. Man kan også velge for eksempel å bare se på de første eller siste verdiene til en bestemt variabel.
+Hvis man vil se de første eller siste radene i et datasett så kan man bruke henholdsvis `head()` og `tail()`.
 
 
 ```r
@@ -365,7 +359,7 @@ tail(ess_subset)
 ## 1406                  Yes   30 Hardly interested      1988  30
 ```
 
-Alle disse kan også bruker på enkeltvariabler. 
+Alle disse funksjonene kan også brukes på enkeltvariabler. 
 
 # Deskriptiv statistikk
 
@@ -373,7 +367,7 @@ Som dere husker fra forelesning og fra kapittel seks i Kellsted og Whitten så e
 
 ## Kategoriske variabler 
 
-R har ingen innebygd funksjon for å finne modusverdien. Ved å søke på internett så finner du fort mange ulike funksjoner du kan bruke, men for å gjøre det enkelt bruker vi bare `table()`. Funksjonen `table()` gir oss en frekvenstabell, mens `prop.table` gjør om frekvenstabellen til andeler. ESS datasettet mangler data for noen observasjoner. ved å ta med `useNA = "always"` så får vi ogås denne informasjonen i tabellen:
+R har ingen innebygd funksjon for å finne modusverdien. Ved å søke på internett så finner du fort mange ulike funksjoner du kan bruke, men for å gjøre det enkelt bruker vi bare `table()`. Funksjonen `table()` gir oss en frekvenstabell, mens `prop.table` gjør om frekvenstabellen til andeler. ESS datasettet mangler data for noen observasjoner. Ved å ta med `useNA = "always"` i `table()` så får vi også denne informasjonen i tabellen:
 
 ```r
 table(ess_subset$vote, useNA = "always")
@@ -544,7 +538,7 @@ ggplot(ess_subset, aes(x = "", y = interest, fill = interest)) +
 
 
 ### Søylediagram med to variabler
-Hvor mange innenfor hvert nivå av politisk interesse stemte? Vi kan bruke `geom_bar()` igjen, men vi sier at vi også vil se fordelingen av hvordan respondentene stemte innenfor hvert nivå av politisk interesse med `(aes(fill = vote2))`. Så sier vi at vi vil at det skal være en søyle for de ulike alternativene for vote med `position = "dodge"`. 
+Hvor mange innenfor hvert nivå av politisk interesse stemte? Vi kan bruke `geom_bar()` igjen, men vi sier at vi også vil se fordelingen av hvordan respondentene stemte innenfor hvert nivå av politisk interesse med `(aes(fill = vote))`. Så sier vi at vi vil at det skal være en søyle for de ulike alternativene for vote med `position = "dodge"`. 
 
 
 ```r
@@ -592,7 +586,7 @@ Et histogram viser hvor mange enheter det er i hver kategori. Vi kan enten spesi
 ```r
 ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
  	  geom_histogram(bins = 5) +
-  ggtitle("Histogram med fem søyler (bins) og relativ frekvens")
+  ggtitle("Histogram med fem søyler (bins) og density")
 ```
 
 
@@ -604,7 +598,7 @@ ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
 ```r
 ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
   geom_histogram(binwidth = 10) +
-  ggtitle("Histogram med søylebredde (binwidth) 10 og relativ frekvens")
+  ggtitle("Histogram med søylebredde (binwidth) 10 og density")
 ```
 
 
@@ -612,8 +606,9 @@ ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
 ![](../../output/sem2_hist4.png)
 
 ### Boksplott
+Vi kan lage et boksplott med `geom_boxplot.` Et boksplott viser hvordan en kontinuerlig variabel er fordelt. Boksen representerer spennet til første (25 % ) og tredje (75 %) kvartil, mens streken midt i boksen viser andre (50 %) kvartil (også kjent som median). For å finne kvartilene så ordner vi observasjonene i stigende rekkefølge og deler dem inn i fire deler med like mange observasjoner i hver. Første kvartil angir grensen mellom første og andre fjerdedel. Det betyr at 25 % av observasjonene har en verdi som er lavere enn verdien til første kvartil, mens 75 % har en verdi som er høyere. Tilsvarende utgjøre tredje kvartil grensen mellom andre og tredje fjerdedel, og vi kan si at 75 % av observasjonene har en verdi som er lavere enn verdiene til tredje kvaritl, mens 25 % har en verdi som er høyere. 
 
-Hvordan fordeler alder seg på interesse? Vi kan lage et boksplott med `geom_boxplot.` Et boksplott kan vise hvordan en kontinuerlig variabel (alder) er fordelt innenfor en annen kategorisk variabel (politisk interesse). Boksen i midten representerer spennet til de 50% vanligste verdiene (andre og tredje kvartil), mens strekene viser spennet til verdiene i nedre og øvre kvartil. 
+Prikkene i grafen angir uteliggere. Uteliggere er observasjoner som har enten veldig høye eller veldig lave verdier relativt til de andre observasjonene. I R beregnes disse utfra kvartilbredden. Kvartilbredden er differansen mellom tredje og første kvartil. Alle observasjoner som er lavere enn første kvartil minus 1,5 ganger kvartilbredden eller høyere enn tredje kvartil pluss 1,5 ganger kvartilbredden regnes som uteliggere. 
 
 
 ```r

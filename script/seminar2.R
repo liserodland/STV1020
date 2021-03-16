@@ -22,7 +22,7 @@ install.packages(c("tidyverse",
 # Før vi kan bruke pakken må vi også laste 
 # den inn:
 library(tidyverse,
-        haven)
+        foreign)
 
 
 # Laste inn data ----
