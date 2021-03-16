@@ -10,17 +10,19 @@ output:
 
 
 
-I dag skal vi se på følgende: 
+På seminar to skal vi se på det følgende: 
 
-3. Organisering av arbeidet 
-1. Pakker 
-2. Laste inn data (prosjekt og working directory)
-4. Målenivå
+1. Organisering av arbeidet 
+2. Pakker 
+3. Laste inn data 
+4. Organisering av data
 5. Klasser og målenivå
-6. Utforske data
+6. Deskriptiv statistikk
 7. Plotting 
 
+
 # Organisering av arbeidet
+
 Når vi jobber R så kan vi organisere arbeidet vårt på to måter: 
 1. Bruke prosjekter 
 2. Sette working directory
@@ -39,7 +41,9 @@ I dette seminaret skal vi bruke et datasett fra European Social Survey Round 9 (
 
 Pass på at du har lagret datasettet vi skal bruke i dag i samme mappe som den du har satt som working directory.
 
-# Overskrifter og tekst
+
+## Overskrifter og tekst
+
 Hvordan man organiserer et R-script kommer an på hva man selv synes er mest oversiktlig, men det er viktig at man klarer å holde oversikt over hva man har kodet og forstår hva man har gjort når man kommer tilbake til et script. 
 
 Det er lurt å lage overskrifter for å huske hva du tenker at koden din skal gjøre. Dersom du velger overskriftformatet "# Overskrift ----" så vil R automatisk gi deg muligheten til å gjemme koden under overskriften. Om du trykker på "Show document outline" i menylinjen til høyre over scriptet ditt kan du også få opp en innholdsfortegnelse basert på overskriftene dine. 
@@ -49,6 +53,7 @@ Det er lurt å lage overskrifter for å huske hva du tenker at koden din skal gj
 Det kan også være lurt å inkludere kommentarer i scriptet ditt  som forklarer hva du gjør. Tekst som ikke skal leses av R skriver man etter emneknagg (#). Vi glemmer fort så det er en god idé å tenke at du skal kunne se tilbake på dette scriptet om et år igjen og skjønne hva du har gjort. 
 
 Til sist så er det lurt å ikke skrive for mange tegn før du bytter linje. [The tidyverse style guide](https://style.tidyverse.org/syntax.html#long-lines) anbefaler at en begrenser antall tegn til 80 per linje. R teller for hvor mange tegn du har per linje til venstre nedenfor scriptet ditt. Tidyverse sin stilguide inneholder også flere tips til hvordan man kan skrive lettleselig kode. 
+
 
 # Pakker 
 
@@ -68,9 +73,27 @@ Det neste vi gjør er å laste inn pakken ved hjelp av `library()`:
 library(tidyverse)
 ```
 
+```
+## -- Attaching packages ---------- tidyverse 1.3.0 --
+```
+
+```
+## v ggplot2 3.3.2     v purrr   0.3.4
+## v tibble  3.0.3     v dplyr   1.0.2
+## v tidyr   1.1.2     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.0
+```
+
+```
+## -- Conflicts ------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+
 Merk at pakkenavnet ikke står i hermetegn når vi bruker `library()`. Hermetegn rundt pakkenavnet er bare nødvendig når vi bruker `install.packages()`.
 
 # Laste inn data 
+
 Dersom dere skal gjøre statistisk analyse, er som regel den første seksjonen import og forberedelse av data. En styrke ved R, er at det er mulig å importere mange ulike filtyper, både fra en mappe på pcen din og fra en url på internett. Det er også mulig å ha flere datasett oppe i R samtidig. Jeg går gjennom import av filer fra excel, stata, spss og R, men vit at det finnes mange andre muligheter. Hvis man lurer på hvordan man skal laste inn en bestemt filtype og har glemt hvordan man gjør det så er dette veldig lett å finne på internett 
 
 Når du skal laste inn eller lagre noe lokalt på pc-en så vil R til enhver tid forvente at filnavn du refererer til befinner seg i working directory. Som vi husker så er working directory en mappe på pcen din; enten den du har lagret prosjektet ditt i eller den du har satt som working directory ved hjelp av `setwd()`. For å sjekke hva nåværende working directory er, og hvilke filer som finnes i den mappen, kan du skrive følgende kode (jeg har gjemt egen output):
@@ -90,6 +113,7 @@ list.files()
 
 ```
 ## [1] "seminar2.md"    "seminar2.pdf"   "seminar2.Rmd"   "seminar2_files"
+## [5] "soyle1.png"
 ```
 Datasett kommer i mange ulike filformater. Noen vanlige formater er csv, dta (Stata-datasett), sav (SPSS-datasett) og Rdata. Hvilket format dataene dine har bestemmer hvilken funksjon du må bruke for å laste inn datasettet. For det meste så følger funksjonene dette formatet: 
 
@@ -99,18 +123,18 @@ Datasett kommer i mange ulike filformater. Noen vanlige formater er csv, dta (St
 datasett <- read_filtype("filbane/filnavn.filtype") 
 ```
 
-For eksempel så er datasettet vi skal bruke i dag en dta-fil. Pakken `haven` inneholder funksjoner for å lese dta-filer og sav-filer. Det første vi gjør er derfor å installere og laste inn `haven`. 
+For eksempel så er datasettet vi skal bruke i dag en dta-fil. Pakken `foreign` inneholder funksjoner for å lese dta-filer og sav-filer. Det første vi gjør er derfor å installere og laste inn `foreign`. Et alternativ til `foreign` er `haven`. 
 
 
 ```r
-install.packages("haven")
+install.packages("foreign")
 ```
 
 
 ```r
-library(haven)
+library(foreign)
 
-ess <- read_dta("../../data/ESS9NO.dta")
+ess <- read.dta("../../data/ESS9NO.dta")
 ```
 
 Her er eksempler på noen andre funksjoner for å laste inn data:
@@ -136,6 +160,7 @@ df <- read_excel("data/filnavn.xlsx")
 ```
 
 # Organisering av data
+
 Når man bruker større datasett som ESS, så inneholder datasettet ofte mange flere variabler enn de vi ønsker å bruke i våre analyser og variablene har navn som kan være vanskelig å huske, f.eks. nwspol. For å finne ut hvilken informasjon variablene inneholder så kan vi slå opp i kodeboken. Kodeboken til ESS finner dere [her](https://www.europeansocialsurvey.org/docs/round9/survey/ESS9_appendix_a7_e03_1.pdf). ESS inneholder også mange landspesisifkke variabler og kodeboken er derfor veldig lang.
 
 Når vi skal jobbe videre med data så kan det være lurt å fjerne de variablene vi ikke skal bruke og gi variablene navn som er lette for oss å forstå og huske. For å gjøre dette skal vi benytte oss av funksjoner i `tidyverse`. Først bruker vi `select()` til å velge de variablene vi vil beholde og så bruker vi `rename` til å endre navnene. Vi bruker en pipe `%>%` mellom funksjonene, som tar outputen til et utsagn og gjør det til inputen til det neste utsagnet. Pipen kan sees på som ordet "så". Rename-funksjonen lar oss forandre navnet til variabler og bruker syntaksen nytt_navn = gammelt_navn.
@@ -147,7 +172,7 @@ ess_subset <- ess %>%
   rename(
     	news = nwspol,
     	interest = polintr, 
-    	age = yrbrn
+    	year_born = yrbrn
   )
 ```
 
@@ -177,7 +202,7 @@ ess_subset$age <- 2018 - ess_subset$year_born
 
 I forelesning gikk dere gjennom tre ulike målenivåer; kategorisk, ordinalt og kontinuerlig. Disse sammen faller til en viss grad med noen av klassene i R. Men det er viktig å huske at R ikke vet hvilken klasse en variabel har så dere kan ikke nødvendigvis bruke dette til å sjekke variabelens målenivå. Det viktige er at dere gir R riktig informasjon om  hvilket målenivå en variabel har.  
 
-*Kategorisk* 
+## Kategorisk 
 
 Når variabler er kategoriske så kan egenskapen deles i to eller flere gjensidig utelukkende kategorier. I ESS datasettet vårt er  variabelen "vote" kategorisk; man har enten stemt, ikke stemt, eller så er man ikke berettiget til å stemme. Dette kan vi se i utklippet fra kodeboken. 
 
@@ -190,34 +215,23 @@ class(ess_subset$vote)
 ```
 
 ```
-## [1] "haven_labelled" "vctrs_vctr"     "double"
-```
-Her får vi opp flere klasser; "haven_labelled", "vctrs_vctr" og "double". Dette skyldes blant annet at datasett i dta-format ofte kommer med labels. I mange datasett får kategorisk variabler ofte tall istedenfor kategorinavn som verdier.  Labels inneholder informasjon om hvilke kategorier disse tallene representerer. Denne informasjonen finner vi også i kodeboken. Dette gjør at kategoriske variabler ofte fremstår som at de har et høyere målenivå enn de faktisk har i R. For å få frem poenget så kan vi spørre R om variabelen `vote` er registrert som numerisk: 
-
-
-```r
-is.numeric(ess_subset$vote)
-```
-
-```
-## [1] TRUE
-```
-Før vi bruker denne variabelen i en analyse bør vi endre klassen ved å bruke for eksempel `as.factor()`:
-
-
-```r
-ess_subset$vote2 <- as.factor(ess_subset$vote)
-
-class(ess_subset$vote2)
-```
-
-```
 ## [1] "factor"
 ```
+Her får vi opp klassen "factor". Klassen i R samsvarer altså med variabelens målenivå. Vi kan bruke `levels()` til å sjekke hvilke nivåer eller kategorier som er registrert:
 
-*Ordinalnivå*
+```r
+levels(ess_subset$vote)
+```
 
-Når variabler er på ordinalnivå kan de deles i to eller flere kategorier som kan rangeres, men vi kan ikke si noe om avstanden mellom verdiene og en enhets økning har ikke samme betydning. I ESS datasettet vår så er variabelen "interest" et eksempel på en variabel på ordinalnivå; i utdraget fra kodeboken ser vi at man kan være ikke interessert, lite interessert, ganske interessert, eller veldig interessert i politikk. 
+```
+## [1] "Yes"                  "No"                   "Not eligible to vote"
+## [4] "Refusal"              "Don't know"           "No answer"
+```
+
+
+## Ordinalnivå
+
+Når variabler er på ordinalnivå kan de deles i to eller flere gjensidig utelukkende kategorier som kan rangeres, men vi kan ikke si noe om avstanden mellom verdiene og en enhets økning har ikke samme betydning. I ESS datasettet vår så er variabelen `interest` et eksempel på en variabel på ordinalnivå; i utdraget fra kodeboken ser vi at man kan være ikke interessert, lite interessert, ganske interessert, eller veldig interessert i politikk. 
 
 ![Utdrag fra ESS sin kodebok for variabelen interest (opprinnelig navn polintr)](../../bilder/interest_skjermdump.JPG)
 
@@ -227,7 +241,7 @@ class(ess_subset$interest)
 ```
 
 ```
-## [1] "haven_labelled" "vctrs_vctr"     "double"
+## [1] "factor"
 ```
 
 ```r
@@ -235,32 +249,25 @@ is.numeric(ess_subset$interest)
 ```
 
 ```
-## [1] TRUE
+## [1] FALSE
 ```
-Som vi ser er også denne variabelen registrert som numerisk av R. Denne bør vi omkode til en faktor. Faktorer bevarer informasjon om rangering. I og med at kategoriene i dette tilfelle har verdiene 1 til 4 i stigende rekkefølge så trenger vi ikke å angi en egen rangering når vi lager faktoren: 
+Som vi ser er også denne variabelen registrert som en faktor av R. Igjen så kan vi bruke levels: 
 
 
 ```r
-ess_subset$interest2 <- as.factor(ess_subset$interest)
-
-class(ess_subset$interest2)
+levels(ess_subset$interest)
 ```
 
 ```
-## [1] "factor"
+## [1] "Very interested"       "Quite interested"      "Hardly interested"    
+## [4] "Not at all interested" "Refusal"               "Don't know"           
+## [7] "No answer"
 ```
 
-```r
-levels(ess_subset$interest2)
-```
 
-```
-## [1] "1" "2" "3" "4"
-```
+## Kontinuerlig
 
-*Kontinuerlig*
-
-Kontinuerlige variabler kan ragneres, har samme avstand mellom alle verdier og en enhets økning betyr alltid det samme. Her er det altså snakk om variabler med faktiske tallverdier. I ESS datasettet vårt så er variabelen "news" kontinuerlig. Som vi kan se i utdraget fra kodeboken så måler variabelen hvor mange minutter man bruker på nyheter hver dag. Det er et minutts avstand mellom hver verdi, og en økning på en enhet vil alltid bety en økning på et minutt. 
+Kontinuerlige variabler kan rangeres, har samme avstand mellom alle verdier og en enhets økning betyr alltid det samme. Her er det altså snakk om variabler med faktiske tallverdier. I ESS datasettet vårt så er variabelen "news" kontinuerlig. Som vi kan se i utdraget fra kodeboken så måler variabelen hvor mange minutter man bruker på nyheter hver dag. Det er et minutts avstand mellom hver verdi, og en økning på en enhet vil alltid bety en økning på et minutt. 
 
 ![Utdrag fra ESS sin kodebok for variabelen news (opprinnelig navn nwspol)](../../bilder/news_skjermdump.JPG)
 
@@ -272,7 +279,7 @@ class(ess_subset$news)
 ```
 
 ```
-## [1] "haven_labelled" "vctrs_vctr"     "double"
+## [1] "integer"
 ```
 
 ```r
@@ -283,7 +290,9 @@ is.numeric(ess_subset$news)
 ## [1] TRUE
 ```
 
-Denne variabelen er numerisk og skal være det så her gjør vi ingen endringer. 
+Denne variabelen er numerisk og skal være det så her er alt i orden. 
+
+Jeg vil oppfordre dere til å være obs og alltid sjekke at klassen på en variabel dere skal bruke stemmer overens med målenivået. I mange datasett får kategorisk variabler ofte tall istedenfor kategorinavn som verdier og lastes inn som klassen numeric. Dette gjør at kategoriske variabler kan fremstå som at de har et høyere målenivå enn de faktisk har i R. Derfor er det alltid viktig å også sjekke kodeboken for å se hvilket målenivå variabelen faktisk har. Det kommer ikke til å stå "denne variabelen har kategorisk målenivå" så dere må gjøre en selvstendig vurdering basert på hvilke verdier variabelen har. 
 
 # Utforske data
 Det er mange ulike måter å utforske datasett og variabler på. Vi skal se på funksjonene: `summary()`, `str()`, `head()` og `tail()`. 
@@ -295,14 +304,22 @@ summary(ess_subset)
 ```
 
 ```
-##       vote            news           interest     year_born         age         vote2      interest2 
-##  Min.   :1.000   Min.   :   0.0   Min.   :1.0   Min.   :1928   Min.   :15.00   1   :1156   1   :184  
-##  1st Qu.:1.000   1st Qu.:  30.0   1st Qu.:2.0   1st Qu.:1957   1st Qu.:32.00   2   : 124   2   :564  
-##  Median :1.000   Median :  60.0   Median :2.0   Median :1971   Median :47.00   3   : 125   3   :568  
-##  Mean   :1.266   Mean   : 104.1   Mean   :2.4   Mean   :1971   Mean   :46.54   NA's:   1   4   : 89  
-##  3rd Qu.:1.000   3rd Qu.: 120.0   3rd Qu.:3.0   3rd Qu.:1986   3rd Qu.:61.00               NA's:  1  
-##  Max.   :3.000   Max.   :1109.0   Max.   :4.0   Max.   :2003   Max.   :90.00                         
-##  NA's   :1       NA's   :34       NA's   :1     NA's   :32     NA's   :32
+##                    vote           news                         interest  
+##  Yes                 :1156   Min.   :   0.0   Hardly interested    :568  
+##  No                  : 124   1st Qu.:  30.0   Quite interested     :564  
+##  Not eligible to vote: 125   Median :  60.0   Very interested      :184  
+##  Refusal             :   0   Mean   : 104.1   Not at all interested: 89  
+##  Don't know          :   0   3rd Qu.: 120.0   Refusal              :  0  
+##  No answer           :   0   Max.   :1109.0   (Other)              :  0  
+##  NA's                :   1   NA's   :34       NA's                 :  1  
+##    year_born         age       
+##  Min.   :1928   Min.   :15.00  
+##  1st Qu.:1957   1st Qu.:32.00  
+##  Median :1971   Median :47.00  
+##  Mean   :1971   Mean   :46.54  
+##  3rd Qu.:1986   3rd Qu.:61.00  
+##  Max.   :2003   Max.   :90.00  
+##  NA's   :32     NA's   :32
 ```
 
 ```r
@@ -310,30 +327,12 @@ str(ess_subset)
 ```
 
 ```
-## tibble [1,406 x 7] (S3: tbl_df/tbl/data.frame)
-##  $ vote     : dbl+lbl [1:1406] 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 3, 1, 1, 2, 1, 1, 1, 1, 1,...
-##    ..@ label       : chr "Voted last national election"
-##    ..@ format.stata: chr "%20.0g"
-##    ..@ labels      : Named num [1:6] 1 2 3 NA NA NA
-##    .. ..- attr(*, "names")= chr [1:6] "Yes" "No" "Not eligible to vote" "Refusal" ...
-##  $ news     : dbl+lbl [1:1406]    60,    60,   540,    30,    60,   120,    60,    90,   120,    60,   120,    30,   120,   120,    ...
-##    ..@ label       : chr "News about politics and current affairs, watching, reading or listening, in min"
-##    ..@ format.stata: chr "%12.0g"
-##    ..@ labels      : Named num [1:3] NA NA NA
-##    .. ..- attr(*, "names")= chr [1:3] "Refusal" "Don't know" "No answer"
-##  $ interest : dbl+lbl [1:1406] 3, 2, 2, 2, 2, 1, 2, 3, 2, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 3, 2, 3, 3, 2, 3, 3, 1, 2,...
-##    ..@ label       : chr "How interested in politics"
-##    ..@ format.stata: chr "%21.0g"
-##    ..@ labels      : Named num [1:7] 1 2 3 4 NA NA NA
-##    .. ..- attr(*, "names")= chr [1:7] "Very interested" "Quite interested" "Hardly interested" "Not at all interested" ...
-##  $ year_born: dbl+lbl [1:1406] 1961, 1960, 1956, 1967, 1972, 1964, 1959, 2000, 1950, 1975, 1934, 1965, 1950, 1941, 1986, 1994, 1971,...
-##    ..@ label       : chr "Year of birth"
-##    ..@ format.stata: chr "%12.0g"
-##    ..@ labels      : Named num [1:3] NA NA NA
-##    .. ..- attr(*, "names")= chr [1:3] "Refusal" "Don't know" "No answer"
-##  $ age      : num [1:1406] 57 58 62 51 46 54 59 18 68 43 ...
-##  $ vote2    : Factor w/ 3 levels "1","2","3": 1 1 1 1 1 1 1 3 1 1 ...
-##  $ interest2: Factor w/ 4 levels "1","2","3","4": 3 2 2 2 2 1 2 3 2 2 ...
+## 'data.frame':	1406 obs. of  5 variables:
+##  $ vote     : Factor w/ 6 levels "Yes","No","Not eligible to vote",..: 1 1 1 1 1 1 1 3 1 1 ...
+##  $ news     : int  60 60 540 30 60 120 60 90 120 60 ...
+##  $ interest : Factor w/ 7 levels "Very interested",..: 3 2 2 2 2 1 2 3 2 2 ...
+##  $ year_born: int  1961 1960 1956 1967 1972 1964 1959 2000 1950 1975 ...
+##  $ age      : num  57 58 62 51 46 54 59 18 68 43 ...
 ```
 
 Hvis man vil se de første eller siste radene i et datasett, kan man bruke henholdsvis head- og tail-funksjonene. Man kan også velge for eksempel å bare se på de første eller siste verdiene til en bestemt variabel.
@@ -344,15 +343,13 @@ head(ess_subset)
 ```
 
 ```
-## # A tibble: 6 x 7
-##        vote      news              interest year_born   age vote2 interest2
-##   <dbl+lbl> <dbl+lbl>             <dbl+lbl> <dbl+lbl> <dbl> <fct> <fct>    
-## 1   1 [Yes]        60 3 [Hardly interested]      1961    57 1     3        
-## 2   1 [Yes]        60 2 [Quite interested]       1960    58 1     2        
-## 3   1 [Yes]       540 2 [Quite interested]       1956    62 1     2        
-## 4   1 [Yes]        30 2 [Quite interested]       1967    51 1     2        
-## 5   1 [Yes]        60 2 [Quite interested]       1972    46 1     2        
-## 6   1 [Yes]       120 1 [Very interested]        1964    54 1     1
+##   vote news          interest year_born age
+## 1  Yes   60 Hardly interested      1961  57
+## 2  Yes   60  Quite interested      1960  58
+## 3  Yes  540  Quite interested      1956  62
+## 4  Yes   30  Quite interested      1967  51
+## 5  Yes   60  Quite interested      1972  46
+## 6  Yes  120   Very interested      1964  54
 ```
 
 ```r
@@ -360,15 +357,13 @@ tail(ess_subset)
 ```
 
 ```
-## # A tibble: 6 x 7
-##                       vote               news              interest year_born   age vote2 interest2
-##                  <dbl+lbl>          <dbl+lbl>             <dbl+lbl> <dbl+lbl> <dbl> <fct> <fct>    
-## 1 1 [Yes]                     90              1 [Very interested]        1955    63 1     1        
-## 2 3 [Not eligible to vote]    20              2 [Quite interested]       2003    15 3     2        
-## 3 1 [Yes]                     30              3 [Hardly interested]      1994    24 1     3        
-## 4 1 [Yes]                     60              2 [Quite interested]       1984    34 1     2        
-## 5 2 [No]                   NA(c) [Don't know] 3 [Hardly interested]      1974    44 2     3        
-## 6 1 [Yes]                     30              3 [Hardly interested]      1988    30 1     3
+##                      vote news          interest year_born age
+## 1401                  Yes   90   Very interested      1955  63
+## 1402 Not eligible to vote   20  Quite interested      2003  15
+## 1403                  Yes   30 Hardly interested      1994  24
+## 1404                  Yes   60  Quite interested      1984  34
+## 1405                   No   NA Hardly interested      1974  44
+## 1406                  Yes   30 Hardly interested      1988  30
 ```
 
 Alle disse kan også bruker på enkeltvariabler. 
@@ -387,8 +382,12 @@ table(ess_subset$vote, useNA = "always")
 
 ```
 ## 
-##    1    2    3 <NA> 
-## 1156  124  125    1
+##                  Yes                   No Not eligible to vote 
+##                 1156                  124                  125 
+##              Refusal           Don't know            No answer 
+##                    0                    0                    0 
+##                 <NA> 
+##                    1
 ```
 
 ```r
@@ -397,8 +396,10 @@ prop.table(table(ess_subset$vote))
 
 ```
 ## 
-##          1          2          3 
-## 0.82277580 0.08825623 0.08896797
+##                  Yes                   No Not eligible to vote 
+##           0.82277580           0.08825623           0.08896797 
+##              Refusal           Don't know            No answer 
+##           0.00000000           0.00000000           0.00000000
 ```
 
 ```r
@@ -407,12 +408,16 @@ prop.table(table(ess_subset$vote, useNA = "always"))
 
 ```
 ## 
-##            1            2            3         <NA> 
-## 0.8221906117 0.0881934566 0.0889046942 0.0007112376
+##                  Yes                   No Not eligible to vote 
+##         0.8221906117         0.0881934566         0.0889046942 
+##              Refusal           Don't know            No answer 
+##         0.0000000000         0.0000000000         0.0000000000 
+##                 <NA> 
+##         0.0007112376
 ```
 
-
 ## Kontinuerlige variabler
+
 
 ```r
 # Finner minimumsverdi (det laveste antall minutter brukt på nyheter)
@@ -420,14 +425,7 @@ min(ess_subset$news, na.rm = TRUE) # na.rm = TRUE sier at missing skal droppes i
 ```
 
 ```
-## <labelled<double>[1]>: News about politics and current affairs, watching, reading or listening, in min
 ## [1] 0
-## 
-## Labels:
-##  value      label
-##  NA(b)    Refusal
-##  NA(c) Don't know
-##  NA(d)  No answer
 ```
 
 ```r
@@ -436,14 +434,7 @@ max(ess_subset$news, na.rm = TRUE)
 ```
 
 ```
-## <labelled<double>[1]>: News about politics and current affairs, watching, reading or listening, in min
 ## [1] 1109
-## 
-## Labels:
-##  value      label
-##  NA(b)    Refusal
-##  NA(c) Don't know
-##  NA(d)  No answer
 ```
 
 ```r
@@ -503,127 +494,131 @@ summary(ess_subset$news)
 ```
 
 # Plotting
+
 Vi skal kort introdusere hvordan man kan visualisere data i dette seminaret, og så vil dere få en mer grundig gjennomgang neste seminar. Det er gøy å kunne visualisere dataene våre, både for vår egen del, men også for de som skal lese oppgavene våre. For å få fine grafer kan man bruke funksjonen `ggplot()`.
 
 ## Kategoriske variabeler
-*Søylediagram med en variabel*
+
+### Søylediagram og kakediagram med en variabel
 Hvordan kan vi visualisere hvordan fordelingen av politisk interesse er? Her kan vi bruke `geom_bar` til å lage et søylediagram (bar chart). Et søylediagram viser antall observasjoner av hver verdi.
 
 
 ```r
-ggplot(data = ess_subset, aes(x = interest2)) + 
-  geom_bar()
+ggplot(data = ess_subset, aes(x = interest)) + 
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
-![](seminar2_files/figure-latex/unnamed-chunk-163-1.pdf)<!-- --> 
+
+
+
+\includegraphics[width=27.08in]{../../output/sem2_soyle1} 
 
 Dersom vi ikke ønsker å gi missingverdiene (NA) en egen søyle så kan vi bruke `filter()` til å fjerne disse: 
 
 
 ```r
 ggplot(data = ess_subset %>% 
-         filter(!is.na(interest2)), 
-       aes(x = interest2)) + 
-  geom_bar()
+         filter(!is.na(interest)), 
+       aes(x = interest)) + 
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
-![](seminar2_files/figure-latex/unnamed-chunk-164-1.pdf)<!-- --> 
+
+
+
+\includegraphics[width=27.08in]{../../output/sem2_soyle2} 
 
 Et alternativ til søylediagram er kakediagram (pie chart): 
 
+
 ```r
-ggplot(ess_subset, aes(x = "", y = interest2, fill = interest2)) + 
+ggplot(ess_subset, aes(x = "", y = interest, fill = interest)) + 
   geom_bar(stat = "identity", width = 1) + 
   coord_polar("y", start = 0) +
   theme_void() +
   scale_fill_grey()
 ```
 
-![](seminar2_files/figure-latex/unnamed-chunk-165-1.pdf)<!-- --> 
 
 
-*Søylediagram med to variabler*
+
+\includegraphics[width=27.08in]{../../output/sem2_kake} 
+
+### Søylediagram med to variabler
 Hvor mange innenfor hvert nivå av politisk interesse stemte? Vi kan bruke `geom_bar()` igjen, men vi sier at vi også vil se fordelingen av hvordan respondentene stemte innenfor hvert nivå av politisk interesse med `(aes(fill = vote2))`. Så sier vi at vi vil at det skal være en søyle for de ulike alternativene for vote med `position = "dodge"`. 
 
 
 ```r
 ggplot(data = ess_subset, 
-       aes(x = interest2)) + 
-  geom_bar(aes(fill=vote2),
-           position = "dodge")
+       aes(x = interest)) + 
+  geom_bar(aes(fill=vote),
+           position = "dodge") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
-![](seminar2_files/figure-latex/unnamed-chunk-166-1.pdf)<!-- --> 
+
+
+
+\includegraphics[width=27.08in]{../../output/sem2_soyle3} 
 
 ## Kontinuerlige variabler
-*Histogram*
+### Histogram
 Hvordan fordeler respondentenes alder og tiden de bruker på nyheter seg? Disse variablene er kontinuerlige, så vi kan bruke `geom_histogram` for å lage et histogram. Her gjør jeg det med variabelen news. 
 
 
 ```r
 ggplot(data = ess_subset, aes(x = news)) +
- 	  geom_histogram(bins = 5) 
+ 	  geom_histogram(bins = 5) +
+  ggtitle("Histogram med fem søyler (bins) og frekvens")
 ```
 
-```
-## Don't know how to automatically pick scale for object of type haven_labelled/vctrs_vctr/double. Defaulting to continuous.
-```
 
-```
-## Warning: Removed 34 rows containing non-finite values (stat_bin).
-```
 
-![](seminar2_files/figure-latex/unnamed-chunk-167-1.pdf)<!-- --> 
+\includegraphics[width=27.08in]{../../output/sem2_hist1} 
+
 
 ```r
 ggplot(data = ess_subset, aes(x = news)) +
-  geom_histogram(binwidth = 10) 
+  geom_histogram(binwidth = 10) +
+  ggtitle("Histogram med søylebredde (binwidth) på 10 og frekvens")
 ```
 
-```
-## Don't know how to automatically pick scale for object of type haven_labelled/vctrs_vctr/double. Defaulting to continuous.
-```
 
-```
-## Warning: Removed 34 rows containing non-finite values (stat_bin).
-```
 
-![](seminar2_files/figure-latex/unnamed-chunk-167-2.pdf)<!-- --> 
+
+\includegraphics[width=27.08in]{../../output/sem2_hist2} 
 
 Et histogram viser hvor mange enheter det er i hver kategori. Vi kan enten spesifisere hvor mange søyler vi vil ha (bins) eller hvor stor hver søyle skal være (bindwidth). Vi kan også velge å plotte density fremfor count. Da får vi histogrammer tilsvarende figur 6.5 i Kellsted og Whitten: 
 
 
 ```r
 ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
- 	  geom_histogram(bins = 5) 
+ 	  geom_histogram(bins = 5) +
+  ggtitle("Histogram med fem søyler (bins) og relativ frekvens")
 ```
 
-```
-## Don't know how to automatically pick scale for object of type haven_labelled/vctrs_vctr/double. Defaulting to continuous.
-```
 
-```
-## Warning: Removed 34 rows containing non-finite values (stat_bin).
-```
 
-![](seminar2_files/figure-latex/unnamed-chunk-168-1.pdf)<!-- --> 
+
+\includegraphics[width=27.08in]{../../output/sem2_hist3} 
+
+
 
 ```r
 ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
-  geom_histogram(binwidth = 10) 
+  geom_histogram(binwidth = 10) +
+  ggtitle("Histogram med søylebredde (binwidth) 10 og relativ frekvens")
 ```
 
-```
-## Don't know how to automatically pick scale for object of type haven_labelled/vctrs_vctr/double. Defaulting to continuous.
-```
 
-```
-## Warning: Removed 34 rows containing non-finite values (stat_bin).
-```
 
-![](seminar2_files/figure-latex/unnamed-chunk-168-2.pdf)<!-- --> 
 
-*Boksplott*
+\includegraphics[width=27.08in]{../../output/sem2_hist4} 
+
+### Boksplott
+
 Hvordan fordeler alder seg på interesse? Vi kan lage et boksplott med `geom_boxplot.` Et boksplott kan vise hvordan en kontinuerlig variabel (alder) er fordelt innenfor en annen kategorisk variabel (politisk interesse). Boksen i midten representerer spennet til de 50% vanligste verdiene (andre og tredje kvartil), mens strekene viser spennet til verdiene i nedre og øvre kvartil. 
 
 
@@ -633,59 +628,8 @@ ggplot(data = ess_subset, aes(x = news)) +
   theme_minimal()
 ```
 
-```
-## Don't know how to automatically pick scale for object of type haven_labelled/vctrs_vctr/double. Defaulting to continuous.
-```
 
-```
-## Warning: Removed 34 rows containing non-finite values (stat_boxplot).
-```
 
-![](seminar2_files/figure-latex/unnamed-chunk-169-1.pdf)<!-- --> 
 
+\includegraphics[width=27.08in]{../../output/sem2_box} 
 Hvis dere vil utforske hvordan man kan tilpasse de ulike diagrammene vi har sett på og mange andre, kan denne siden være nyttig: https://www.r-graph-gallery.com/index.html
-
-# BONUS: hente ut labels
-Ved hjelp av pakken `labelled` kan vi hente ut informasjon om labels og bruke det i plots. NB. dette er en bonus for dere som vil lage fine plot og vil ikke komme på prøven. Først installerer og laste vi inn pakken: 
-
-
-```r
-install.packages("labelled")
-```
-
-
-```r
-library(labelled)
-```
-
-Så lager vi et datasett med informasjon om verdier og labels ved hjelp av funksjonen `val_labels`. I koden under skjer flere ting. Først henter jeg ut informasjon om verdier og labels og lagrer i et objekt. Så endrer jeg navnet på den variabelen med verdiene så navnet matcher variabelnavnet i det opprinnelige datasettet mitt. Så gjør jeg om radnavnene til en variabel fordi det er her informasjonen om labels er lagret. Til slutt filtrerer jeg ut labels for missing. 
-
-```r
-labels_vote <- data.frame(val_labels(ess_subset$vote)) %>% 
-  rename(vote = val_labels.ess_subset.vote.) %>%           
-  mutate(labels_vote = rownames(.)) %>% 
-  filter(!is.na(vote))
-```
-
-Etter å ha gjort dette så slår jeg sammen de to datasettene og plotter på nytt. Denne gangen bruker jeg variabelen `labels_vote` i tabell og plot: 
-
-```r
-ess_subset <- ess_subset %>% 
-  full_join(labels_vote, by = "vote")
-
-table(ess_subset$labels_vote)
-```
-
-```
-## 
-##                   No Not eligible to vote                  Yes 
-##                  124                  125                 1156
-```
-
-```r
-ggplot(data = ess_subset, aes(x = labels_vote)) + 
-  geom_bar()
-```
-
-![](seminar2_files/figure-latex/unnamed-chunk-173-1.pdf)<!-- --> 
-
