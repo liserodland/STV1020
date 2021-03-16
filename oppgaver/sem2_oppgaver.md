@@ -15,7 +15,7 @@ output:
 3. Bruk `yrbrn` til å lage en ny variabel med informajson om respondentens alder. 
 4. Lag et datasett som bare inneholder `trstplt`, `gndr`, `yrbrn` og `vote`.
 5. Hvilken klasse har `trstplt` og `gndr`? (Bonusspørsmål: hvilket målenivå har de?)
-6. Hvor mange verdier har `trstplt? Hvor mange har svart at de har "Complete trust" til politikere? 
+6. Hvor mange verdier har `trstplt`? Hvor mange har svart at de har "Complete trust" til politikere? 
 7. Lag et histogram som viser fordelingen til `trstplt`. Si noe kort om hvordan verdiene fordeler seg. 
 8. Er det forskjell mellom hvor mange kvinner og menn som stemte? Vis dette ved hjelp av en graf. 
 9. Er det en forskjell i spredningen av alder for de som stemte og de som ikke stemte? Vis dette ved hjelp av en graf. 

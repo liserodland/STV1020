@@ -4,34 +4,39 @@
 
 # Bestemme working directory ----
 
-# Først setter vi working directory til den mappen vi ønsker 
-# å hente og lagre filer til (ikke nødvendig dersom du jobber 
-# i prosjektfilen din):
+# Først setter vi working directory til den 
+# mappen vi ønsker å hente og lagre filer 
+# til (ikke nødvendig dersom du jobber i 
+# prosjektfilen din):
 setwd("~/Desktop/STV1020")
 
 
 # Pakker ----
 
-# Første gang man skal bruke en pakke må man installere den. 
-# I dag skal vi installere to pakker:
-install.packages("tidyverse", 
-                 "haven") 
+# Første gang man skal bruke en pakke må man
+# installere den. I dag skal vi installere 
+# to pakker:
+install.packages(c("tidyverse", 
+                 "foreign")) 
 
-# Før vi kan bruke pakken må vi også laste den inn:
+# Før vi kan bruke pakken må vi også laste 
+# den inn:
 library(tidyverse,
         haven)
 
 
 # Laste inn data ----
 
-# Vi laste inn datasettet vårt og lagrer det som et objekt:
-__ <- read_dta("__")
+# Vi laste inn datasettet vårt og lagrer det
+# som et objekt:
+__ <- read.dta("__")
 
 
 # Organisering av data ----
 
-# Lager et nytt datasett med et subset av variablene og 
-# endrer navn på noen variabler:
+# Lager et nytt datasett med et subset av 
+# variablene og endrer navn på noen 
+# variabler:
 ess_subset <- ess %>% 
   select(nwspol, polintr, vote, yrbrn) %>% 
   rename(
@@ -48,17 +53,17 @@ __$__ <- 2018 - __$__
 
 # vote er kategorisk, sjekker klassen i R:
 class(__$__)
-is.numeric(__$__)
 
-# omkoder så klasse i R reflekterer målenivå:
-__$__ <- as.factor(__$__)
+# Sjekker nivåer/kategorier:
+levels(__$__)
+
 
 # interest er ordinal, sjekker klassen i R:
 class(__$__)
 is.numeric(__$__)
 
-# omkoder så klasse i R reflekterer målenivå:
-__$__ <- as.factor(__$__)
+# Sjekker nivåer/kategorier: 
+levels(__$__)
 
 # news er kontinuerlig, sjekker klassen i R:
 class(__$__)
@@ -119,7 +124,8 @@ ggplot(data = __,
            position = "dodge")
 
 # Kakediagram (pie chart): 
-ggplot(data = __, aes(x = "", y = __, fill = __)) + 
+ggplot(data = __, 
+       aes(x = "", y = __, fill = __)) + 
   geom_bar(stat = "identity", width = 1) + 
   coord_polar("y", start = 0) +
   theme_void() +
@@ -127,7 +133,7 @@ ggplot(data = __, aes(x = "", y = __, fill = __)) +
 
 
 # Kontinuerlige data
-# Histogram med antall
+# Histogram med frekvens
 # Med fem søyler:
 ggplot(data = __, aes(x = __)) +
   geom_histogram(bins = 5) 
@@ -136,15 +142,17 @@ ggplot(data = __, aes(x = __)) +
 ggplot(data = __, aes(x = __)) +
   geom_histogram(binwidth = 10) 
 
-# Histogram med 
-ggplot(data = ess_subset, aes(x = __, y = ..density..)) +
+# Histogram med relativ frekvens:
+# Fem søyler
+ggplot(data = ess_subset, 
+       aes(x = __, y = ..density..)) +
   geom_histogram(bins = 5) 
 
+# Med søylebredde på 10
 ggplot(data = ess_subset, aes(x = __, y = ..density..)) +
   geom_histogram(binwidth = 10) 
 
 # Boksplot
-
 ggplot(data = __, aes(x = __)) +
   geom_boxplot() +
   theme_minimal()
