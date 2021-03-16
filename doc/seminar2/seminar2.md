@@ -232,7 +232,7 @@ levels(ess_subset$vote)
 
 Når variabler er på ordinalnivå kan de deles i to eller flere gjensidig utelukkende kategorier som kan rangeres, men vi kan ikke si noe om avstanden mellom verdiene og en enhets økning har ikke samme betydning. I ESS datasettet vår så er variabelen `interest` et eksempel på en variabel på ordinalnivå; i utdraget fra kodeboken ser vi at man kan være ikke interessert, lite interessert, ganske interessert, eller veldig interessert i politikk. 
 
-![Utdrag fra ESS sin kodebok for variabelen interest (opprinnelig navn polintr)](../../bilder/interest_skjermdump.JPG)
+![Utdrag fra ESS sin kodebok for variabelen interest (opprinnelig navn polintr)](../../bilder/interest_skjermdump.jpg)
 
 
 ```r
@@ -510,8 +510,7 @@ ggplot(data = ess_subset, aes(x = interest)) +
 
 
 
-
-\includegraphics[width=27.08in]{../../output/sem2_soyle1} 
+![](../../output/sem2_soyle1.png)
 
 Dersom vi ikke ønsker å gi missingverdiene (NA) en egen søyle så kan vi bruke `filter()` til å fjerne disse: 
 
@@ -526,8 +525,7 @@ ggplot(data = ess_subset %>%
 
 
 
-
-\includegraphics[width=27.08in]{../../output/sem2_soyle2} 
+![](../../output/sem2_soyle2.png)
 
 Et alternativ til søylediagram er kakediagram (pie chart): 
 
@@ -542,8 +540,8 @@ ggplot(ess_subset, aes(x = "", y = interest, fill = interest)) +
 
 
 
+![](../../output/sem2_kake.png)
 
-\includegraphics[width=27.08in]{../../output/sem2_kake} 
 
 ### Søylediagram med to variabler
 Hvor mange innenfor hvert nivå av politisk interesse stemte? Vi kan bruke `geom_bar()` igjen, men vi sier at vi også vil se fordelingen av hvordan respondentene stemte innenfor hvert nivå av politisk interesse med `(aes(fill = vote2))`. Så sier vi at vi vil at det skal være en søyle for de ulike alternativene for vote med `position = "dodge"`. 
@@ -559,8 +557,7 @@ ggplot(data = ess_subset,
 
 
 
-
-\includegraphics[width=27.08in]{../../output/sem2_soyle3} 
+![](../../output/sem2_soyle3.png)
 
 ## Kontinuerlige variabler
 ### Histogram
@@ -574,8 +571,8 @@ ggplot(data = ess_subset, aes(x = news)) +
 ```
 
 
-
-\includegraphics[width=27.08in]{../../output/sem2_hist1} 
+![](../../output/sem2_hist1.png)
+```
 
 
 ```r
@@ -586,8 +583,8 @@ ggplot(data = ess_subset, aes(x = news)) +
 
 
 
+![](../../output/sem2_hist2.png)
 
-\includegraphics[width=27.08in]{../../output/sem2_hist2} 
 
 Et histogram viser hvor mange enheter det er i hver kategori. Vi kan enten spesifisere hvor mange søyler vi vil ha (bins) eller hvor stor hver søyle skal være (bindwidth). Vi kan også velge å plotte density fremfor count. Da får vi histogrammer tilsvarende figur 6.5 i Kellsted og Whitten: 
 
@@ -600,8 +597,7 @@ ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
 
 
 
-
-\includegraphics[width=27.08in]{../../output/sem2_hist3} 
+![](../../output/sem2_hist3.png)
 
 
 
@@ -613,7 +609,7 @@ ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
 
 
 
-!(../../output/sem2_hist4.png)
+![](../../output/sem2_hist4.png)
 
 ### Boksplott
 
@@ -628,6 +624,6 @@ ggplot(data = ess_subset, aes(x = news)) +
 
 
 
-!(../../output/sem2_box.png)
+![](../../output/sem2_box.png)
 
 Hvis dere vil utforske hvordan man kan tilpasse de ulike diagrammene vi har sett på og mange andre, kan denne siden være nyttig: https://www.r-graph-gallery.com/index.html
