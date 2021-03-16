@@ -571,8 +571,8 @@ ggplot(data = ess_subset, aes(x = news)) +
 ```
 
 
+
 ![](../../output/sem2_hist1.png)
-```
 
 
 ```r

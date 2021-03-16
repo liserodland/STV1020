@@ -370,6 +370,7 @@ ggplot(data = ess_subset, aes(x = news)) +
  	  geom_histogram(bins = 5) +
   ggtitle("Histogram med fem søyler (bins) og frekvens")
 ```
+
 ```{r, include = FALSE}
 ggplot(data = ess_subset, aes(x = news)) +
  	  geom_histogram(bins = 5) +
@@ -379,7 +380,6 @@ ggsave("../../output/sem2_hist1.png")
 ```
 
 ![](../../output/sem2_hist1.png)
-```
 
 ```{r, eval = FALSE}
 ggplot(data = ess_subset, aes(x = news)) +
