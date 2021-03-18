@@ -21,8 +21,8 @@ install.packages(c("tidyverse",
 
 # Før vi kan bruke pakken må vi også laste 
 # den inn:
-library(tidyverse,
-        foreign)
+library(tidyverse)
+library(foreign)
 
 
 # Laste inn data ----
