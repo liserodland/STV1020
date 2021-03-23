@@ -690,5 +690,9 @@ https://ggplot2.tidyverse.org/
 https://socviz.co/makeplot.html#makeplot 
 
 http://euclid.psych.yorku.ca/www/psy6135/tutorials/gapminder.html 
+
+https://www.tidytuesday.com/
+
+https://twitter.com/hashtag/tidytuesday
  
  
