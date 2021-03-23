@@ -158,35 +158,36 @@ Så undersøker jeg om omkodingen er blitt gjort riktig ved å bruke funksjonen 
 
 ```r
 # Lager en tabell med opprinnelig og ny variabel:
-table(data$year_1952, data$year)
+table(data$year_1952, data$year, useNA = "always")
 ```
 
 ```
-##     
-##      1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 2002 2007
-##   0   142    0    0    0    0    0    0    0    0    0    0    0
-##   5     0  142    0    0    0    0    0    0    0    0    0    0
-##   10    0    0  142    0    0    0    0    0    0    0    0    0
-##   15    0    0    0  142    0    0    0    0    0    0    0    0
-##   20    0    0    0    0  142    0    0    0    0    0    0    0
-##   25    0    0    0    0    0  142    0    0    0    0    0    0
-##   30    0    0    0    0    0    0  142    0    0    0    0    0
-##   35    0    0    0    0    0    0    0  142    0    0    0    0
-##   40    0    0    0    0    0    0    0    0  142    0    0    0
-##   45    0    0    0    0    0    0    0    0    0  142    0    0
-##   50    0    0    0    0    0    0    0    0    0    0  142    0
-##   55    0    0    0    0    0    0    0    0    0    0    0  142
+##       
+##        1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 2002 2007 <NA>
+##   0     142    0    0    0    0    0    0    0    0    0    0    0    0
+##   5       0  142    0    0    0    0    0    0    0    0    0    0    0
+##   10      0    0  142    0    0    0    0    0    0    0    0    0    0
+##   15      0    0    0  142    0    0    0    0    0    0    0    0    0
+##   20      0    0    0    0  142    0    0    0    0    0    0    0    0
+##   25      0    0    0    0    0  142    0    0    0    0    0    0    0
+##   30      0    0    0    0    0    0  142    0    0    0    0    0    0
+##   35      0    0    0    0    0    0    0  142    0    0    0    0    0
+##   40      0    0    0    0    0    0    0    0  142    0    0    0    0
+##   45      0    0    0    0    0    0    0    0    0  142    0    0    0
+##   50      0    0    0    0    0    0    0    0    0    0  142    0    0
+##   55      0    0    0    0    0    0    0    0    0    0    0  142    0
+##   <NA>    0    0    0    0    0    0    0    0    0    0    0    0    0
 ```
 
 ```r
 # Lager en tabell med en logisk test:
-table((data$year_1952 + 1952) == data$year)
+table((data$year_1952 + 1952) == data$year, useNA = "always")
 ```
 
 ```
 ## 
-## TRUE 
-## 1704
+## TRUE <NA> 
+## 1704    0
 ```
 
 Jeg kan også endre retningen på verdienes ved matematisk omkoding. Da ganger jeg variablene med (-1) og plusser på antall verdier variablene har. Nå blir 2007 år null. 
@@ -197,28 +198,29 @@ Jeg kan også endre retningen på verdienes ved matematisk omkoding. Da ganger j
 data$year_2007 <- data$year_1952*(-1) + 55
 
 # Sjekker at det ble riktig med table():
-table(data$year_1952, data$year_2007)
+table(data$year_1952, data$year_2007, useNA = "always")
 ```
 
 ```
-##     
-##        0   5  10  15  20  25  30  35  40  45  50  55
-##   0    0   0   0   0   0   0   0   0   0   0   0 142
-##   5    0   0   0   0   0   0   0   0   0   0 142   0
-##   10   0   0   0   0   0   0   0   0   0 142   0   0
-##   15   0   0   0   0   0   0   0   0 142   0   0   0
-##   20   0   0   0   0   0   0   0 142   0   0   0   0
-##   25   0   0   0   0   0   0 142   0   0   0   0   0
-##   30   0   0   0   0   0 142   0   0   0   0   0   0
-##   35   0   0   0   0 142   0   0   0   0   0   0   0
-##   40   0   0   0 142   0   0   0   0   0   0   0   0
-##   45   0   0 142   0   0   0   0   0   0   0   0   0
-##   50   0 142   0   0   0   0   0   0   0   0   0   0
-##   55 142   0   0   0   0   0   0   0   0   0   0   0
+##       
+##          0   5  10  15  20  25  30  35  40  45  50  55 <NA>
+##   0      0   0   0   0   0   0   0   0   0   0   0 142    0
+##   5      0   0   0   0   0   0   0   0   0   0 142   0    0
+##   10     0   0   0   0   0   0   0   0   0 142   0   0    0
+##   15     0   0   0   0   0   0   0   0 142   0   0   0    0
+##   20     0   0   0   0   0   0   0 142   0   0   0   0    0
+##   25     0   0   0   0   0   0 142   0   0   0   0   0    0
+##   30     0   0   0   0   0 142   0   0   0   0   0   0    0
+##   35     0   0   0   0 142   0   0   0   0   0   0   0    0
+##   40     0   0   0 142   0   0   0   0   0   0   0   0    0
+##   45     0   0 142   0   0   0   0   0   0   0   0   0    0
+##   50     0 142   0   0   0   0   0   0   0   0   0   0    0
+##   55   142   0   0   0   0   0   0   0   0   0   0   0    0
+##   <NA>   0   0   0   0   0   0   0   0   0   0   0   0    0
 ```
 
 
-## Omkoding med ifelse() 
+## Omkoding med `ifelse()` 
 
 Den funksjonen jeg bruker mest til omkoding, er `ifelse()`. Funksjonen kan brukes på numeriske og kategoriske variabler. Syntaksen til denne funksjonen kan forklares som følger:
 
@@ -243,20 +245,27 @@ Jeg bruker en kombinasjon av en tabell og en logisk test (se forklaringer fra f�
 
 
 ```r
-table(data$lifeExp_2, data$lifeExp > mean(data$lifeExp, na.rm = TRUE))
+table(data$lifeExp_2, data$lifeExp > mean(data$lifeExp, na.rm = TRUE), useNA = "always")
 ```
 
 ```
-##    
-##     FALSE TRUE
-##   0   809    0
-##   1     0  895
+##       
+##        FALSE TRUE <NA>
+##   0      809    0    0
+##   1        0  895    0
+##   <NA>     0    0    0
+```
+## Omkoding med `recode()`
+Dersom vi vil omkode en variabel med flere variabler så kan vi gjøre det med flere `ifelse()` nøstet i hverandre. Det kan imidlertid bli veldig mye kode. Et alternativ er å kombinere `mutate()` og `recode()`. `mutate()` er en funksjon i tidyverse vi bruker for å lage nye variabler. `recode()` er også en del av tidyverse og den brukes til å endre verdier på variabler. Syntaksen til kombinasjonen av `mutate()` og `recode()` er:
+
+
+```r
+mutate(nyvariabel = recode(gammelvariabel, 
+                           verdi1 = nyverdi1, 
+                           verdi2 = nyverdi2))
 ```
 
-
-# Subsetting av datasett
-
-Å subsette betyr å lage et nytt datasett basert på et gammelt. Dette gikk vi gjennom i seminar 2, men jeg repeterer det her. For å subsette så bruker vi funksjoner i pakken `tidyverse`. Vi bruker pipes angitt ved `%>%` for å binde sammen ulike operasjoner vi vil utføre på et datasett. Dette kalles for piping. Det er en effektiv og ryddig måte å kode på. Derfor kommer jeg ofte til å bruke pipes i seminarene. Pakken installerte vi i andre seminar, men vi må laste den inn for å bruke den: 
+I dette eksempelet skal vi lage en ny variabel `continent2` med tallverdier i steden for kontinentnavn. Ettersom funksjonen vi skal bruker ligger i pakken `tidyverse` så må vi aller først laste inn pakken med `library()`
 
 
 ```r
@@ -278,6 +287,44 @@ library(tidyverse)
 ## -- Conflicts -------------------------------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
+```
+
+```r
+data <- data %>% 
+  mutate(continent2 = recode(continent, 
+                             Africa = 1, 
+                             Americas = 2, 
+                             Asia = 3, 
+                             Europe = 4, 
+                             Oceania = 5))
+```
+
+Vi sjekker med en tabell at det ble riktig: 
+
+
+```r
+table(data$continent, data$continent2, useNA = "always")
+```
+
+```
+##           
+##              1   2   3   4   5 <NA>
+##   Africa   624   0   0   0   0    0
+##   Americas   0 300   0   0   0    0
+##   Asia       0   0 396   0   0    0
+##   Europe     0   0   0 360   0    0
+##   Oceania    0   0   0   0  24    0
+##   <NA>       0   0   0   0   0    0
+```
+
+
+# Subsetting av datasett
+
+Å subsette betyr å lage et nytt datasett basert på et gammelt. Dette gikk vi gjennom i seminar 2, men jeg repeterer det her. For å subsette så bruker vi funksjoner i pakken `tidyverse`. Vi bruker pipes angitt ved `%>%` for å binde sammen ulike operasjoner vi vil utføre på et datasett. Dette kalles for piping. Det er en effektiv og ryddig måte å kode på. Derfor kommer jeg ofte til å bruke pipes i seminarene. Pakken installerte vi i andre seminar, men vi må laste den inn for å bruke den: 
+
+
+```r
+library(tidyverse)
 ```
 
 Den første funksjonen `select()` brukes til å velge ut hvilke variabler du vil ha med i det nye datasettet:

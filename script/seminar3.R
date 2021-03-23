@@ -56,16 +56,16 @@ summary(__)
 
 # Sjekker at kodingen gikk fint:
 # Lager en tabell med opprinnelig og ny variabel:
-table(__, data$year)
+table(__, data$year, useNA = "always")
 
 # Lager en tabell med en logisk test:
-table((__ + 1952) == data$year)
+table((__ + 1952) == data$year, useNA = "always")
 
 # Endrer retning på variabelen:
 __ <- __*(-1) + 55
 
 # Sjekker at det ble riktig med table():
-table(__, __)
+table(__, __, useNA = "always")
 
 
 ## Omkoding med ifelse ----
@@ -78,6 +78,18 @@ data$lifeExp_2 <- ifelse(test = data$lifeExp > mean(data$lifeExp, na.rm = TRUE),
 table(data$lifeExp_2, 
       data$lifeExp > mean(data$lifeExp, na.rm = TRUE))
 
+
+## Omkoding med recode ----
+data <- data %>% 
+  mutate(continent2 = recode(continent, 
+                             Africa = 1, 
+                             Americas = 2, 
+                             Asia = 3, 
+                             Europe = 4, 
+                             Oceania = 5))
+
+# Sjekker at det blir riktig
+table(data$continent, data$continent2, useNA = "always")
 
 # Subsetting av datasett ----
 

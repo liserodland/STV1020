@@ -96,10 +96,10 @@ Så undersøker jeg om omkodingen er blitt gjort riktig ved å bruke funksjonen 
 
 ```{r}
 # Lager en tabell med opprinnelig og ny variabel:
-table(data$year_1952, data$year)
+table(data$year_1952, data$year, useNA = "always")
 
 # Lager en tabell med en logisk test:
-table((data$year_1952 + 1952) == data$year)
+table((data$year_1952 + 1952) == data$year, useNA = "always")
 ```
 
 Jeg kan også endre retningen på verdienes ved matematisk omkoding. Da ganger jeg variablene med (-1) og plusser på antall verdier variablene har. Nå blir 2007 år null. 
@@ -109,12 +109,12 @@ Jeg kan også endre retningen på verdienes ved matematisk omkoding. Da ganger j
 data$year_2007 <- data$year_1952*(-1) + 55
 
 # Sjekker at det ble riktig med table():
-table(data$year_1952, data$year_2007)
+table(data$year_1952, data$year_2007, useNA = "always")
 
 ```
 
 
-## Omkoding med ifelse() 
+## Omkoding med `ifelse()` 
 
 Den funksjonen jeg bruker mest til omkoding, er `ifelse()`. Funksjonen kan brukes på numeriske og kategoriske variabler. Syntaksen til denne funksjonen kan forklares som følger:
 
@@ -136,8 +136,37 @@ data$lifeExp_2 <- ifelse(test = data$lifeExp > mean(data$lifeExp, na.rm = TRUE),
 Jeg bruker en kombinasjon av en tabell og en logisk test (se forklaringer fra første seminar om logiske tester) for å sjekke at det ble riktig: 
 
 ```{r}
-table(data$lifeExp_2, data$lifeExp > mean(data$lifeExp, na.rm = TRUE))
+table(data$lifeExp_2, data$lifeExp > mean(data$lifeExp, na.rm = TRUE), useNA = "always")
 
+```
+## Omkoding med `recode()`
+Dersom vi vil omkode en variabel med flere variabler så kan vi gjøre det med flere `ifelse()` nøstet i hverandre. Det kan imidlertid bli veldig mye kode. Et alternativ er å kombinere `mutate()` og `recode()`. `mutate()` er en funksjon i tidyverse vi bruker for å lage nye variabler. `recode()` er også en del av tidyverse og den brukes til å endre verdier på variabler. Syntaksen til kombinasjonen av `mutate()` og `recode()` er:
+
+```{r, eval = FALSE}
+mutate(nyvariabel = recode(gammelvariabel, 
+                           verdi1 = nyverdi1, 
+                           verdi2 = nyverdi2))
+
+```
+
+I dette eksempelet skal vi lage en ny variabel `continent2` med tallverdier i steden for kontinentnavn. Ettersom funksjonen vi skal bruker ligger i pakken `tidyverse` så må vi aller først laste inn pakken med `library()`
+
+```{r}
+library(tidyverse)
+
+data <- data %>% 
+  mutate(continent2 = recode(continent, 
+                             Africa = 1, 
+                             Americas = 2, 
+                             Asia = 3, 
+                             Europe = 4, 
+                             Oceania = 5))
+```
+
+Vi sjekker med en tabell at det ble riktig: 
+
+```{r}
+table(data$continent, data$continent2, useNA = "always")
 ```
 
 
