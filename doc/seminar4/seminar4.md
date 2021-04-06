@@ -9,7 +9,7 @@ output:
 ---
 I løpet av dette seminaret skal vi: 
 
-1. Repetere litt om innlastning av data. 
+1. Repetere litt om pakker og innlastning av data. 
 2. Missingverdier (NA).
 3. Statistiske mål.
 4. Univariat analyse.
@@ -97,7 +97,7 @@ library(scales)
 ##     col_factor
 ```
 
-# Laste inn data og ulike typer av data. 
+# Laste inn data
 Det neste vi skal gjøre er å laste inn data. Som vi allerede har snakket om så finnes det mange typer data og hver type krever egne koder for innlastning. På Canvas har jeg lastet opp et dokument som oppsummerer litt av dette. I dag skal vi bruke noen ulike datasett; et fra ESS og to fra Kellstedt og Whitten. Det første skal vi laste inn data i csv.-format ved hjelp av funksjonen `read.csv`:  
 
 
@@ -187,7 +187,7 @@ summary(data)
 
 Det finnes mange grunner til at det er tomme celler/manglende verdier/svar i dataene. I datasett basert på spørreundersøkelser som ESS så kan det hende at noen respondenter ikke har ønsket å svare på alle spørsmål. I andre tilfeller kan det hende vi rett og slett mangler dataen. Vi skal nå se på hvordan vi kan finne missing-verdier og hva vi kan gjøre med dem i R. Når dere skal gjøre egne analyser så er det er viktig å teoretisk begrunne hvordan man håndterer NA-verdier på bakgrunn av utvalget av populasjonen. Er missing-verdiene systematiske eller er de tilfeldige? 
 
-Når vi skal finne missing er det mest vanlig er å bruke funksjonen `is.na()`. `is.na()` tar utgangspunkt i en logisk test. For hver observasjon i et datasett eller en variabel så sjekker `is.na()` om det finnes missingverdier. Under ser dere et eksempel der jeg spør R om rad 1:6 i datasettet `data` har missingverdier: 
+Når vi skal finne missing er det mest vanlig er å bruke funksjonen `is.na()`. `is.na()` tar utgangspunkt i en logisk test. For hver observasjon i et datasett eller en variabel så sjekker `is.na()` om det finnes missingverdier. Under ser dere et eksempel der jeg spør R om rad 1:6 i datasettet `data` har missingverdier. `slice_head(n = 6)` avgrenser datasettet til de seks første observasjonene: 
 
 
 ```r
@@ -280,7 +280,7 @@ complete.cases(data %>%
 ## [1]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
 ```
 
-Fra dette kan vi lese at de fem første og den sjette observasjonen ikke har noen missing, men den fjerde obsevarsjonen mangler informasjon på minst en variabel. Fra før vet vi at denne observasjonen mangler informasjon på variabelen tillit. Nå kombinerer vi `sum()` og `complete.cases()` for å finne antall observasjoner uten noen missing i datasettet vårt:
+Fra dette kan vi lese at de tre første og de to siste observasjonene ikke har noen missing, men den fjerde obsevarsjonen mangler informasjon på minst en variabel. Fra før vet vi at denne observasjonen mangler informasjon på variabelen tillit. Nå kombinerer vi `sum()` og `complete.cases()` for å finne antall observasjoner uten noen missing i datasettet vårt:
 
 
 ```r
@@ -648,8 +648,7 @@ ggplot(ANES2016small, aes(x = vote,
 
 ## Sammenligne gjennomsnitt med t-test
 
-Når den avhengige variabelen vår er kontinuerlig og den uavhengige er katerogisk så kan vi bruke en t-test til å sjekke om gruppegjennomsnittene er singifikant forskjellige. Før vi gjør det kan vi undersøke sammenhengen i et boxplot: 
-
+Når den avhengige variabelen vår er kontinuerlig og den uavhengige er katerogisk så kan vi bruke en t-test til å sjekke om gruppegjennomsnittene er singifikant forskjellige. Før vi gjør det kan vi undersøke sammenhengen i et boxplot. Nå skal vi bruke ESS-datasettet vi lastet inn først i seminaret igjen.  I ESS-datasettet er kjonn registrert som en numerisk variabel. For å fortelle R at dette er en kategorisk variabel så kan vi skrive `as.factor(kjonn)`. Prøv gjerne å lage plottet uten `as.factor()` for å se hva som skjer. Vi lager et boksplot: 
 
 
 
@@ -731,11 +730,11 @@ cov(FairFPSR3,
 
 Som Kellstedt og Whitten skriver så kan kovarians fortelle oss noe om sammenhengens retning, men den forteller oss ingenting om hvor sikre vi kan være på at denne samvariasjonen skiller seg fra det vi ville fått om det ikke fantes en sammenheng i populasjonen vi ønsker å undersøke. Til det bruker vi Pearson's r. 
 
-Pearsons r beskriver styrken og retningen til korrelasjonen mellom to variabler. Den varierer fra -1 (negativ sammenheng) til 1 (positiv sammenheng). 0 indikerer ingen sammenheng. Pearson's r finner vi ved hjelo av funksjonen `cor()`. Vi spesifiserer det samme som vi gjorde i `cov`; avhengig variabel (`y = `), uavhengig variabel (`x =`) og hva vi skal gjøre med missingverdier (`use = "pairwise.complete.obs`):
+Pearsons r beskriver styrken og retningen til korrelasjonen mellom to variabler. Den varierer fra -1 (negativ sammenheng) til 1 (positiv sammenheng). 0 indikerer ingen sammenheng. Pearson's r finner vi ved hjelp av funksjonen `cor()`. Vi spesifiserer det samme som vi gjorde i `cov`; avhengig variabel (`y = `), uavhengig variabel (`x =`) og hva vi skal gjøre med missingverdier (`use = "pairwise.complete.obs`):
 
 
 ```r
-# correlation between inc_vote and growth
+# Korrelasjon mellom vekst og stemmeandel
 cor(x = FairFPSR3$growth,
     y = FairFPSR3$inc_vote, 
     use = "pairwise.complete.obs")
@@ -748,7 +747,7 @@ Hvordan kan vi tolke korrelasjonen?
 
 
 ```r
-# testing whether the correlation is statistically significant
+# tester om korrelasojnen er statistisk signifikant
 cor.test(FairFPSR3$inc_vote, 
          FairFPSR3$growth, 
          use = "pairwise.complete.obs")
