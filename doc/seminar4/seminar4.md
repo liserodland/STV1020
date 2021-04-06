@@ -103,8 +103,12 @@ Det neste vi skal gjøre er å laste inn data. Som vi allerede har snakket om s�
 
 ```r
 # For å laste inn .csv-filer
-data <- read.csv("../../data/internett.csv") 
+data <- read.csv("../../data/internett.csv")
+```
 
+
+
+```r
 # For å lagre .csv-filer
 write.csv(data, file = "../../data/internett_ed.csv", row.names = FALSE)
 ```
@@ -415,8 +419,7 @@ I en større oppgave ønsker man ofte å presentere alle variablenes deskriptive
 
 ```r
 stargazer(data,
-          type = "text",
-          out = "sem4_desktab.htm")
+          type = "text")
 ```
 
 ```
