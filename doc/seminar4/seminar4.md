@@ -12,8 +12,7 @@ I løpet av dette seminaret skal vi:
 1. Repetere litt om pakker og innlastning av data. 
 2. Missingverdier (NA).
 3. Statistiske mål.
-4. Univariat analyse.
-5. Bivariat analyse.
+4. Bivariat hypotesetest
 
 # Repetisjon 
 ## Pakker og funksjoner
@@ -664,7 +663,7 @@ ggplot(data, aes(x = utdanning, fill = as.factor(kjonn))) +
 
 ![](../../output/sem4_boxplot.png)
 
-For å gjennomføre en t-test bruker vi funksjonen `t.test()`:
+For å gjennomføre en tohalet t-test bruker vi funksjonen `t.test()`:
 
 
 ```r
@@ -686,7 +685,76 @@ t.test(utdanning ~ as.factor(kjonn), data = data, var.equal = TRUE)
 ```
 Hva forteller p-verdien (p-value) oss her? 
 
+Oversikt over t-tester:
 
+```r
+# Enhalet test
+# Tester om menn (verdi 1) har signifikant mindre utdanning enn kvinner:
+t.test(utdanning ~ as.factor(kjonn), 
+       data = data, 
+       alternative = "less",
+       var.equal = TRUE)
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  utdanning by as.factor(kjonn)
+## t = 2.7274, df = 2658, p-value = 0.9968
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##       -Inf 0.7347443
+## sample estimates:
+## mean in group 1 mean in group 2 
+##        11.74582        11.28754
+```
+
+```r
+# Enhalet test
+# Tester om menn (verdi 1) har signifikant mer utdanning enn kvinner:
+t.test(utdanning ~ as.factor(kjonn), 
+       data = data, 
+       alternative = "greater",
+       var.equal = TRUE)
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  utdanning by as.factor(kjonn)
+## t = 2.7274, df = 2658, p-value = 0.003213
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  0.1818002       Inf
+## sample estimates:
+## mean in group 1 mean in group 2 
+##        11.74582        11.28754
+```
+
+```r
+# Tohalet test
+# Tester om menn (verdi 1) har signifikant forskjellig utdanning fra kvinner:
+t.test(utdanning ~ as.factor(kjonn), 
+       data = data, 
+       alternative = "two.sided",
+       var.equal = TRUE)
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  utdanning by as.factor(kjonn)
+## t = 2.7274, df = 2658, p-value = 0.006425
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.1288003 0.7877442
+## sample estimates:
+## mean in group 1 mean in group 2 
+##        11.74582        11.28754
+```
 ## Korrelasjonskoeffisient
 Vi avslutter med bivariat analyse med to kontinuerlige variabler. Dette er en forsmak på bivariat regresjonsanalyse som vi skal se mer på neste gang. Hensikten med dette  er å beskrive korrelasjonen eller samvariasjonen mellom variablene. Vi kan beskrive denne sammenhengen med Pearsons r og teste om korrelasjonen er statistisk signifikant.  
        
