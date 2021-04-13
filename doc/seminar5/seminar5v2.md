@@ -390,7 +390,9 @@ ggplot(data = FairFPSR3) +
 ![](../../output/sem5_fig5.png)
 
 ### Legge til regresjonslinje med `fitted()` og `geom_line()`
-Den andre er å be R løse regresjonslikningen for alle observasjonene våre og så legge til et nytt lag med predikerte verdier i plottet. R kan gjøre utregningen for oss ved hjelp av funksjonen `fitted()` så vi slipper heldigvis å gjøre det for hånd. 
+Den andre metoden er å be R løse regresjonslikningen for alle observasjonene våre og så legge til et nytt lag med predikerte verdier i plottet. Denne metoden går vi ikke gjennom i detalj på seminar så det holder i massevis å kunne den første. 
+
+R kan regne ut de predikerte verdiene for oss ved hjelp av funksjonen `fitted()` så vi slipper heldigvis å gjøre det for hånd. 
 
 Her bruker vi funksjonene `fitted()` og `resid()` til å legge til predikerte verdier og residualer for de ulike variablene i datasettet vårt:
 
