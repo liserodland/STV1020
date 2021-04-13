@@ -1,6 +1,11 @@
 ---
-title: 'Seminar 5: Regresjon med to variabler'
-output: github_document
+title: "Seminar 5: Regresjon med en uavhengig variabel"
+author: "Lise Rødland"
+date: "April 12, 2021"
+output:
+  pdf_document: 
+    keep_md: yes
+  github_document: default
 ---
 
 I dag skal vi se på fem ting:
@@ -14,27 +19,29 @@ I dag skal vi se på fem ting:
 Datasettet vi skal bruke er det samme som det som omtales i kapittel ni i The
 Fundamentals of Political Science Research. I likhet med kapittel ni så skal vi 
 kjøre en regresjon der vi ser på effekten av økonomisk vekst (`growth`)
-på andel stemmer partiet til den sittende kandidaten får (`inc_vote`). Det første vi skal 
-gjøre er å sette working directory, laste inn pakker og laste inn datasettet: 
+på andel stemmer partiet til den sittende kandidaten får (`inc_vote`). Det første vi skal gjøre er å åpne prosjektfilen vår/sette working directory, laste inn pakker og laste inn datasettet: 
+
+```{r, eval = FALSE}
+# Bestemmer working directory (om du ikke jobber i prosjekt). Bytt ut det som står mellom "" så det matcher din filbane:
+setwd("../STV1020/")
+```
 
 ```{r, eval = TRUE, include=TRUE, echo=TRUE, message=FALSE}
-# Bestemmer working directory
-setwd("../../STV1020/")
 
 # Laster inn pakker
 library(tidyverse)
 library(stargazer)
 
 # Laster inn datasettet
-load("data/FairFPSR3.RData")
+# Bytt ut det som står mellom "" til å passe din filbane:
+load("../../data/FairFPSR3.RData")
 
 ```
 
-Vi bruker `load()` fordi datasettet er i .Rdata-format. 
+Vi bruker `load()` for å laste inn data fordi datasettet er i .Rdata-format. 
 
 ## Undersøker data
-Når vi skal kjøre en 
-regresjonsanalyse så er noe av det første vi gjør er å undersøke datasettet: 
+Når vi skal kjøre en regresjonsanalyse så er noe av det første vi gjør å undersøke datasettet: 
 
 ```{r}
 # Hent ut informasjon om variabelnavn, klasse m.m.
@@ -45,25 +52,29 @@ FairFPSR3
 
 # Printer variabelnavnene
 names(FairFPSR3)
+
+# Henter ut oppsummerende statistikk:
+summary(FairFPSR3)
 ```
 
-Det er også lurt å sjekke om mange observasjoner har manglende informasjon på 
-noen av variablene du er interessert i. 
+Det er også lurt å sjekke om mange observasjoner har manglende informasjon (missing) på variablene du er interessert i: 
 
 ```{r}
-# Sjekker hvor mange observasjoner som har manglende informasjon/missing/NA
+# Sjekker hvor mange observasjoner som vi har informasjon på alle variablene om:
 table(complete.cases(FairFPSR3))
+```
 
+Vi ser at 35 av observasjonene våre ikke har noen missingverdier. Vi kan også sjekke for enkeltvariabler:
+
+```{r}
 # Sjekker hvor mange observasjoner som har missing på variabelen inflation
 table(is.na(FairFPSR3$inflation))
 
 ```
 
-Legg merke til at funksjonene `complete.cases()` og `is.na()` er logiske tester. 
-Disse evaluerer hver observasjon og sjekker om de har missing på noen variabler
-(`complete.cases()`) eller på variabelen `inflation`. For å illustrere dette så
-kan vi prøve å legge til to nye variabler i datasettet basert på disse logiske
-testene: 
+Vi ser at en observasjon har missing på variabelen `inflation`. 
+
+Legg merke til at funksjonene `complete.cases()` og `is.na()` er logiske tester. Disse evaluerer hver observasjon og sjekker om vi har informasjon om alle variabler (`complete.cases()`) og om vi mangler informasjon på variabelen `inflation`. For å illustrere dette så kan vi prøve å legge til to nye variabler i datasettet basert på disse logiske testene: 
 
 ```{r}
 FairFPSR3 <- FairFPSR3 %>% 
@@ -71,19 +82,14 @@ FairFPSR3 <- FairFPSR3 %>%
          inf_na = is.na(inflation))
 ```
 
-Bruk `view()` eller klikk på datasettet ditt for å se hvordan de nye variablene
-ser ut. Hva betyr `TRUE` og `FALSE` i de to kolonnene?
+Bruk `view()` eller klikk på datasettet ditt for å se hvordan de nye variablene ser ut. Hva betyr `TRUE` og `FALSE` i de to kolonnene?
+
+Mer informasjon om missingverdier finner dere i dokumentet som beskriver seminar 4. 
 
 ## Omkoding av variabler
-Etter at vi har kartlagt datastrukturen og hvilke variabler vi har så må vi 
-vurdere om noen av variablene må omkodes før vi kan gjøre analysen vår. For å
-få samme resultater som i kapittel ni trenger vi ikke å omkode noe, men for å få
-noe å sammenligne med skal vi lage en dikotom variabel. I `tidyverse` bruker man 
-som regel `mutate()`sammen med andre funksjoner for å opprette nye variabler. 
-Koden over hvor vi opprettet variabler for de logiske testene `complete.cases()`
-og `is.na()` er eksempler på dette. Nå skal vi også kombinere `mutate()` med
-`if.else` for å lage en dikotom variabel som tar verdien `Growth` om observasjonen
-er et år med positiv økonomisk vekst og `No growth` om observasjonen er et år uten
+Etter at vi har kartlagt datastrukturen og hvilke variabler vi har så må vi vurdere om noen av variablene må omkodes før vi kan gjøre analysen vår. For å få samme resultater som i kapittel ni trenger vi ikke å omkode noe, men for å få noe å sammenligne med skal vi lage en dikotom variabel. 
+
+I `tidyverse` bruker man som regel `mutate()`sammen med andre funksjoner for å opprette nye variabler. Koden over hvor vi opprettet variabler for de logiske testene `complete.cases()` og `is.na()` er eksempler på dette. Nå skal vi også kombinere `mutate()` med `if.else` for å lage en dikotom variabel som tar verdien `Growth` om observasjonen er et år med positiv økonomisk vekst og `No growth` om observasjonen er et år uten
 økonomisk vekst: 
 
 ```{r}
@@ -91,25 +97,25 @@ er et år med positiv økonomisk vekst og `No growth` om observasjonen er et år
 FairFPSR3 <- FairFPSR3 %>% 
   mutate(growth_dich = ifelse(growth > 0, "Growth", "No growth"),
          growth_dich = factor(growth_dich, levels = c("No growth", "Growth")))
+```
 
+Hvordan `ifelse()` fungerer er nærmere beskrivet i seminar 3. Det neste vi gjør er å sjekke om omkodingen ble riktig: 
+
+```{r}
 # Sjekker at det ser ok ut: 
 class(FairFPSR3$growth_dich)
 table(FairFPSR3$growth_dich, useNA = "always")
 ```
 
-Når du lager en faktor-variabel så tar R utgangspunkt i alfabetet når 
-referansekategorien bestemmes. I dette tilfellet ville referansekateogrien blitt
+Når du lager en faktor-variabel så tar R utgangspunkt i alfabetet når referansekategorien bestemmes. I dette tilfellet ville referansekateogrien blitt
 "Growth", men vi bruker `factor()` til å endre referansekategorien til "No growth". 
-Når en omkoder numeriske variabler så kan det være nyttig å lage et plott for å
-sjekke at det ble riktig. Her bruker vi `color` argumentet til å gi ulik farge 
-til observasjonene.
 
+Når en omkoder numeriske variabler så kan det være nyttig å lage et plott for å sjekke at det ble riktig. Her bruker vi `fill` argumentet til å gi ulik farge 
+til observasjonene basert på om det var vekst eller ikke: 
 
-```{r}
-# Eksempel på plott. Kan byttes ut med andre plott i f.eks. Healy 
-# (har ikke fått boka enda så vet ikke hva de vektlegger der)
+```{r, eval = FALSE}
 ggplot(data = FairFPSR3) +
-  geom_histogram(aes(x=growth, fill = growth_dich),
+  geom_bar(aes(x=growth, fill = growth_dich),
                binwidth = 1) +
   theme_bw() +
   theme(legend.title=element_blank()) +
@@ -118,40 +124,60 @@ ggplot(data = FairFPSR3) +
 
 ```
 
-For å lagre plottet lokalt på pc-en så kan bruker export og save as under Plots
-eller vi kan bruke funksjonen `ggsave()`. 
+```{r, include = FALSE}
+ggplot(data = FairFPSR3) +
+  geom_bar(aes(x=growth, fill = growth_dich),
+               binwidth = 1) +
+  theme_bw() +
+  theme(legend.title=element_blank()) +
+  xlab("Growth rate") +
+  ylab("No. of observations")
+
+ggsave("../../output/sem5fgi1.png")
+
+```
+
+![](../../output/sem5fgi1.png)
+
+Ut fra plottet kan vi se at alle observasjonene med verdien `No growth` hadde negativ vekstrate, mens alle observasjoner med verdien `Growth` hadde positiv vekstrate. 
+
+For å lagre plottet lokalt på pc-en så kan bruker export og save as under Plots eller vi kan bruke funksjonen `ggsave()`. 
 
 ## Litt plotting før regresjon
-Før du kjører en regresjon så kan det være lurt å plotte den avhengige og den uavhengige variabelen din. I kapittel ni bruker Kellstedt og Whitten. I vårt tilfelle er dette variabelene `inc_vote` (avhengig variabel) og `growth` (uavhengig variabel). For å få til dette bruker vi `ggplot`.
+Før du kjører en regresjon så kan det være lurt å plotte den avhengige og den uavhengige variabelen din. I vårt tilfelle er dette variabelene `inc_vote` og `growth`. For å få til dette bruker vi `ggplot`.
 
-```{r}
+```{r, eval = FALSE}
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
-  theme_classic() +
-  theme(axis.line = element_line(colour = "black"),
-        panel.border = element_rect(colour = "black", fill=NA, size=1)) +
+  theme_bw() +
   ylab("Incumbent-Party Vote Percentage") +
   xlab("Percentage change in Real GDP Per Capita") 
 ```
 
+```{r, include = FALSE}
+ggplot(data = FairFPSR3) +
+  geom_point(aes(x = growth, y = inc_vote)) +
+  theme_bw() +
+  ylab("Incumbent-Party Vote Percentage") +
+  xlab("Percentage change in Real GDP Per Capita") 
+
+ggsave("../../output/sem5_fig2.png")
+```
+
+![](../../output/sem5_fig2.png)
+
 ## Regresjon med numerisk uavhengig variabel
-For å kjøre en lineær regresjon i R så bruker vi funksjonen `lm()`. 
-`lm()` har følgende syntaks: 
+For å kjøre en lineær regresjon i R så bruker vi funksjonen `lm()`.  `lm()` har følgende syntaks: 
 
 ```{r, eval = FALSE}
 lm(avhengig_variabel ~ uavhengig_variabel, data = mitt_datasett)
 # På mac får du ~ med alt + k + space
 ```
 
-Dersom datasettet ditt har manglende informasjon (missing/NA) så må du legge til
-et element som sier hvordan regresjonen skal forholde seg til dette. Ved å legge
-til `na.action = "na.exclude" i `lm()` så beholder R informasjon om hvilke 
-observasjoner som mangler data slik at vi kan bruke `fitted()` som vi skal snakke
-mer om senere. 
+Dersom datasettet ditt har manglende informasjon (missing/NA) så må du legge til et element som sier hvordan regresjonen skal forholde seg til dette. Ved å legge til `na.action = "na.exclude"` i `lm()` så beholder R informasjon om hvilke 
+observasjoner som mangler data slik at vi kan bruke `fitted()` som vi skal snakke mer om senere. 
 
-I eksempelet fra kapittel ni i Kellsted og Whitten er vi interessert i effekten 
-av den uavengige variabelen `growth` på den avhengige variabelen `inc_vote`. 
-Under kjører vi modellen og lagrer den som `model` i Environment:
+I eksempelet fra kapittel ni i Kellsted og Whitten er vi interessert i effekten av den uavengige variabelen `growth` på den avhengige variabelen `inc_vote`. Under kjører vi modellen og lagrer den som `model` i Environment:
 
 ```{r}
 model <- lm(inc_vote ~ growth, 
@@ -159,100 +185,160 @@ model <- lm(inc_vote ~ growth,
             na.action = "na.exclude")
 ```
 
-Det finnes flere måter å undersøke resultatene på. Vi skal se på hvordan vi kan 
-gjøre dette ved hjelp av `summary()`, `stargazer()` og `ggplot()`. Vi skal først se på
-`summary()`.
+Det finnes flere måter å undersøke resultatene på. Vi skal se på hvordan vi kan gjøre dette ved hjelp av `summary()`, `stargazer()` og `ggplot()`. Vi skal først se på `summary()`.
 
 ```{r}
 summary(model)
 ```
 
-`stargazer()` er en nyttig funksjon som gir oss samme informasjon som `summary()`, 
-men i et litt mer lettlest format. 
+`stargazer()` er en nyttig funksjon som gir oss samme informasjon som `summary()`, men i et litt mer lettlest format. 
 
 ```{r}
 stargazer(model, 
           type = "text")
 ```
 
-Ved hjelp av stargazer så kan vi også lagre tabeller lokalt på PC-en som vi kan
-bruke i word-dokumenter og liknende. Da endrer vi på `type` argumentet og legger
-til et `out` argument. `out` argumentet forteller i hvilken mappe du vil lagre
-filen samt hva filen skal hete. Da får du en .htm-fil som ser omtrent ut som i
-eksempelet under. Den kan du høyreklikke på og velge åpne i word dersom du skal 
-ha tabellen inn i en oppgave eller liknende. 
+Ved hjelp av stargazer så kan vi også lagre tabeller lokalt på PC-en som vi kan bruke i word-dokumenter og liknende. Da endrer vi på `type` argumentet og legger
+til et `out` argument. `out` argumentet forteller i hvilken mappe du vil lagre filen samt hva filen skal hete. Da får du en .htm-fil som ser omtrent ut som i
+eksempelet under. Den kan du høyreklikke på og velge åpne i word dersom du skal ha tabellen inn i en oppgave eller liknende: 
 
 ```{r, message=FALSE, eval=FALSE}
 stargazer(model,  
           type = "html",
-          out = "output/model1_tab.htm")
+          out = "model1_tab.htm")
 ```
 
-```{r, message=FALSE, eval=TRUE, include=FALSE}
-stargazer(model, 
-          type = "html",
-          out = "../output/model1_tab.htm")
-```
+Informasjonen vi får ved hjelp av `summary()` og `stargazer()` er veldig nyttig.Vi får vite koeffisientene, standardfeilene og informasjon vi kan bruke til å evaluere modellen vår. I seminar skal vi bruke en del tid på å tolke disse tabellene.
 
-```{r, echo = FALSE}
-htmltools::includeHTML("../output/model1_tab.htm")
-```
-
-Informasjonen vi får ved hjelp av `summary()` og `stargazer()` er veldig nyttig. 
-Vi får vite koeffisientene, standardfeilene og informasjon vi kan bruke til å 
-evaluere modellen vår. I seminar skal vi bruke en del tid på å tolke disse tabellene.
-
-Et alternativ til tabeller er å plotte resultatene fra regresjonen. Nå skal vi 
-lage figur 9.4 i kapittel ni ved hjelp av `ggplot()`. 
+Et alternativ til tabeller er å plotte resultatene fra regresjonen. Nå skal vi lage figur 9.4 i kapittel ni ved hjelp av `ggplot()`. 
 
 Først lager vi et plott med de observerte verdiene (dette er det samme plottet som vi lagde tidligere): 
-```{r}
+```{r, eval = FALSE}
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
-  theme_classic() +
-  theme(axis.line = element_line(colour = "black"),
-        panel.border = element_rect(colour = "black", fill=NA, size=1)) +
+  theme_bw() +
   ylab("Incumbent-Party Vote Percentage") +
   xlab("Percentage change in Real GDP Per Capita") 
 ```
 
-Det neste vi skal gjøre er å legge til regresjonslinjen i plottet. For å gjøre 
-det skal vi først løse regresjonslikningen for alle observasjonene våre. Årsaken 
-er at vi nå vil legge til verdiene på den avhengige variabelen stemmeandeler som
-modellen vår gir oss og ikke de observerte verdiene. R kan gjøre utregningen for 
-oss ved hjelp av funksjonen ´fitted()´ så vi slipper heldigvis å gjøre det for hånd. 
+```{r, include = FALSE}
+ggplot(data = FairFPSR3) +
+  geom_point(aes(x = growth, y = inc_vote)) +
+  theme_bw() +
+  ylab("Incumbent-Party Vote Percentage") +
+  xlab("Percentage change in Real GDP Per Capita") 
 
+ggsave("../../output/sem5_fig3.png")
+
+```
+
+![](../../output/sem5_fig3.png)
+
+Det neste vi skal gjøre er å legge til regresjonslinjen i plottet. Dette kan gjøres på to måter. 
+
+### Legge til regresjonslinje med `geom_smooth`
+
+Den første måten er å bruke `geom_smooth(method = "lm")` for å plotte en regresjonslinje:
+
+```{r, eval = FALSE}
+ggplot(data = FairFPSR3) +
+  geom_point(aes(x = growth, y = inc_vote)) +
+  theme_bw() +
+  ylab("Incumbent-Party Vote Percentage") +
+  xlab("Percentage change in Real GDP Per Capita") +
+  geom_smooth(aes(x = growth, y = inc_vote),
+              method = "lm", color = "goldenrod3")
+```
+
+```{r, include = FALSE}
+ggplot(data = FairFPSR3) +
+  geom_point(aes(x = growth, y = inc_vote)) +
+  theme_bw() +
+  ylab("Incumbent-Party Vote Percentage") +
+  xlab("Percentage change in Real GDP Per Capita") +
+  geom_smooth(aes(x = growth, y = inc_vote),
+              method = "lm", color = "goldenrod3")
+
+ggsave("../../output/sem5_fig4.png")
+```
+
+![](../../output/sem5_fig4.png)
+
+I kapittel ni viser Kellstedt og  Whitten at regresjonslinjen krysser
+utvalgets gjennomsnittsverdier på uavhengig og avhengig variabel. Det kan vi også
+vise ved å legge til to linjer i koden vår:
+
+```{r, eval = FALSE}
+ggplot(data = FairFPSR3) +
+  geom_point(aes(x = growth, y = inc_vote)) +
+  theme_bw() +
+  ylab("Incumbent-Party Vote Percentage") +
+  xlab("Percentage change in Real GDP Per Capita") +
+  geom_smooth(aes(x = growth, y = inc_vote),
+              method = "lm", color = "goldenrod3") +
+  geom_hline(yintercept=mean(FairFPSR3$inc_vote), linetype = "dashed") +
+  geom_vline(xintercept=mean(FairFPSR3$growth), linetype = "dashed")
+```
+
+```{r, include = FALSE}
+ggplot(data = FairFPSR3) +
+  geom_point(aes(x = growth, y = inc_vote)) +
+  theme_bw() +
+  ylab("Incumbent-Party Vote Percentage") +
+  xlab("Percentage change in Real GDP Per Capita") +
+  geom_smooth(aes(x = growth, y = inc_vote),
+              method = "lm", color = "goldenrod3") +
+  geom_hline(yintercept=mean(FairFPSR3$inc_vote), linetype = "dashed") +
+  geom_vline(xintercept=mean(FairFPSR3$growth), linetype = "dashed")
+
+ggsave("../../output/sem5_fig5.png")
+```
+
+![](../../output/sem5_fig5.png)
+
+### Legge til regresjonslinje med `fitted()` og `geom_line()`
+Den andre metoden er å be R løse regresjonslikningen for alle observasjonene våre og så legge til et nytt lag med predikerte verdier i plottet. Denne metoden går vi ikke gjennom i detalj på seminar så det holder i massevis å kunne den første. 
+
+R kan regne ut de predikerte verdiene for oss ved hjelp av funksjonen `fitted()` så vi slipper heldigvis å gjøre det for hånd. 
+
+Her bruker vi funksjonene `fitted()` og `resid()` til å legge til predikerte verdier og residualer for de ulike variablene i datasettet vårt:
 ```{r}
 FairFPSR3 <- FairFPSR3 %>% 
   mutate(fitted = fitted(model), 
          residuals = resid(model))
 ```
 
-Nå kan vi bruke denne informasjonen til å legge til en regresjonslinje i plottet
-vårt. Prikkene angir de ulike _observerte_ verdikominasjonene, mens den rette
+Nå kan vi bruke denne informasjonen til å legge til en regresjonslinje i plottet vårt. Prikkene angir de ulike *observerte* verdikominasjonene, mens den rette
 linjen gir oss den lineære sammenhengen fra modellen vår. 
 
-```{r}
+```{r, eval = FALSE}
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
-  theme_classic() +
-  theme(axis.line = element_line(colour = "black"),
-        panel.border = element_rect(colour = "black", fill=NA, size=1)) +
+  theme_bw() +
   ylab("Incumbent-Party Vote Percentage") +
   xlab("Percentage change in Real GDP Per Capita") +
   geom_line(aes(x = growth, y = fitted))
 ```
 
-I kapittel ni viser Kellstedt og  Whitten at regresjonslinjen krysser
-utvalgets gjennomsnittsverdier på uavhengig og avhengig variabel. Det kan vi også
-vise ved å legge til to linjer i koden vår: 
-
-```{r}
+```{r, include = FALSE}
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
-  theme_classic() +
-  theme(axis.line = element_line(colour = "black"),
-        panel.border = element_rect(colour = "black", fill=NA, size=1)) +
+  theme_bw() +
+  ylab("Incumbent-Party Vote Percentage") +
+  xlab("Percentage change in Real GDP Per Capita") +
+  geom_line(aes(x = growth, y = fitted))
+
+ggsave("../../output/sem5_fig6.png")
+```
+
+![](../../output/sem5_fig6.png)
+
+Også her kan vi vise at regresjonslinjen krysser utvalgets gjennomsnittsverdier på uavhengig og avhengig variabel. Vi legger til de to linjene `geom_hline()` og `geom_vline()`:
+
+```{r, eval = FALSE}
+ggplot(data = FairFPSR3) +
+  geom_point(aes(x = growth, y = inc_vote)) +
+  theme_bw() +
   ylab("Incumbent-Party Vote Percentage") +
   xlab("Percentage change in Real GDP Per Capita") +
   geom_line(aes(x = growth, y = fitted)) +
@@ -261,11 +347,25 @@ ggplot(data = FairFPSR3) +
 
 ```
 
-I kapittel ni er det flere eksempler på hvordan vi kan sjekke om en modell er god
-eller ikke. Noe av det gikk vi gjennom når vi så på resultatene av modellen. En
-ting som ikke kommer med når vi bruker `stargazer()` og `summary()` er 
+```{r, include = FALSE}
+ggplot(data = FairFPSR3) +
+  geom_point(aes(x = growth, y = inc_vote)) +
+  theme_bw() +
+  ylab("Incumbent-Party Vote Percentage") +
+  xlab("Percentage change in Real GDP Per Capita") +
+  geom_line(aes(x = growth, y = fitted)) +
+  geom_hline(yintercept=mean(FairFPSR3$inc_vote), linetype = "dashed") +
+  geom_vline(xintercept=mean(FairFPSR3$growth), linetype = "dashed")
+
+ggsave("../../output/sem5_fig7.png")
+
+```
+
+![](../../output/sem5_fig7.png)
+
+I kapittel ni i Kellstedt og Whitten er det flere eksempler på hvordan vi kan sjekke om en modell er god eller ikke. Noe av det gikk vi gjennom når vi så på resultatene av modellen. En ting som ikke kommer med når vi bruker `stargazer()` og `summary()` er 
 konfidensintervallene til en koeffisient. De kan vi enkelt hente ut ved hjelp av
-funksjonen `confint()` 
+funksjonen `confint()`: 
 
 ```{r}
 confint(model)
@@ -273,52 +373,15 @@ confint(model)
 
 ## Regresjon med dikotom uavhengig variabel
 For å øve oss på tolkning skal vi nå kjøre en modell med `inc_vote` som avhengig 
-variabel og den dikotome vekst-variabelen vi lagde tidligere som forklaringsvariabel. 
-Hvilken verdi representerer konstantleddet i denne regresjonen? 
+variabel og den dikotome vekst-variabelen vi lagde tidligere som uavhengig variabel. At en variabel er dikotom betyr at den bare har to verdier.  Først kjører vi modellen før vi undersøker resultatene i stargazer:
 
 ```{r}
+# Lagrer modellen
 model_dich <- lm(inc_vote ~ growth_dich, 
                  data = FairFPSR3,
                  na.action = "na.exclude")
+
+# Undersøker resultatene
 stargazer(model_dich, 
           type = "text")
 ```
-
-
-## Oppgaver
-Du skal bruke datasettet ess_nor og lineær regresjon for å undersøke relasjonen mellom AV og UV. 
-
-Variabel	          Beskrivelse
-----------------    ----------------
-influence	          Political system allows people to have influence on politics (1-5)
-                    1 (not at all)
-                    5 (a great deal)
-vote	              Voted last national election
-                    1 (yes)
-                    2 (no)
-                    3 (not eligible to vote)
-polintr	            How interested in politics (1-4)
-                    1 (Very interested)
-                    4 (Not at all interested)
-happy	              How happy are you (0-10)
-                    0 (Extremely unhappy)
-                    10 (Extremely happy)
-age	                Age of respondent
-gender	            Gender of respondent
-                    1 (Male)    
-                    2 (Female)
-idnr	              Respondents identification number
-----------------    ----------------
-
-1. Last ned datasettet ess_nor og oppgi antall enheter og variabler i datasettet. 
-2. Finn navn på variablene i datasettet. 
-3. Opprett en nytt datasett ess2 med kun variablene influence, happy og age. Pass på at klassen til variablene er numeric. 
-4. Vis hvordan du fjerner enheter som mangler opplysninger fra datasettet ess_nor. Oppgi antall enheter i datasettet etter at du har fjernet enhetene. 
-5. Lag et spredningsplott av sammenhengen mellom happy (AV) og influence (UV). 
-6.	Kjør en lineær regresjonsmodell med happy som avhengig variabel og influence som uavhengig variabel. 
-7.	Tolk koeffisienten til influence.
-8.	Print resultatet av regresjonen i en tabell ved hjelp av stargazer(). Lagre tabellen lokalt på pc-en din og åpne den i f.eks. word eller en nettleser.
-9.	Lag et plott med de predikerte y-verdiene på y-aksen og verdiene av x på x-aksen. Lagre plottet lokalt på pc-en din.
-10.	Estimer en ny modell hvor du legger til age som uavhengig variabel. Hva skjer? Tips: google hvordan du legger til flere variabler. 
-
-
