@@ -210,8 +210,8 @@ ggplot(data = FairFPSR3) +
                binwidth = 1) +
   theme_bw() +
   theme(legend.title=element_blank()) +
-  xlab("Growth rate") +
-  ylab("No. of observations")
+  labs(x = "Growth rate",
+       y = "No. of observations")
 ```
 
 
@@ -230,8 +230,8 @@ Før du kjører en regresjon så kan det være lurt å plotte den avhengige og d
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
   theme_bw() +
-  ylab("Incumbent-Party Vote Percentage") +
-  xlab("Percentage change in Real GDP Per Capita") 
+  labs(y = "Incumbent-Party Vote Percentage",
+       x = "Percentage change in Real GDP Per Capita")
 ```
 
 
@@ -339,8 +339,8 @@ Først lager vi et plott med de observerte verdiene (dette er det samme plottet 
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
   theme_bw() +
-  ylab("Incumbent-Party Vote Percentage") +
-  xlab("Percentage change in Real GDP Per Capita") 
+  labs(y = "Incumbent-Party Vote Percentage",
+       x = "Percentage change in Real GDP Per Capita")
 ```
 
 
@@ -358,8 +358,8 @@ Den første måten er å bruke `geom_smooth(method = "lm")` for å plotte en reg
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
   theme_bw() +
-  ylab("Incumbent-Party Vote Percentage") +
-  xlab("Percentage change in Real GDP Per Capita") +
+  labs(y = "Incumbent-Party Vote Percentage",
+       x = "Percentage change in Real GDP Per Capita") +
   geom_smooth(aes(x = growth, y = inc_vote),
               method = "lm", color = "goldenrod3")
 ```
@@ -377,8 +377,8 @@ vise ved å legge til to linjer i koden vår:
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
   theme_bw() +
-  ylab("Incumbent-Party Vote Percentage") +
-  xlab("Percentage change in Real GDP Per Capita") +
+  labs(y = "Incumbent-Party Vote Percentage",
+       x = "Percentage change in Real GDP Per Capita") +
   geom_smooth(aes(x = growth, y = inc_vote),
               method = "lm", color = "goldenrod3") +
   geom_hline(yintercept=mean(FairFPSR3$inc_vote), linetype = "dashed") +
@@ -410,8 +410,8 @@ linjen gir oss den lineære sammenhengen fra modellen vår.
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
   theme_bw() +
-  ylab("Incumbent-Party Vote Percentage") +
-  xlab("Percentage change in Real GDP Per Capita") +
+  labs(y = "Incumbent-Party Vote Percentage",
+       x = "Percentage change in Real GDP Per Capita") +
   geom_line(aes(x = growth, y = fitted))
 ```
 
@@ -426,8 +426,8 @@ Også her kan vi vise at regresjonslinjen krysser utvalgets gjennomsnittsverdier
 ggplot(data = FairFPSR3) +
   geom_point(aes(x = growth, y = inc_vote)) +
   theme_bw() +
-  ylab("Incumbent-Party Vote Percentage") +
-  xlab("Percentage change in Real GDP Per Capita") +
+  labs(y = "Incumbent-Party Vote Percentage",
+       x = "Percentage change in Real GDP Per Capita") +
   geom_line(aes(x = growth, y = fitted)) +
   geom_hline(yintercept=mean(FairFPSR3$inc_vote), linetype = "dashed") +
   geom_vline(xintercept=mean(FairFPSR3$growth), linetype = "dashed")
