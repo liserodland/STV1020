@@ -10,7 +10,7 @@ library(stargazer)
 
 ## 1. Laster inn datasettet
 data <- read.csv("data/wvs_us17.csv")
-# Leser i environment at datasettet inneholder 2596 obsrvasjoner og 7 variabler
+# Leser i environment at datasettet inneholder 2596 observasjoner (=enheter) og 7 variabler
 
 
 ## 2. Finner navn på variablene i datasettet

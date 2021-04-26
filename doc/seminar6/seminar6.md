@@ -10,11 +10,12 @@ output:
 
 I dag skal vi se på fem ting:
 
-1. Laste inn data (repetisjon)
-2. Omkoding av variabler (repetisjon)
-3. Plotting (repetisjon)
-4. Kjøre en regresjonsmodell med en uavhengig variabel (nytt)
-5. Tolkning og fremstilling av regresjonsresultater (nytt)
+1. Laste inn pakker og data (repetisjon)
+2. Bli kjent med data (repetisjon)
+3. Forberede data for analyse 
+4. Multippel regresjonanalyse
+5. Multippel regresjonsanalyse med samspill
+6. Presentasjon av regresjonsresultater i tabell
 
 # Laste inn pakker
 Det aller første vi gjør er å laste inn pakkene vi skal bruke i dag ved hjelp av `library(pakkenavn)`:
@@ -25,7 +26,7 @@ library(tidyverse)
 ```
 
 ```
-## -- Attaching packages ------------------------------ tidyverse 1.3.0 --
+## -- Attaching packages ------------------------------------------ tidyverse 1.3.0 --
 ```
 
 ```
@@ -36,7 +37,7 @@ library(tidyverse)
 ```
 
 ```
-## -- Conflicts --------------------------------- tidyverse_conflicts() --
+## -- Conflicts --------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -61,15 +62,19 @@ library(stargazer)
 Dersom du ikke har brukt disse pakkene før må du huske å kjøre `install.packages("pakkenavn")` først. Dersom du får en feilmelding av typen "Error in library(pakkenavn) : there is no package called 'pakkenavn'" så kan det indikere at pakken ikke er installert. Prøv å kjøre `install.packages("pakkenavn")` og `library(pakkenavn)` igjen. 
 
 # Laste inn data
-Det neste vi skal gjøre er å laste inn datasettet vi skal jobbe med i dag. Vi skal jobbe videre med datasettet fra Kellstedt og Whitten som vi så på forrige gang. Disse dataene er i `Rdata`-format og vi bruker derfor funksjonen `load()`. Husk at hvilken funksjon du bruker for å laste inn data avhenger av hvilket format dataene har. Dersom du er usikker på hvilken funksjon du skal bruke så sjekk dokumentet jeg har lastet opp i Canvas. Vi laster inn data: 
+Det neste vi skal gjøre er å laste inn datasettet vi skal jobbe med i dag. Vi skal jobbe videre med datasettet fra Kellstedt og Whitten som vi kikket litt på i seminar 4. Disse dataene er i `csv`-format og vi bruker derfor funksjonen `read.csv()`. Husk at hvilken funksjon du bruker for å laste inn data avhenger av hvilket format dataene har. Dersom du er usikker på hvilken funksjon du skal bruke så sjekk dokumentet jeg har lastet opp på Canvas. Vi laster inn data og lagrer som et objekt i environment: 
 
 
 ```r
 # Bytt ut det som står i "" med din egen filbane:
-load("../../data/ANES1996small.RData")
+ANES1996small <- read.csv("../../data/ANES1996small.csv")
 ```
 
 # Bli kjent med data 
+I dag skal vi teste to hypoteser fra kapittel 11 i Kellstedt og Whitten (side 247):
+* Alt annet likt, så vil rikere individer gi Hillary Clinton lavere score.
+* Alt annet likt, så vil kvinner gi Hillary Clinton en høyere score.
+
 Det er alltid lurt å bli litt kjent med datasettet før en begynner å kjøre analyser. Vi har sett på flere koder for dette, blant annet i seminar fem, men vi gjentar noen av dem her. 
 
 Vi finner navnene på variablene: 
@@ -102,24 +107,32 @@ head(ANES1996small)
 ```
 
 ```
-## # A tibble: 6 x 24
 ##   v960066 v960067 v960070 v960071 v960073 v960115 v960119 v960272 v960281
-##     <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
 ## 1       1       1       3       3       2       1     574       0       0
 ## 2       1       1       2       2       1       1       0      60      30
 ## 3       1       1       2       2       2       1       0      70      85
 ## 4       1       1       2       2       3       1       0      30      40
 ## 5       2       1       4       2       3       1       0      40      60
 ## 6       1       1       3       3       4       1    7323      70      15
-## # ... with 15 more variables: v960284 <dbl>, v960292 <dbl>, v960293 <dbl>,
-## #   v960365 <dbl>, v960385 <dbl>, v960420 <dbl>, v960568 <dbl>, v960571 <dbl>,
-## #   v960605 <dbl>, v960606 <dbl>, v960610 <dbl>, v960701 <dbl>, v961039 <dbl>,
-## #   v961300 <dbl>, religion <dbl>
+##   v960284 v960292 v960293 v960365 v960385 v960420 v960568 v960571 v960605
+## 1      85       0      85       6       3       4       3       2      32
+## 2      70      30      60       5       1       5       4       1      42
+## 3      15      70      30       2       1       2       4       2      53
+## 4      60      40      60       5       3       5       1       2      31
+## 5      30      40      60       4       3       4       4       1      34
+## 6      60      40      60       4       5       5       2       1      73
+##   v960606 v960610 v960701 v961039 v961300 religion
+## 1       3       3      21      70       5        2
+## 2       1       6      22      50       5        2
+## 3       1       6      24      70       5        9
+## 4       1       7      21      50       5        9
+## 5       1       6      21      50       5        2
+## 6       1       1      NA      NA      NA        9
 ```
 
-Ved å bruke for eksempel `View()` får vi mer informasjon om hva slags struktur datasettet vårt har. Dersom vi jobber i store datasett er det lurt å bruke funksjoner som `head()` og `tail()` isteden for å bruker `View()` eller «trykke» på datasettet i environment. `View` krever mye fra pc’en. 
+Ved å bruke for eksempel `View()` får vi mer informasjon om hva slags struktur datasettet vårt har. Dersom vi jobber i store datasett er det lurt å bruke funksjoner som `head()` og `tail()` isteden for å bruke `View()` eller «trykke» på datasettet i environment. `View` krever mye av pc’en. 
 
-For å titte på enkelt variabler bruker vi syntaksen `datasett$variabel`. Det kan også være praktisk å se denne informasjonen i en tabell. Da kan vi bruke table(`datasett$variabel`). For eksempel så vet jeg at variabelen `v960066` er det man kaller en dikotom variabel for kjønn. At en variabel er dikotom betyr bare at den har to verdier. Denne variabelen tar verdien 1 dersom respondenten er en mann og 2 dersom respondenten er en kvinne. Vi kan undersøke den i en tabell:
+For å titte på enkeltvariabler bruker vi syntaksen `datasett$variabel`. Det kan også være praktisk å se denne informasjonen i en tabell. Da kan vi bruke table(`datasett$variabel`). For eksempel så vet jeg at variabelen `v960066` er det man kaller en dikotom variabel for kjønn. At en variabel er dikotom betyr bare at den har to verdier. Denne variabelen tar verdien 1 dersom respondenten er en mann og 2 dersom respondenten er en kvinne. Vi kan undersøke den i en tabell:
 
 
 ```r
@@ -132,31 +145,479 @@ table(ANES1996small$v960066, useNA = "always")
 ##  768  946    0
 ```
 
-
-
 # Forberede data for analyse
 Før vi begynner på regresjonsanalysen så skal vi endre navn på noen av variablene våre så de blir mer intuitive, lage et subset med de variablene vi vil bruke og omkode kjønnsvariabelen til det man kaller en dummyvariabel. En dummyvariabel tar verdiene 0 og 1. 
 
 Først endrer vi navnene på de variabelene vi vil bruke i datasettet vårt ved hjelp av `rename()`. `rename()` har syntaksen `rename(nyttnavn = gammeltnavn)`. I praksis blir det: 
 
 
+```r
+ANES1996small <- ANES1996small %>% 
+  rename(hillary_thermo = v960281,
+         income = v960701,
+         womenmvmt_thermo = v961039,
+         gender = v960066,
+         age = v960605)
+```
+
+Vi kan bruke `names()` eller `head()` for å sjekke at omkodingen funket:
 
 
 ```r
-# renaming existing variables, creating a dummy variable for female, and the interactive term
-ANES1996small2 = ANES1996small %>%
-  rename(hillary_thermo = v960281,
-         income = v960701,
-         womenmvmt_thermo = v961039) %>%
-  mutate(female = ifelse(v960066==1, 0, 1))
+names(ANES1996small)
+```
+
+```
+##  [1] "gender"           "v960067"          "v960070"          "v960071"         
+##  [5] "v960073"          "v960115"          "v960119"          "v960272"         
+##  [9] "hillary_thermo"   "v960284"          "v960292"          "v960293"         
+## [13] "v960365"          "v960385"          "v960420"          "v960568"         
+## [17] "v960571"          "age"              "v960606"          "v960610"         
+## [21] "income"           "womenmvmt_thermo" "v961300"          "religion"
+```
+
+Det neste vi skal gjøre er å bruke `select()` til lage et subset. I `select()` fyller du ut navnet på de variablene du vil beholde og setter et `-` foran variabler du vil fjerne. Dersom jeg vil lage et nytt datasett med variable var1 og var2 kan jeg skrive:
+
+
+```r
+nydata <- data %>% 
+  select(var1, var2)
+```
+
+Dersom jeg vil lage et nytt datasett som inneholder alle variabler bortsett fra var2 så kan jeg skrive: 
+
+
+```r
+nydata <- data %>% 
+  select(-var2)
+```
+
+Merk at jeg gir datasettet et nytt navn til høyre for assignment operatoren `<-`. Det gjør jeg for å beholde det opprinnelige datasettet i tilfelle jeg vil ha med noe mer eller koden ikke gjør det jeg forventet at den skulle gjøre. Vi vil lage et nytt datasett som bare inneholder de variablene vi ga nye navn. Vi kaller det nye datasettet `ANES1996small2` og fyller inn variablene vi vil beholde:
+
+
+```r
+ANES1996small2 <- ANES1996small %>% 
+  select(hillary_thermo,
+         income,
+         womenmvmt_thermo,
+         gender,
+         age)
+```
+
+Det siste vi skal gjøre er å legge til en ny variabel i datasettet vårt. Den skal hete `female` og ta verdien 1 dersom observasjonen har verdien 1 på `gender` og 0 ellers. Dette er en dummyvariabel og vi kan tenke oss at 0 står for nei og 1 står for ja. For å få til dette kombinerer vi `mutate()` som vi bruker for å opprette nye variabler og `ifelse()`:
+
+
+```r
+ANES1996small2 <- ANES1996small2 %>%
+  mutate(female = ifelse(gender == 1, 0, 1))
+```
+
+
+I `ifelse()` sier vi at dersom variabelen `gender` har verdien 1, så skal den nye variabelen `female` få verdien 0, dersom `gender` ikke har verdien 1 så skal den nye variabelen `female` få verdien 1. 
+
+Vi sjekker at omkodingen ble riktig ved hjelp av en krysstabell med ny og gammel variabel: 
+
+
+```r
+table(ANES1996small2$female, ANES1996small2$gender, useNA = "always")
+```
+
+```
+##       
+##          1   2 <NA>
+##   0    768   0    0
+##   1      0 946    0
+##   <NA>   0   0    0
+```
+
+Før vi ser på multippel regresjonsanalyse så skal vi se litt nærmere på den avhengige variabelen vår. Den avhengige variabelen er `hillary_thermo`. Dette er en såkalt **thermometer rating** der respontenene i American National Election Study (NES) ble spurt hva de føler (i motsetning til hva de mener) om ulike individer eller grupper. Skalaen går  fra 0 til 100 der en score på 50 indikerer at respondenten hverken har varme eller kalde følelser for individet eller gruppen spørsmålet gjelder. Scorer lavere enn 50 indikerer "kalde" følelser, men scorer over 50 indikerer "varme" følelser. Dette kan dere lese mer om i kapittel 10 og 11 i Kellstedt og Whitten. 
+
+Vi kan bruke `summary()` til å undersøke variabelen nærmere:
+
+
+```r
+summary(ANES1996small$hillary_thermo)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##    0.00   30.00   60.00   52.81   70.00  100.00      29
+```
+
+Fra summary kan vi lese at hele skalaen fra 0 (Min.) til 100 (Max.) er tatt i bruk, at halvparten ga en lavere score enn 60 (Median) og at den gjennomsnittlige scoren var 52.81 (Mean). I tillegg kan vi se at vi mangler informasjon for 29 respondenter (NA's). 
+
+Vi kan også lage et histogram over fordelingen:
+
+
+```r
+ggplot(data = ANES1996small) +
+  geom_histogram(aes(x = hillary_thermo),
+                 binwidth = 10) +
+  theme_bw()
+```
+
+
+![](../../output/sem6_fig1.png)
+
+# Multippel regresjonanalyse
+Multippel regresjonsanalyse er regresjonanalyse med flere uavhengige variabler. De uavhengige variablene kan være forklaringsvariabler eller variabler du ønsker å kontrollere for. Vi bruker samme funksjon som vi brukte når vi kjørte en regresjonsanalyse med en uavhengig variabel i seminar 5, nemlig `lm()`. Syntaksen er også veldig lik. Vi skiller mellom avhengig variabel og uavhenig variable med `~` og legger til flere uavhengige variabler med `+`. Syntaksen der vi velger å lagre modellen som et objekt, av er avhengig variabel og uv er uavhengig variable blir:
+
+
+```r
+model <- lm(av ~ uv1 + uv2, data = data, na.action = "na.exclude")
+```
+
+Når vi kjører regresjoner så vil vi ofte velge å lagre de som et objekt. Det gjør vi for å kunne presentere resultatene på ulike måter i tabeller og plot, bruke informasjonen i modellen til å hente ut predikerte verdier eller kjøre regresjonsdiagnostikk. 
+
+For ordens skyld så gjentar vi hypotesene som vi vil teste som er beskrevet i Kellstedt og Whitten på side 247:
+* Alt annet likt, så vil rikere individer gi Hillary Clinton lavere score.
+* Alt annet likt, så vil kvinner gi Hillary Clinton en høyere score.
+
+Det betyr at vi vil ha med tre variabler i modellen vår: `hillary_thermo` er avhengig variabel, mens `income` og `female` er de uavhengige variablene. For å kjøre modellen kjører vi følgende kode: 
+
+
+```r
+model1 <- lm(hillary_thermo ~ income + female, 
+             data = ANES1996small2, na.action = "na.exclude")
+```
+
+Vi kan bruke `summary()` og `stargazer()` for å undersøke resultatene: 
+
+
+```r
+summary(model1)
+```
+
+```
+## 
+## Call:
+## lm(formula = hillary_thermo ~ income + female, data = ANES1996small2, 
+##     na.action = "na.exclude")
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -68.421 -18.569   4.191  21.431  58.998 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  61.1804     2.2204  27.554  < 2e-16 ***
+## income       -0.8408     0.1179  -7.134 1.50e-12 ***
+## female        8.0814     1.4952   5.405 7.51e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 28.68 on 1539 degrees of freedom
+##   (172 observations deleted due to missingness)
+## Multiple R-squared:  0.06007,	Adjusted R-squared:  0.05884 
+## F-statistic: 49.17 on 2 and 1539 DF,  p-value: < 2.2e-16
+```
+
+```r
+stargazer(model1, type = "text")
+```
+
+```
+## 
+## ===============================================
+##                         Dependent variable:    
+##                     ---------------------------
+##                           hillary_thermo       
+## -----------------------------------------------
+## income                       -0.841***         
+##                               (0.118)          
+##                                                
+## female                       8.081***          
+##                               (1.495)          
+##                                                
+## Constant                     61.180***         
+##                               (2.220)          
+##                                                
+## -----------------------------------------------
+## Observations                   1,542           
+## R2                             0.060           
+## Adjusted R2                    0.059           
+## Residual Std. Error     28.684 (df = 1539)     
+## F Statistic          49.174*** (df = 2; 1539)  
+## ===============================================
+## Note:               *p<0.1; **p<0.05; ***p<0.01
+```
+
+For å undersøke hva som skjer med koeffisienten til en uavhengig variabel så kan vi kjøre en redusert modell og sammenligne disse i en tabell: 
+
+
+```r
+model0 <- lm(hillary_thermo ~ income, 
+             data = ANES1996small2, na.action = "na.exclude")
+```
+
+For å lage tabellen så bruker vi `stargazer()`:
+
+
+```r
+stargazer(model0, model1, 
+          type = "text")
+```
+
+```
+## 
+## =====================================================================
+##                                    Dependent variable:               
+##                     -------------------------------------------------
+##                                      hillary_thermo                  
+##                               (1)                      (2)           
+## ---------------------------------------------------------------------
+## income                     -0.962***                -0.841***        
+##                             (0.117)                  (0.118)         
+##                                                                      
+## female                                               8.081***        
+##                                                      (1.495)         
+##                                                                      
+## Constant                   67.445***                61.180***        
+##                             (1.911)                  (2.220)         
+##                                                                      
+## ---------------------------------------------------------------------
+## Observations                 1,542                    1,542          
+## R2                           0.042                    0.060          
+## Adjusted R2                  0.042                    0.059          
+## Residual Std. Error    28.945 (df = 1540)       28.684 (df = 1539)   
+## F Statistic         67.891*** (df = 1; 1540) 49.174*** (df = 2; 1539)
+## =====================================================================
+## Note:                                     *p<0.1; **p<0.05; ***p<0.01
+```
+
+Vi kan legge til tittel og variabelnavn for at tabellen skal bli mer forståelig:
+
+
+```r
+stargazer(model0, model1, 
+          type = "text",
+          title = c("Results from regression analysis"),
+          covariate.labels = c("Income",
+                               "Female",
+                               "Intercept"),
+          dep.var.labels = "Hillary Clinton Thermometer score")
+```
+
+```
+## 
+## Results from regression analysis
+## =====================================================================
+##                                    Dependent variable:               
+##                     -------------------------------------------------
+##                             Hillary Clinton Thermometer score        
+##                               (1)                      (2)           
+## ---------------------------------------------------------------------
+## Income                     -0.962***                -0.841***        
+##                             (0.117)                  (0.118)         
+##                                                                      
+## Female                                               8.081***        
+##                                                      (1.495)         
+##                                                                      
+## Intercept                  67.445***                61.180***        
+##                             (1.911)                  (2.220)         
+##                                                                      
+## ---------------------------------------------------------------------
+## Observations                 1,542                    1,542          
+## R2                           0.042                    0.060          
+## Adjusted R2                  0.042                    0.059          
+## Residual Std. Error    28.945 (df = 1540)       28.684 (df = 1539)   
+## F Statistic         67.891*** (df = 1; 1540) 49.174*** (df = 2; 1539)
+## =====================================================================
+## Note:                                     *p<0.1; **p<0.05; ***p<0.01
+```
+
+Det er litt mer komplisert å plotte regresjonslinjer når vi har flere uavhengig variabler. Det er fordi verdien på avhengig variabel nå vil avehenge av en kombinasjon av ulike verdier på de uavhengige variablene. Det finnes måter å gjøre det på og det finnes pakker som forenkler denne jobben, men vi kommer ikke til å se på dette i seminar.  
+Før vi går videre til modelldiagnostikk så legger vi til en variabel med de predikerte verdiene i datasettet. Jeg lager også en variabel for residualene som vi skal se nærmere på senere:
+
+
+```r
+ANES1996small2 <- ANES1996small2 %>% 
+  mutate(mod1fitted = fitted(model1),
+         mod1resid = resid(model1))
+```
+
+
+# Multippel regresjon med samspillsledd
+Modellene vi har laget til nå har vært additive modeller. Nå skal vi legge til et samspillsledd mellom kjønn og hvordan man stiller seg til kvinnebevegelsen. Hypotesen er presentert i Kellstedt og Whitten på side 256:
+
+* Effekten av hvordan en respondent føler om kvinnebevegelsen på hvordan de føler om  Hillary Clinton vil være sterkere for kvinner enn for menn. 
+
+
+Først kjører vi den additive modellen:
+
+```r
+model2additiv <- lm(hillary_thermo ~ female + womenmvmt_thermo, 
+                    data = ANES1996small2, na.action = "na.exclude")
+```
+
+Vi legger til samspillsledd i modellen vår ved å bruke `*` mellom de to variablene vi vil undersøke samspillet av:
+
+
+```r
+model2samspill <- lm(hillary_thermo ~ female*womenmvmt_thermo, 
+                     data = ANES1996small2, na.action = "na.exclude")
+
+summary(model2additiv)
+```
+
+```
+## 
+## Call:
+## lm(formula = hillary_thermo ~ female + womenmvmt_thermo, data = ANES1996small2, 
+##     na.action = "na.exclude")
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -73.920 -16.175   3.254  17.471  86.884 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       5.98451    2.13429   2.804  0.00511 ** 
+## female            7.13137    1.36590   5.221 2.04e-07 ***
+## womenmvmt_thermo  0.67936    0.03165  21.463  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 25.76 on 1463 degrees of freedom
+##   (248 observations deleted due to missingness)
+## Multiple R-squared:  0.2652,	Adjusted R-squared:  0.2642 
+## F-statistic:   264 on 2 and 1463 DF,  p-value: < 2.2e-16
+```
+
+```r
+summary(model2samspill)
+```
+
+```
+## 
+## Call:
+## lm(formula = hillary_thermo ~ female * womenmvmt_thermo, data = ANES1996small2, 
+##     na.action = "na.exclude")
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -76.935 -16.711   3.214  18.271  83.226 
+## 
+## Coefficients:
+##                         Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)              1.56065    3.03991   0.513  0.60776    
+## female                  15.21339    4.18739   3.633  0.00029 ***
+## womenmvmt_thermo         0.75375    0.04824  15.624  < 2e-16 ***
+## female:womenmvmt_thermo -0.13040    0.06387  -2.042  0.04138 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 25.74 on 1462 degrees of freedom
+##   (248 observations deleted due to missingness)
+## Multiple R-squared:  0.2673,	Adjusted R-squared:  0.2658 
+## F-statistic: 177.8 on 3 and 1462 DF,  p-value: < 2.2e-16
+```
+
+# Presentasjon av regresjonsresultater i tabell
+
+Her skal vi se på hvordan vi kan sammenligne de to modellene i en fin tabell. Vi skal bruke `stargazer()`, men kommer til å spesifisere noen flere argumenter enn tidligere. Vi bruker `type =` til å spesifisere hvilket format vi vil ha tabellen i. `covariate.labels` bruker vi til å legge til nye navn til de uavhengige variablene i modellen. Det er veldig viktig å legge inn navnene i samme rekkefølge som i regresjonsmodellen, om ikke risikerer vi å gi feil navn til variablene. `Dep.var.labels` bruker til å gi navn til avhengig variabel:
+
+
+```r
+stargazer(model2additiv, model2samspill, type = "text",
+          title = c("Tabell fra Kellstedt og Whitten s. 257"),
+          covariate.labels = c("Female",
+                               "Women's Movement Thermometer",
+                               "Women's Movement Thermometer x Female",
+                               "Intercept"),
+          dep.var.labels = "Hillary Clinton Thermometer score")
+```
+
+```
+## 
+## Tabell fra Kellstedt og Whitten s. 257
+## =========================================================================================
+##                                                       Dependent variable:                
+##                                       ---------------------------------------------------
+##                                                Hillary Clinton Thermometer score         
+##                                                  (1)                       (2)           
+## -----------------------------------------------------------------------------------------
+## Female                                        7.131***                  15.213***        
+##                                                (1.366)                   (4.187)         
+##                                                                                          
+## Women's Movement Thermometer                  0.679***                  0.754***         
+##                                                (0.032)                   (0.048)         
+##                                                                                          
+## Women's Movement Thermometer x Female                                   -0.130**         
+##                                                                          (0.064)         
+##                                                                                          
+## Intercept                                     5.985***                    1.561          
+##                                                (2.134)                   (3.040)         
+##                                                                                          
+## -----------------------------------------------------------------------------------------
+## Observations                                    1,466                     1,466          
+## R2                                              0.265                     0.267          
+## Adjusted R2                                     0.264                     0.266          
+## Residual Std. Error                      25.765 (df = 1463)        25.737 (df = 1462)    
+## F Statistic                           263.974*** (df = 2; 1463) 177.753*** (df = 3; 1462)
+## =========================================================================================
+## Note:                                                         *p<0.1; **p<0.05; ***p<0.01
+```
+Dersom vi vil lagre denne på PC-en og åpne den i word så byttr vi til `type = "html"` og spesifiserer et filnavn i `out = `:
+
+
+```r
+stargazer(model2additiv, model2samspill, type = "html",
+          title = c("Tabell fra Kellstedt og Whitten s. 257"),
+          covariate.labels = c("Female",
+                               "Women's Movement Thermometer",
+                               "Women's Movement Thermometer x Female",
+                               "Intercept"),
+          dep.var.labels = "Hillary Clinton Thermometer score",
+          out = "mod2_tabell.htm")
+```
+
+
+# Modelldiagnostikk
+Videre skal vi se på noen grafiske verktøy for å vurdere om enkelteforutsetninger for OLS er oppfylt. Hvor mye tid vi bruker på dette på seminar vil avhenge av hvor god tid vi får. Dersom dere vil se nærmere på dette så anbefaler jeg å ta en titt på [denne siden](https://github.com/langoergen/stv4020aR/blob/master/docs/Regresjonsdiagnostikk.md).
+
+Det første vi skal se på er restleddenes fordeling. For å vurdere denne så bruker vi restleddene/residualene som vi lagret i datasettet tidligere. Vi kan bruke `ggplot()` til å vurdere om restleddenes fordelingen: 
+
+
+```r
+ggplot(data = ANES1996small2, aes(x = mod1resid)) +
+  geom_histogram() +
+  theme_bw()
 ```
 
 
 
-Vi lager et subset av det opprinnelige ESS datasettet, da tar vi kunmed de variablene vi vil ha til resten av analysen. Dette er ikke nødvendig i strengforstand, men vi gjør det for å gjøre datasettet litt mer oversiktlig. Vi bruker select() fra dplyr for å velge ut variablene vi vil ha med i datasettet.Husk også at det er lurt å lagredet nye datasettet i et nytt objekt, slik at vi ikke overskriver det originale datasettet.ess <-ESS8SE %>% select(gndr, agea, eduyrs, nwspol, stfdem, vote)Det er alltid lurt å sjekke hvor mye missing vi har i data. Da bruker vi table() og complete.cases(),FALSE viser til hvilke enheter som har NA på minst en variabel, TRUE viser til enhetene som har verdier på alle variablertable(complete.cases(ess))Vi bruker funksjonen na.omit() til å kaste ut enheter med missing verdier. Å kaste ut missing er en mulig strategi, men dette bør vi alltid tenke igjennom. Dette gjelder spesielt om dataharmye missing verdier.ess <-na.omit(ess)
-Vi tar en titt på avhengig variabel til regresjonsanalysen. Denne variabelen måler hvor fornøyd respondenten er med demokratiet målt på en skala fra 0-10.str(ess$stfdem)summary(ess$stfdem)Videre tar vi en titt på noen av de uavhengige variablene.Variabelen gndr er kodet 1 = mann og 2 = kvinne.table(ess$gndr)Vi vil kode om denne slik at mann = 0 og kvinne = 1. Dette er en noe mer intuitiv koding av denne variabelen. Det kan også være lurt å tenke over hvilke forventninger vi har til variabelen, her forventer vi for eksempel at kvinner er mer fornøyde med demokratiet enn menn. Da kvinne skal kodes som 1 vil vi i så fall få en positiv koeffisient dersom forventningen innfris. Vi bruker mutatetil å opprette en ny variabelfor kjønn, transmutevil erstatte den gamle variabelen med den nye omkodede. Jeg vil anbefale å bruke mutatesom hovedregel, da slipper vi å gå tilbake til originaldata dersom noe går galt.ess <-ess %>%mutate(kjønn = if_else(gndr == 1, 0, 1))Vi bruker if_elseinne i mutate for å kode om variabelen.Koden ovenfor sier: dersom gndr har verdier 1, skal den nye variabelen fåverdien0, dersom gndr har andre verdier får disse verdien 1 i den nye variabelen. Vi sjekkerhvordan vote variabelen er kodet.Denne variabelen har informasjon om respondenten stemte ved forrige valg, og er kodet ja, nei og ikke stemmeberettiget. table(ess$vote)Vi vil ha en dikotom variabel som fanger hvorvidt personen stemte ved siste valg eller ikke. Vi vil har de som ikke var stemmeberettiget sammen med de som ikke stemte i forrige valg. Dvs, kodet som nei.ess <-ess %>%mutate(vote2 = if_else(vote >= 2, 0, 1))Sjekk ?if_else() for hjelpefilen til denne funksjonen
-Koden sier at respondentene som har verdien 2 eller høyere på vote skal ha verdien 0 i den nye variabelen. De som har verdier under 2 får verdien 1 på den nye variabelen.Sjekk omkodingen med table(), vi kan også sammenligne den omkodede variablene med den originalevariabelenved å bruke table(ess$vote). På den måten kan vi seat omkodingen er riktig. table(ess$vote2)Vi endrer navnene på variablene, for å gjøre det hele mer oversiktlig. Dette er helt valgfritt, men dere vil ofte oppleve at variablene i diverse datasett har navn som er lite intuitive.Vi bruker renamefunksjonensom er en enkelt kode for å endre navn. Sjekk ?rename for mer informasjon.ess <-ess %>%rename(alder = agea, utdanning = eduyrs, nyheter = nwspol, demokrati = stfdem)Vi kan sjekke at omkodningen og navnebyttene er korrekte ved å bruke headfunksjonenhead(ess)Kjøre  OLS regresjonen, vi brukerfunksjonenlmfor å kjøre en OLS i RFor å legge til uavhengige variabler bruker vi +, avhengig variabler kommer først og spesifiseres med~Vi forteller R hvilket datasett vi vil bruke med data =Vi lagrer også modellen i et objekt, slik at vi kan bruke verdiene seneremod1 <-lm(demokrati ~ vote2 + nyheter + utdanning +
-alder + kjønn, data = ess)Vi bruker summary for å se resultatene av modellen vår.summary(mod1) Her har jeg lagt til ett samspillsledd mellom stemmegivning og konsum av politiske nyheter. En måte å legge til samspill på er ved å bruke * mellom samspillsvariablene. Det er også mulig å opprette en ny variabel med mutate hvor man spesifiserer samspillsleddet.mod2 <-lm(demokrati ~ vote2 * nyheter + utdanning +alder + kjønn, data = ess)Legg merke til at vi for koeffisienter for både samspillsleddet og koeffisienter for variablene i samspillet individuelt. Dette er viktiginformasjon når vi skal tolke resultatene fra en modell med samspill. Her plotter vi regresjonslinjen for utdannings variabelen vår.Det er viktig å velge plot etter hvilke variabler vi er interesserte i å visualisere. Her har vi to kontinuerlige variablersom er rimelig enkelt å plotte. Dersom vi vil plott dummyvariabler eller kategoriske variabler må vi finne andre plots. En jukselapp til ggplot finnes her: https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdfggplot(ess, aes(x = utdanning, y = demokrati)) + stat_smooth(method = "lm", col = "red")Videre skal vi se på noen grafiske verktøy for å vurdere om enkelteforutsetninger for OLS er oppfylt
-Da må vi først lagre restleddene og verdiene fra modellen vår i datasettetDette kan også gjøres med mutate, men her velger vi å bruke en enkelt kode fra base.Vi bruker residfunksjonen for å trekke ut restleddene fra modell 1. fitted.values ligger allerede innbakt i modellobjektet, derfor kan vi enkelt trekke disse ut med $ og lagre disse i datasettet vårt. ess$mod1Resid <-resid(mod1)ess$mod1Fitted <-mod1$fitted.valuesVi vil så vurdere restleddenes fordeling med et histogram, er restleddene våre normalfordelte?Her bruker vi restleddenefra mod 1 som vi la inn i datasettet vårt med koden ovenfor.ggplot(ess,aes(x = mod1Resid)) + geom_histogram()Nå skal vi forsøke å lage en figur som plotter restleddene mot modellens verdierDette gjør vi for å vurdereeventuellhetroskedastisitetVi brukerverdiene som i lagret i datasettet på x aksen og modellens restledd på y aksen. Vi legger til de ulike enhetene med geom_point, så trekker vi en linje gjennompunktene med geom_smooth.ggplot(ess,aes(x = mod1Fitted, y = mod1Resid)) +geom_point() + geom_smooth() Slike plott kanvære noe vanskelig å tolke,hvor enkeleller vanskelig tolkningen blir avhenger ofte av hvordan variablene våre er kodet. Vi kan også bruke plot() for å få ulike figurer for diagnosistikk, vi vil få 4 ulike plot med denne funksjonen.Disse plottene er ikke like fine som de vi lager i ggplot, men de kan hjelpe oss med å få en rask oversikt over ulike diagnosistikk plot(mod1)
-Vi lager en fin regresjonstabell med begge modellene våre side ved side.Stargazer pakken kan bruken til svært mye i R. Husk å sjekke hjelepfilen ?stargazer. Vi bruker type = til å spesifisere hvilket format vi vil ha tabellen i. covariate.labels bruker til å legge til nye navn til de uavhengige variablenei modellen. Det er viktig å legge inn navnene i samme rekkefølge som i regresjonsmodellen, vist ikke risikerer vi å gi feil navn til variablene. Dep.var.labels bruker til å gi navn til avhengig variabel. stargazer(mod1, mod2, type = "text", title = c("Modeller"), covariate.labels = c("Evne til politisk deltakelse", "Politiske nyheter","Utdanning","Alder","Kjønn","Samspill"),dep.var.labels = c("Tilfredshet med demokratiet"))Vi ønsker ofte å bruke tabellene våre i eksempelviswordVi kan lagre tabellen som en html-fil og deretter bruke den i eksempelvis wordDette gjør vi ved å sette type = "html",Deretter legger vi til argumentet out = "navnpåtabell.htm"stargazer(mod1, mod2, type = "html", title = c("Modeller"), covariate.labels = c("Evne til politisk deltakelse", "Politiske nyheter","Utdanning","Alder",
-"Kjønn","Samspill"),dep.var.labels = c("Tilfredshet med demokratiet"),out = "regtabell.htm")Tabellen vi da lagers i working directory. Vi kan da bruke «åpne i»i mappen hvor filen ligger –og velge åpne i word.
+![](../../output/sem6_fig2.png) 
+
+Vi kan også plotte restleddene mot modellens verdier. Dette gjør vi for å vurdere eventuell hetroskedastisitet. Vi bruker de predikerte verdiene som vi lagret i datasettet på x aksen og modellens restledd på y aksen. Vi legger til de ulike enhetene med `geom_point`, så trekker vi en linje gjennompunktene med `geom_smooth()`.
+
+
+```r
+ggplot(data = ANES1996small2 ,
+       aes(x = mod1fitted, y = mod1resid)) +
+  geom_point() + 
+  geom_smooth() + 
+  theme_bw()
+```
+
+
+![](../../output/sem6_fig3.png)
+
+Slike plott kan være noe vanskelig å tolke. Hvor enkel eller vanskelig tolkningen blir avhenger ofte av hvordan variablene våre er kodet. 
+
+Vi kan også bruke plot() for å få ulike figurer for diagnosistikk, vi vil få 4 ulike plot med denne funksjonen. Disse plottene er ikke like fine som de vi lager i ggplot, men de kan hjelpe oss med å få en rask oversikt over ulike diagnosistikk:
+
+
+```r
+plot(model1)
+```
+
+
+![](../../output/sem6_fig4.png)
+
+![](../../output/sem6_fig5.png)
+
+![](../../output/sem6_fig7.png)
+
+![](../../output/sem6_fig8.png)
+
