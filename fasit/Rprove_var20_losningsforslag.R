@@ -5,7 +5,7 @@ library(tidyverse)
 ### Oppgave 1 ###
 
 # Bruker load() for å laste inn fil i .Rdata-format
-load("../../wages.Rdata")
+load("data/wages.Rdata")
 
 
 ### Oppgave 2 ###
@@ -13,15 +13,15 @@ load("../../wages.Rdata")
 # Inntekt 
 
 # Raskeste måten 
-summary(data$wages)
-sd(data$wages, na.rm = TRUE) # sd() finner standardavviket
+summary(wages$wages)
+sd(wages$wages, na.rm = TRUE) # sd() finner standardavviket
 
 # ELLER 
-mean(data$wages, na.rm = TRUE)
-min(data$wages, na.rm = TRUE)
-max(data$wages, na.rm = TRUE)
-sd(data$wages, na.rm = TRUE)
-sum(is.na(data$wages))
+mean(wages$wages, na.rm = TRUE)
+min(wages$wages, na.rm = TRUE)
+max(wages$wages, na.rm = TRUE)
+sd(wages$wages, na.rm = TRUE)
+sum(is.na(wages$wages))
 
 # gjennomsnitt = 15.6, minimumsverdi = 2.3, maxverdi = 49.9, 
 # standardavvik = 7.9, og antall NA = 3278
@@ -29,15 +29,15 @@ sum(is.na(data$wages))
 # Utdanning
 
 # Raskeste måten
-summary(data$education)
-sd(data$education, na.rm = TRUE)
+summary(wages$education)
+sd(wages$education, na.rm = TRUE)
 
 # ELLER 
-mean(data$education, na.rm = TRUE)
-min(data$education, na.rm = TRUE)
-max(data$education, na.rm = TRUE)
-sd(data$education, na.rm = TRUE)
-sum(is.na(data$education))
+mean(wages$education, na.rm = TRUE)
+min(wages$education, na.rm = TRUE)
+max(wages$education, na.rm = TRUE)
+sd(wages$education, na.rm = TRUE)
+sum(is.na(wages$education))
 
 # gjennomsnitt = 12.5, minimumsverdi = 0, maxverdi = 20, 
 # standardavvik = 3.4, og antall NA = 249
@@ -45,7 +45,7 @@ sum(is.na(data$education))
 ### Oppgave 3 ###
 
 # Lager histogram
-ggplot(data, aes(wages)) + geom_histogram()
+ggplot(wages, aes(wages)) + geom_histogram()
 
 # Histogrammet viser en høyreskjev fordeling, hvor de fleste observasjonene 
 # har relativt lave inntekter. 
@@ -54,7 +54,7 @@ ggplot(data, aes(wages)) + geom_histogram()
 ### Oppgave 4 ### 
 
 # Lager spredningsplott
-ggplot(data, aes(education, wages)) + geom_point()
+ggplot(wages, aes(education, wages)) + geom_point()
 
 # Spredningsplottet viser at det ser ut som at det er en positiv sammenheng 
 # mellom utdanning og inntekt. Altså med økende utdanning, øker også inntekt.
@@ -62,37 +62,37 @@ ggplot(data, aes(education, wages)) + geom_point()
 ### Oppgave 5 ##
 
 # Krysstabell mellom kjønn og utdanning
-table(data$sex, data$education)
+table(wages$sex, wages$education)
 
 
 ### Oppgave 6 ### 
 
 # Omkoder kjønn
 
-data$sex_new <- ifelse(data$sex == "Female", 0, 1) 
+wages$sex_new <- ifelse(wages$sex == "Female", 0, 1) 
 # Her får kvinner får verdien 0 og menn 1. 
 
 # Sjekker at det er gjort riktig med en krysstabell
-table(data$sex, data$sex_new)
+table(wages$sex, wages$sex_new, useNA = "always")
 
 # Omkoder utdanning
-data$education_new <- ifelse(data$education > mean(data$education, na.rm = TRUE), 1, 0)
+wages$education_new <- ifelse(wages$education > mean(wages$education, na.rm = TRUE), 1, 0)
 # Husk å bruke na.rm her også, ellers vil det ikke fungere. 
 
 # Sjekker at det er gjort riktig med en krysstabell
-table(data$education, data$education_new)
+table(wages$education, wages$education_new, useNA = "always")
 
 
 ### Oppgave 7 ### 
 
 # Oppretter nytt datasett med select()
-data_new <- data %>% select(wages, education, sex, sex_new, education_new)
+data_new <- wages %>% select(wages, education, sex, sex_new, education_new)
 
 
 ### Oppgave 8 ### 
 
 # Estimerer regresjonsmodell 
-mod <- lm(formula = wages ~ education, data = data)
+mod <- lm(formula = wages ~ education, data = wages)
 
 # Sammendrag av resultater 
 summary(mod)
@@ -105,7 +105,7 @@ summary(mod)
 ### Oppgave 9 ### 
 
 # Estimerer regresjonsmodell og legger til kjønn i modellen
-mod2 <- lm(formula = wages ~ education + sex, data = data)
+mod2 <- lm(formula = wages ~ education + sex, data = wages)
 
 # Sammendrag av resultater 
 summary(mod2)
