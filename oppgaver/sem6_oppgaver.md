@@ -7,7 +7,7 @@ output:
     keep_md: yes
   github_document: default
 ---
-Datasettet dere skal jobbe med i dag inneholder følgende variabler: 
+Datasettet dere skal jobbe med i dag inneholder blant annet følgende variabler: 
 
 * grspnum – Inntekt i kroner
 * eduyrs – Antall år med fullført utdanning 
@@ -15,7 +15,7 @@ Datasettet dere skal jobbe med i dag inneholder følgende variabler:
 * agea - Alder
 
 ## Oppgaver 
-1. Last inn datasettet ESS9. Dette er en versjon av spørreundersøkelsen European Social Survey, runde 9 (fra 2018) med tall fra Norge. Du finner datasettet i seminar-modulen på Canvas.
+1. Last inn datasettet ESS9. Dette er en versjon av spørreundersøkelsen European Social Survey, runde 9 (fra 2018) med tall fra Norge. Du finner datasettet i seminar-modulen på Canvas. Har du problemer med å laste inn datasettet så slå opp i dokumentet "Guide for innlastning av datasett" som ligger på Canvas for å finne riktig funksjon. 
 2. Skap et oversiktlig datasett det er lett å jobbe med:
 * Subset datasettet/opprett et nytt objekt hvor du kun inkluderer de variablene som skal inngå i regresjonsanalysen din. 
 * Skift navn på variablene «agea», «eduyrs» og «grspnum» til noe du synes virker mer intuitivt. 
