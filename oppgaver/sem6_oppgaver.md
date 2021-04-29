@@ -26,7 +26,8 @@ Datasettet dere skal jobbe med i dag inneholder blant annet følgende variabler:
 * Estimer en lineær OLS-regresjonsmodell med inntekt som avhengig variabel og utdanning, alder og kjønn som uavhengige variabler. 
 * Presenter resultatene i en fin tabell ved hjelp av «stargazer» funksjonen. Legg inn tittel og navn på avhengig og uavhengige variabler. 
 * Oppgi og tolk koeffisientene til utdanning, kjønn og alder. 
-
-** BONUSOPPGAVER **
 5. Plott regresjonslinjen til en modell med utdanning som uavhengig variabel og inntekt som avhengig variabel og gjør kort rede for hva plottet viser.
+
+** BONUSOPPGAVE **
+
 6. Sjekk og beskriv formen til residual-fordelingen, enten med et tetthets-plott eller et histogram.
