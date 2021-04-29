@@ -11,11 +11,14 @@ Datasettet dere skal jobbe med i dag inneholder blant annet følgende variabler:
 
 * grspnum – Inntekt i kroner
 * eduyrs – Antall år med fullført utdanning 
-* gndr - 1 = mann, 2 = kvinne
+* gndr - 1 = mann, 2 = kvinne (haven)/ "Male", "Female" (foreign)
 * agea - Alder
 
 ## Oppgaver 
-1. Last inn datasettet ESS9. Dette er en versjon av spørreundersøkelsen European Social Survey, runde 9 (fra 2018) med tall fra Norge. Du finner datasettet i seminar-modulen på Canvas. Har du problemer med å laste inn datasettet så slå opp i dokumentet "Guide for innlastning av datasett" som ligger på Canvas for å finne riktig funksjon. 
+1. Last inn datasettet ESS9. Dette er en versjon av spørreundersøkelsen European Social Survey, runde 9 (fra 2018) med tall fra Norge. Du finner datasettet i seminar-modulen på Canvas. Har du problemer med å laste inn datasettet så slå opp i dokumentet "Guide for innlastning av datasett" som ligger på Canvas for å finne riktig funksjon.
+
+**OBS!** Variabelen gndr vil ta litt ulike verdier avhengig av om du bruker foreign eller haven pakken. Bruker du haven pakken tar gndr verdien 1 og 2, men bruker du foreign tar den verdien "Male" og "Female". Dette er viktig å huske på når dere skal omkode gndr-variabelen senere. Er du usikker på hvilke verdier variabelen i ditt datasett har så kan du bruker `table()`. 
+
 2. Skap et oversiktlig datasett det er lett å jobbe med:
 * Subset datasettet/opprett et nytt objekt hvor du kun inkluderer de variablene som skal inngå i regresjonsanalysen din. 
 * Skift navn på variablene «agea», «eduyrs» og «grspnum» til noe du synes virker mer intuitivt. 
