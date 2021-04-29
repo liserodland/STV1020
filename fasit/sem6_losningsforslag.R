@@ -1,4 +1,4 @@
-#### LØSNINGSFORSLAG TIL OPPGAVER SEMINAR 5 ####
+#### LØSNINGSFORSLAG TIL OPPGAVER SEMINAR 6 ####
 ## Husk at det finnes flere måter å løse disse på. Dersom du har fått det til, 
 ## men ikke brukt akkurat samme kode som oss så kan du likevel ha gjort helt 
 ## riktig :) 
