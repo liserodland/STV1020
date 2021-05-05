@@ -287,7 +287,9 @@ summary(model)
 ## F-statistic: 16.26 on 1 and 34 DF,  p-value: 0.0002955
 ```
 
-`stargazer()` er en nyttig funksjon som gir oss samme informasjon som `summary()`, men i et litt mer lettlest format. 
+Ved å bruke `summary` får vi informasjon om koeffisienten (Estimate), standardfeilen (Std. Error), t-verdien (t-value) og p-verdien (Pr(>|t|)). Av summary kan vi derfor lese at koeffisienten til growth er 0.6248 og p-verdien er 0.000295. P-verdien er lavere enn 0.01 og vi kan derfor si at koeffisienten er signifikant på 1 prosents nivå. 
+
+`stargazer()` er en nyttig funksjon som gir oss mye av den samme informasjonen som `summary()`, men i et litt mer lettlest format. 
 
 
 ```r

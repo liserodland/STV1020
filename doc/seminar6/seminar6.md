@@ -26,7 +26,7 @@ library(tidyverse)
 ```
 
 ```
-## -- Attaching packages ------------------------------------------ tidyverse 1.3.0 --
+## -- Attaching packages --------------------------------------------- tidyverse 1.3.0 --
 ```
 
 ```
@@ -37,7 +37,7 @@ library(tidyverse)
 ```
 
 ```
-## -- Conflicts --------------------------------------------- tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -311,6 +311,9 @@ summary(model1)
 ## Multiple R-squared:  0.06007,	Adjusted R-squared:  0.05884 
 ## F-statistic: 49.17 on 2 and 1539 DF,  p-value: < 2.2e-16
 ```
+
+Ved å bruke `summary` får vi informasjon om koeffisienten (Estimate), standardfeilen (Std. Error), t-verdien (t-value) og p-verdien (Pr(>|t|)). Av summary kan vi derfor lese at koeffisienten til income når vi kontrollerer for female er -0.8408 og p-verdien er 0.00000000000150. P-verdien er lavere enn 0.01 og vi kan derfor si at koeffisienten er signifikant på 1 prosents nivå. Dersom du lurer på hva tallene med e- blir skrevet ut så kan du f.eks. bruke denne siden: [converthere.com/](https://converthere.com/numbers/10e+6-written-out)
+
 
 ```r
 stargazer(model1, type = "text")
