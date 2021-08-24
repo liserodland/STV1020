@@ -17,7 +17,7 @@ Har du R og Rstudio installert?
 * Ja - følg instruksjonene under "Hvordan oppdatere R og Rstudio".
 * Nei - følg instruksjonene under "Hvordan installere R og Rstudio". 
 
-##### Hvordan installere R og Rstudio\
+##### Hvordan installere R og Rstudio
 
 *Windows*:
 
@@ -54,9 +54,9 @@ Seminarene går smidigere om alle bruker samme versjon av R. Dersom du har R og 
 
 ###### Verifiser R versjon
 
-Åpne Rstudio. Øverst i konsoll så vil du se "session info". Den første linjen forteller deg hvilken R versjon du bruker. Alternativt så kan du kjøre koden ´R.version.string´ for å printe R versjonen. 
+Åpne Rstudio. Øverst i konsoll så vil du se "session info". Den første linjen forteller deg hvilken R versjon du bruker. Alternativt så kan du kjøre koden `R.version.string` for å printe R versjonen. 
 
-Har du R versjon 4.0.4 ("Lost Library Book") installert?
+Har du R versjon 4.1.0) installert?
 
 * Nei - følg instruksjonene for å “Oppdatere R og Rstudio”
 * Ja - supert! Du er klar for første R-seminar!
