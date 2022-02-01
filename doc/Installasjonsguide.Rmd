@@ -56,7 +56,7 @@ Seminarene går smidigere om alle bruker samme versjon av R. Dersom du har R og 
 
 Åpne Rstudio. Øverst i konsoll så vil du se "session info". Den første linjen forteller deg hvilken R versjon du bruker. Alternativt så kan du kjøre koden `R.version.string` for å printe R versjonen. 
 
-Har du R versjon 4.1.0) installert?
+Har du R versjon 4.1.2 installert?
 
 * Nei - følg instruksjonene for å “Oppdatere R og Rstudio”
 * Ja - supert! Du er klar for første R-seminar!
