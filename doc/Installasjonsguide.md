@@ -4,7 +4,7 @@ output:
   pdf_document: 
       keep_md: yes
   github_document:
-    html_preview: FALSE
+    toc: FALSE
     
 ---
 #### Hvordan innstallere og oppdatere R og Rstudio? 
