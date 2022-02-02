@@ -1,7 +1,5 @@
 ---
 title: "Installasjonsguide"
-author: "Lise Rødland"
-date: "22.2.2021"
 output: 
   pdf_document: 
       keep_md: yes
@@ -12,7 +10,7 @@ output:
 
 Du må installere R og Rstudio før første seminar. Dersom du allerede har installert R og Rstudio så er det fint om du oppdaterer til siste versjon før seminar. Om alle har samme versjon så vil seminarene gå mye smidigere. 
 
-Dersom du trenger hjelp eller har problemer med installasjonen så kan du komme på kodekafé 17. og 23. februar. Mer informasjon om tid og sted finner du på [Kodekafé-sidene](https://www.sv.uio.no/isv/forskning/kurs/?fbclid=IwAR3-yQAJbPp2e8erHl_Ek3Jz_wn1LS4HPaq1t005JeKIJ-TDXoggy-jwlrQ). 
+Dersom du trenger hjelp eller har problemer med installasjon/oppdatering så kan du komme på kodekafé 17. og 23. februar. Mer informasjon om tid og sted finner du på [Kodecafé-sidene](https://www.sv.uio.no/isv/forskning/kurs/?fbclid=IwAR3-yQAJbPp2e8erHl_Ek3Jz_wn1LS4HPaq1t005JeKIJ-TDXoggy-jwlrQ). 
 
 Har du R og Rstudio installert? 
 
