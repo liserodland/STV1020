@@ -3,8 +3,7 @@ title: "Installasjonsguide"
 output: 
   pdf_document: 
       keep_md: yes
-  github_document:
-    toc: FALSE
+  github_document: default 
     
 ---
 #### Hvordan innstallere og oppdatere R og Rstudio? 
