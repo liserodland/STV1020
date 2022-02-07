@@ -10,19 +10,19 @@ laptop.
 
 Før første seminar så forventer vi:
 
-  - At du har lest
+-   At du har lest
     [nedlastningsguiden](https://github.com/louisabo/STV4020A/blob/master/Nedlastningsguide.pdf)
     og denne [introduksjonen til
     R](https://github.com/liserodland/stv4020aR/blob/master/H20-seminarer/Innf%C3%B8ringsseminarer/docs/installasjonsguide_R.md).
 
-  - At du har lastet ned og installert R og Rstudio før første seminar
+-   At du har lastet ned og installert R og Rstudio før første seminar
     (se nedlastningsguide over).
 
 Under seminarrekka så forventer vi:
 
-  - At du møter opp på seminar.
+-   At du møter opp på seminar.
 
-  - At du jobber med å løse oppgaver innimellom seminarene.
+-   At du jobber med å løse oppgaver mellom seminarene.
 
 Dette er viktig for at seminarene skal gå så smidig som mulig og for at
 dere skal få læringsutbytte av å delta. For noen kan R virke skummelt
