@@ -1,7 +1,7 @@
 ---
 title: "Seminar 1"
-author: "Lise Rødland"
-date: "March 3, 2021"
+author: "Lise Rødland & co"
+date: '`r format(Sys.time(), "%d-%m-%Y")`'
 output:
   pdf_document: 
     keep_md: yes
@@ -10,6 +10,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
+
 ```
 
 # Velkommen til første seminar!
@@ -414,7 +416,7 @@ Om vi ser på datasettet etter at vi har laget den nye variabelen så ser vi at 
 ## Logiske tester
 
 R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.   
-```{r}
+```{r logiske_ting}
 1 == 2                                # tester om 1 er lik 2
 2 == 2                                # tester om 2 er lik 2
 "Statsvitenskap" == "statsvitenskap"  # Logiske tester kan også brukes på tekst
@@ -442,3 +444,9 @@ R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.
 
 
 Vi kommer til å bruke disse opearterne mye, spesielt når vi gjør endringer i datasett som å lage nye variabler.  Det er derfor viktig at dere forstår hvordan disse fungerer. Den beste måten å få denne foreståelse på er å øve.
+
+```{r # generere_script, eval=FALSE, echo=FALSE}
+knitr::purl("./doc/seminar1/seminar1.Rmd", 
+            output = "./script/seminar1.R", 
+            documentation = 1)
+```

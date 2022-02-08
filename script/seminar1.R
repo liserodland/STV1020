@@ -1,230 +1,229 @@
-########################
-### SEMINAR 1 SCRIPT ###
-########################
-
-# Der det står __ så kommer vi til å fylle inn i seminar
+## ----setup, include=FALSE--------------------------------------------------------
+knitr::opts_chunk$set(echo = TRUE)
 
 
-# Objekter ---------------------------
+## --------------------------------------------------------------------------------
+# Dette er kode.  
 
-# Etter # skriver jeg kommentarer. 
-# Alt som ikke kommer etter en # vil bli evaluert som kode
-# Sett musepekeren på likningen under og trykk crl+enter
-# (cmd+return på mac) for å kjøre den.
+
+## --------------------------------------------------------------------------------
+# Dette er en kommentar. 
+# Nå skal vi gjøre et lite forsøk med noe enkel matte! 
+# For å kjøre koden setter dere musepekeren ved siden av, og trykker ctrl+enter (cmd+return på Mac). 
 100/2+4
 
-# Første skal vi lage et objekt:
-# Skriv inn et passende objektnavn der det står __ og kjør
-# koden. 
-__ <- 2
 
-# Når vi lager et objekt så skjer det ikke noe umiddelbart
-# i console. Prøv å skriv inn navnet på objektet ditt,
-# kjør koden og se hva som skjer i console:
-__
-
-# Nå har vi laget et objekt. Skriv inn objektnavnet ditt
-# under, kjør koden og se hva resultatet blir i console. 
-2 + __ 
-
-# Dette var et veldig enkelt eksempel, men objekter kan
-# inneholde mye informasjon! Nå skal vi lage to vektorer.
-# Gi objektene et passende navn og kjør koden: 
-__ <- 1:100
-__ <- c(1,4,56,8,4,2,4)
-
-# Skriv inn navnet her, kjør koden og se hva som kommer 
-# opp i console:
-__
-__
-
-# Hva gjorde 1:100? 
-
-# Det er noen regler for objektnavn:
-# - Navn bør bare inneholde små bokstaver, tall og _
-# - Ikke bruk et tall som første tegn
-# - Ikke bruk æ/ø/å
-# - Ikke bruk mellomrom
-# - Ikke bruk FALSE, TRUE, Inf, for, else, break, 
-#   function, funksjonsnavn
+## ---- eval=FALSE-----------------------------------------------------------------
+## #La oss prøve dette med "mean()" funksjonen, som logisk nok finner gjennomsnitt:
+## ?mean
 
 
-# Funksjoner ---------------------------
-
-# Vi kan nå bruke objektene våre til å prøve ut noen
-# funksjoner. Finn gjennomsnittet på de to objektene
-# vi lagde tidligere ved å sette inn objektnavnet i
-# funksjonen og kjøre koden:
-mean(__)
-mean(__)
+## --------------------------------------------------------------------------------
+?vif
 
 
-# Indeksering --------------------------- 
 
-# Noen ganger vil vi være interessert i å hente ut 
-# informasjon om enkeltobservasjoner i dataene våre. 
-# Da kan vi bruke indeksering. 
+## --------------------------------------------------------------------------------
 
-# Sett inn navnet på et av objektene vi lagde
-# tidligere og kjør koden: 
-__[5] 
+To <- 2
 
-# Hva skjedde? 
-
-# Vektorer inneholder strukturert informasjon. Dette
-# gjør det mulig å hente ut informasjon. Sett inn navnet
-# på vektorene her og kjør koden:
-
-__[3:6]
-__[c(3,5,3,6)]
-
-# Vi kan også bruke indeksering inne i funksjoner:
-# Erstatt første __ med funksjnen for å regne gjennomsnitt
-# og erstatt den andre __ med objektnavnet ditt:
-__(__[c(3,5,3,6)])
-
-# Vi kan også bruke indeksering til å subsette
-Ny_Vektor <- __[c(3,5,3,6)]
+2 + To
 
 
-# Klasser --------------------------- 
+## --------------------------------------------------------------------------------
+en_til_hundre <- 1:100
+tall <- c(1,4,56,8,4,2,4)
 
-# Hvilken klasse et objekt har avgjør hva vi kan gjøre 
-# med det. For å sjekke hvilken klasse et objekt har så
-# kan vi bruke ulike funksjoner:
-
-# Sett inn objektnavnet ditt og kjør koden: 
-class(__)
-
-# Hva fikk du i konsoll? Hva betyr svaret? 
-
-# R operer med flere klasser og vi kan også lagre tekst.
-# Gi objektet et navn og skriv noen ord mellom 
-# hermetegnene:
-__ <- "__"
-
-# Hva skjer om du prøver å ta gjennomsnittet av det nye 
-# objektet ditt? 
-__(__)
-
-# Hvilken klasse har det nye objektet ditt? 
-__(__)
-
-# Vi kan kreve at et objekt skal ha en viss klasse. Det 
-# gjør vi med funksjonen as."klassenavn"(). Prøv å lagre
-# den numeriske vektoren fra tidligere som en character:
-
-__ <- as.character(__)
-
-__
-
-mean(__)
-
-# Hva skjedde nå? 
-
-# Vi kan også lage objekter som inneholder både tekst 
-# og tall. Gi objektet et navn og bytt ut __ med tall
-# og ord: 
-
-__ <- c(1,__,0,__, "__", "__", 42, "the answer")
-
-# Hvilken klasse fikk objektet?
-class(__)
+tall
 
 
-# Datasett --------------------------- 
+## --------------------------------------------------------------------------------
+mean(en_til_hundre)
+mean(tall)
 
-# Nå skal vi se på hvordan vi kan slå sammen flere
-# vektorer til et datasett. Først lager vi en del ulike
-# objekter. Kjør koden under
 
+## --------------------------------------------------------------------------------
+tall[5]
+
+
+## --------------------------------------------------------------------------------
+tall[3:6]
+tall[c(3,5,3,6)]
+
+
+## --------------------------------------------------------------------------------
+mean(tall[c(3,5,3,6)])
+
+
+## --------------------------------------------------------------------------------
+Ny_Vektor <- tall[c(3,5,3,6)]
+
+
+## --------------------------------------------------------------------------------
+is.numeric(en_til_hundre)
+# Her ser vi at vi får opp "TRUE" som betyr at en_til_hundre er et numerisk objekt
+
+
+## --------------------------------------------------------------------------------
+class(en_til_hundre)
+
+
+## --------------------------------------------------------------------------------
+Tekst <- "Hei, jeg elsker R! <3"
+# Denne klassen kan inneholde tekst, men vil f.eks. ikke kunne brukes til matte. 
+mean(Tekst)
+
+
+## --------------------------------------------------------------------------------
+tall_ch <- as.character(tall)
+mean(tall_ch)
+
+
+## --------------------------------------------------------------------------------
+# Lager en faktorvariabel uten å sette nivåer
+skolenivaer <- factor(c("Barneskole", 
+                        "Ungdomskole", 
+                        "Videregaende", 
+                        "Videregaende", 
+                        "Universitet",
+                        "Ungdomskole",
+                        "Universitet"))
+
+# Printer alle verdiene
+skolenivaer 
+
+# Printer alle nivåene
+levels(skolenivaer)
+# Er det noe som skurrer her?
+
+
+## --------------------------------------------------------------------------------
+# Endrer faktornivåene
+skolenivaer <- factor(skolenivaer,
+                      levels = c("Barneskole",
+                                 "Ungdomskole",
+                                 "Videregaende",
+                                 "Universitet"))
+skolenivaer
+levels(skolenivaer)
+
+
+## --------------------------------------------------------------------------------
+teksttall <- c(1,4,0,4, "Bamse", "R", "R Seminarer er de BESTE seminarer", 42, "the answer")
+
+class(teksttall)
+mean(teksttall[1:4])
+
+
+## --------------------------------------------------------------------------------
 navn <- c("Mohammed", "Jakob", "Olav", "Martin", 
           "Maja", "Sofia", "Iben", "Therese")
+
 antall <- c(94, 76, 68, NA, 65, 64, 60, NA)
+
 per_tusen <- c(19, 16, 14, NA, 14, 14, 13, NA)
-kjonn <- c("Mann", "Mann", "Mann", "Mann",
-           "Kvinne", "Kvinne", "Kvinne" "Kvinne")
+
+kjonn <- c("Gutt", "Gutt", "Gutt", "Gutt", 
+           "Jente", "Jente", "Jente", "Jente")
+
 by <- c("Oslo")
 
-# Vi har nå laget fem ulike vektorer med ulik informasjon
-# om navnestatistikk. I environment så kan vi se hvor 
-# mange observasjoner det er i hver vektor, men vi kan 
-# også bruke funksjonen length(). 
-# Sjekk lengden på en av vektorene: 
-
-length(__)
-
-# For å slå disse vektorene sammen til et datasett så
-# kan vi bruke funksjonen data.frame. Gi datasettet et n
-# navn og kjør koden: 
-
-__ <- data.frame(navn, antall, per_tusen, kjonn, by)
-
-# Når vi indekserte tidligere så skrev vi kun navnet på
-# objektet samt et tall. Nå som vi har et datasett må vi
-# R informasjon om hvilken rad (observajon) og 
-# rekke (variabel) vi vil hente ut:
-
-# Med klammeparanteser kan vi velge rad og kolonne. 
-# Rad kommer først, og så kolonnen. 
-__[2, 1]
-
-# Hva skjer når vi lar plassen for rad eller kolonne være
-# tom? Sett inn navnet på datasettet ditt og kjør koden:
-_[, 2]  
-_[2, ]
-
-# En mer vanlig måte å hente ut kolonner på er med '$'.
-# Her skrive vi først navnet på datasettet og så navnet
-# på variabelen
-__$navn 
-
-# Denne formen er mye brukt i funksjoner. Finn 
-# gjennomsnittet av variabelen per_tusen:
-mean(__$per_tusen, na.rm = TRUE)
-
-#Eller median for å finne median
-median(__$per_tusen, na.rm = TRUE)
-
-# Funksjonen summary() gir oss all denne informasjonen: 
-summary(__$per_tusen)
 
 
-# Syntaks feil --------------------------- 
+## --------------------------------------------------------------------------------
 
-feil1 <- c(1 2, 3, 4)
+length(navn)
+length(by)
 
-feil2 <- c1, 2, 3, 4)
 
-feil3 < c(1, 2, 3, 4)
 
-feil4 <- c(1, 2, 3, 4
-           
+## --------------------------------------------------------------------------------
+navnestat <- data.frame(navn, antall, per_tusen, kjonn, by)
 
-# Pakker ---------------------------
 
-# Til nå har vi bare brukt funksjoner som er innebygd i
-# R, men nå skal vi installere og laste inn en pakke vi
-# kommer til å bruke mye i seminar. Pakken heter
-# tidyverse. Vi installerer den ved hjelp av funksjonen
-# install.packages(): 
+## --------------------------------------------------------------------------------
+View(navnestat)
 
-install.packages("tidyverse")
 
-# Når vi installerer pakker må vi alltid sette pakkenavnet
-# i hermetegn.  Etter at vi har installert den så må vi
-# laste den inn med funksjonen library():
+## --------------------------------------------------------------------------------
+# Med klammeparanteser kan vi velge rad og kolonne. Rad kommer først, og så kolonnen: 
+navnestat[2,1] 
+
+# Skriver vi en tom får vi alle kollonene/radene 
+navnestat[,2] 
+navnestat[2,]
+
+
+
+## --------------------------------------------------------------------------------
+#Her skriver jeg først navnet på dataframen, og så variabelen: 
+navnestat$antall 
+
+#La oss prøve å få ut gjennomsnittlet til antall 
+mean(navnestat$antall)
+
+
+## --------------------------------------------------------------------------------
+mean(navnestat$antall, na.rm = TRUE) 
+median(navnestat$antall, na.rm = TRUE)
+
+
+## --------------------------------------------------------------------------------
+summary(navnestat$antall)
+
+summary(navnestat)
+
+
+## ---- eval=FALSE-----------------------------------------------------------------
+## install.packages("tidyverse")
+
+
+## --------------------------------------------------------------------------------
 library(tidyverse)
 
-# Vi trenger bare å installere en pakke en gang, men vi må 
-# laste den inn med library() hver gang vi starter en ny
-# R-sesjon.
+
+## ---- warning=FALSE--------------------------------------------------------------
+# I første argument spesifiserer vi datasettet
+# og hvilken variabel vi vil plotte
+# Vi legger til en + på slutten av linjen for
+# å fortelle R at vi vil legge til flere lag
+# Etter + skrive vi hva slags plot vi vil ha. 
+
+ggplot(data = navnestat, aes(x = per_tusen)) + 
+  geom_bar(bins = 30) 
+  
 
 
-# Plotting --------------------------- 
+## ---- echo = FALSE, message=FALSE------------------------------------------------
+"Atomic vector" <- c("numeric", "integer", "character", "factor", "logical")
+"List" <- c("blanding", "", "", "", "")
+tabell <- cbind(`Atomic vector`, List)
 
-# Helt til slutt så skal vi bare se på et eksempel på
-# hvordan vi kan lage et plot med funksjonen ggplot()
 
-ggplot(data = __, aes(x = __)) + 
-  geom_bar() 
+
+## --------------------------------------------------------------------------------
+class(navnestat$navn)
+class(navnestat$antall)
+class(navnestat$by)
+
+
+## --------------------------------------------------------------------------------
+# Her lager vi en ny variabel antall2 der vi ber R lagre alder som character
+navnestat$antall2 <- as.character(navnestat$antall)
+
+
+## ----logiske_ting----------------------------------------------------------------
+1 == 2                                # tester om 1 er lik 2
+2 == 2                                # tester om 2 er lik 2
+"Statsvitenskap" == "statsvitenskap"  # Logiske tester kan også brukes på tekst
+"statsvitenskap" == "statsvitenskap"  # R er imidlertid sensitivt til store og små bokstaver
+1 <= 2                                # Tester om 1 er mindre enn eller lik 2
+1 >= 2                                # Tester om 1 er større enn eller lik 2
+1 != 2                                # Tester om 1 er ulik 2
+1 == 2 | 1 == 1                       # Tester om en av de to påstandene 1 er lik 2 eller 1 er lik 1 er sanne
+1 == 2 & 1 == 1                       # Tester om begge de to påstandene 1 er lik 2 og 1 er lik 1 er sanne
+
+
+## ----generere_script, eval=FALSE, echo=FALSE-------------------------------------
+## knitr::purl("./doc/seminar1/seminar1.Rmd", output = "./script/seminar1.R", documentation = 1)
+

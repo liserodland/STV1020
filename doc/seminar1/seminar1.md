@@ -1,7 +1,7 @@
 ---
 title: "Seminar 1"
-author: "Lise Rødland"
-date: "March 3, 2021"
+author: "Lise Rødland & co"
+date: '08-02-2022'
 output:
   pdf_document: 
     keep_md: yes
@@ -26,17 +26,17 @@ I disse dokumentene vil dere finne noe tekst, noen figurer og tabeller, og noe k
 
 
 ```r
-# Dette er kode.  
+# Dette er kode.
 ```
 
 Alt som er skrevet i grått kan dere kopiere inn i et R-script og kjøre for å se hva som skjer. Når jeg har # foran en tekstlinje så betyr det at jeg skriver en kommentar i scriptet mitt. Når vi setter en # foran teksten så skjønner R at dette ikke er vanlig kode, men en kommentar. Resultatene av faktisk kode vil komme i et eget felt med grå bakgrunn under. R sin respons kjennetegnes ved at linjene starter med ##. Se for eksempel her: 
 
 
 ```r
-# Dette er en kommentar. 
-# Nå skal vi gjøre et lite forsøk med noe enkel matte! 
-# For å kjøre koden setter dere musepekeren ved siden av, og trykker ctrl+enter (cmd+return på Mac). 
-100/2+4
+# Dette er en kommentar.  Nå skal vi gjøre et lite forsøk med noe enkel matte!
+# For å kjøre koden setter dere musepekeren ved siden av, og trykker ctrl+enter
+# (cmd+return på Mac).
+100/2 + 4
 ```
 
 ```
@@ -68,15 +68,16 @@ Ofte når vi bruker R er vi usikre på hvordan forskjellige funksjoner fungerer.
 
 
 ```r
-#La oss prøve dette med "mean()" funksjonen, som logisk nok finner gjennomsnitt:
-?mean
+# La oss prøve dette med 'mean()' funksjonen, som logisk nok finner
+# gjennomsnitt:
+`?`(mean)
 ```
 
 Dersom du får et svar som under her så tyder det på at du ikke har installert pakken funksjonen ligger i. Da kan du legge til et spørsmålstegn til og kjøre kode `??vif`.  
 
 
 ```r
-?vif
+`?`(vif)
 ```
 
 ```
@@ -142,7 +143,7 @@ La oss nå lage noen flere objekter:
 
 ```r
 en_til_hundre <- 1:100
-tall <- c(1,4,56,8,4,2,4)
+tall <- c(1, 4, 56, 8, 4, 2, 4)
 
 tall
 ```
@@ -198,7 +199,7 @@ tall[3:6]
 ```
 
 ```r
-tall[c(3,5,3,6)]
+tall[c(3, 5, 3, 6)]
 ```
 
 ```
@@ -209,7 +210,7 @@ Vi kan også finne gjennomsnittet av utvalgte tall:
 
 
 ```r
-mean(tall[c(3,5,3,6)])
+mean(tall[c(3, 5, 3, 6)])
 ```
 
 ```
@@ -220,7 +221,7 @@ Eller bruke disse som et nytt objekt:
 
 
 ```r
-Ny_Vektor <- tall[c(3,5,3,6)]
+Ny_Vektor <- tall[c(3, 5, 3, 6)]
 ```
 
 
@@ -238,7 +239,8 @@ is.numeric(en_til_hundre)
 ```
 
 ```r
-# Her ser vi at vi får opp "TRUE" som betyr at en_til_hundre er et numerisk objekt
+# Her ser vi at vi får opp 'TRUE' som betyr at en_til_hundre er et numerisk
+# objekt
 ```
 
 Vi kan også bruke funksjonen `class()` til å hente ut informasjon om klassen: 
@@ -261,7 +263,8 @@ ellers definerer vi den som vanlig:
 
 ```r
 Tekst <- "Hei, jeg elsker R! <3"
-# Denne klassen kan inneholde tekst, men vil f.eks. ikke kunne brukes til matte. 
+# Denne klassen kan inneholde tekst, men vil f.eks. ikke kunne brukes til
+# matte.
 mean(Tekst)
 ```
 
@@ -302,16 +305,11 @@ For å lage en faktor bruker vi funksjonen `factor()`. La oss først lage en fak
 
 ```r
 # Lager en faktorvariabel uten å sette nivåer
-skolenivaer <- factor(c("Barneskole", 
-                        "Ungdomskole", 
-                        "Videregaende", 
-                        "Videregaende", 
-                        "Universitet",
-                        "Ungdomskole",
-                        "Universitet"))
+skolenivaer <- factor(c("Barneskole", "Ungdomskole", "Videregaende", "Videregaende",
+    "Universitet", "Ungdomskole", "Universitet"))
 
 # Printer alle verdiene
-skolenivaer 
+skolenivaer
 ```
 
 ```
@@ -338,11 +336,8 @@ I eksempelet her kan vi se at vi først definerer de forskjellige verdiene som e
 
 ```r
 # Endrer faktornivåene
-skolenivaer <- factor(skolenivaer,
-                      levels = c("Barneskole",
-                                 "Ungdomskole",
-                                 "Videregaende",
-                                 "Universitet"))
+skolenivaer <- factor(skolenivaer, levels = c("Barneskole", "Ungdomskole", "Videregaende",
+    "Universitet"))
 skolenivaer
 ```
 
@@ -364,7 +359,8 @@ I toppen her sa jeg at en vektor var et objekt som inneholdt elementer av *samme
 
 
 ```r
-teksttall <- c(1,4,0,4, "Bamse", "R", "R Seminarer er de BESTE seminarer", 42, "the answer")
+teksttall <- c(1, 4, 0, 4, "Bamse", "R", "R Seminarer er de BESTE seminarer", 42,
+    "the answer")
 
 class(teksttall)
 ```
@@ -396,15 +392,13 @@ Vi kan tenke på hver rad i en dataframe som en observasjon. En observasjon kan 
 
 
 ```r
-navn <- c("Mohammed", "Jakob", "Olav", "Martin", 
-          "Maja", "Sofia", "Iben", "Therese")
+navn <- c("Mohammed", "Jakob", "Olav", "Martin", "Maja", "Sofia", "Iben", "Therese")
 
 antall <- c(94, 76, 68, NA, 65, 64, 60, NA)
 
 per_tusen <- c(19, 16, 14, NA, 14, 14, 13, NA)
 
-kjonn <- c("Gutt", "Gutt", "Gutt", "Gutt", 
-           "Jente", "Jente", "Jente", "Jente")
+kjonn <- c("Gutt", "Gutt", "Gutt", "Gutt", "Jente", "Jente", "Jente", "Jente")
 
 by <- c("Oslo")
 ```
@@ -448,8 +442,9 @@ Til nå så har vi bare skrevet navnet på vektoren for å hente ut informasjon.
 
 
 ```r
-# Med klammeparanteser kan vi velge rad og kolonne. Rad kommer først, og så kolonnen: 
-navnestat[2,1] 
+# Med klammeparanteser kan vi velge rad og kolonne. Rad kommer først, og så
+# kolonnen:
+navnestat[2, 1]
 ```
 
 ```
@@ -457,8 +452,8 @@ navnestat[2,1]
 ```
 
 ```r
-# Skriver vi en tom får vi alle kollonene/radene 
-navnestat[,2] 
+# Skriver vi en tom får vi alle kollonene/radene
+navnestat[, 2]
 ```
 
 ```
@@ -466,7 +461,7 @@ navnestat[,2]
 ```
 
 ```r
-navnestat[2,]
+navnestat[2, ]
 ```
 
 ```
@@ -478,8 +473,8 @@ Det blir det fort vanskelig å huske tallet til plasseringen til en variabel. En
 
 
 ```r
-#Her skriver jeg først navnet på dataframen, og så variabelen: 
-navnestat$antall 
+# Her skriver jeg først navnet på dataframen, og så variabelen:
+navnestat$antall
 ```
 
 ```
@@ -487,7 +482,7 @@ navnestat$antall
 ```
 
 ```r
-#La oss prøve å få ut gjennomsnittlet til antall 
+# La oss prøve å få ut gjennomsnittlet til antall
 mean(navnestat$antall)
 ```
 
@@ -499,7 +494,7 @@ Hm. Her ser dere at vi fikk `NA` til svar istedet for det gjennomsnittet vi øns
 
 
 ```r
-mean(navnestat$antall, na.rm = TRUE) 
+mean(navnestat$antall, na.rm = TRUE)
 ```
 
 ```
@@ -568,18 +563,18 @@ library(tidyverse)
 ```
 
 ```
-## -- Attaching packages -------------------------------------------------------------------------------------------------------------------------------- tidyverse 1.3.0 --
+## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 ```
 
 ```
-## v ggplot2 3.3.2     v purrr   0.3.4
-## v tibble  3.0.3     v dplyr   1.0.2
-## v tidyr   1.1.2     v stringr 1.4.0
-## v readr   1.4.0     v forcats 0.5.0
+## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.6     v dplyr   1.0.7
+## v tidyr   1.1.4     v stringr 1.4.0
+## v readr   2.1.1     v forcats 0.5.1
 ```
 
 ```
-## -- Conflicts ----------------------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -588,14 +583,11 @@ Merk at pakkenavnet ikke står i hermetegn når vi bruker `library()`. Hermetegn
 
 
 ```r
-# I første argument spesifiserer vi datasettet
-# og hvilken variabel vi vil plotte
-# Vi legger til en + på slutten av linjen for
-# å fortelle R at vi vil legge til flere lag
-# Etter + skrive vi hva slags plot vi vil ha. 
+# I første argument spesifiserer vi datasettet og hvilken variabel vi vil
+# plotte Vi legger til en + på slutten av linjen for å fortelle R at vi vil
+# legge til flere lag Etter + skrive vi hva slags plot vi vil ha.
 
-ggplot(data = navnestat, aes(x = per_tusen)) + 
-  geom_bar(bins = 30) 
+ggplot(data = navnestat, aes(x = per_tusen)) + geom_bar(bins = 30)
 ```
 
 ![](seminar1_files/figure-latex/unnamed-chunk-29-1.pdf)<!-- --> 
@@ -665,7 +657,7 @@ Om vi ser på datasettet etter at vi har laget den nye variabelen så ser vi at 
 R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.   
 
 ```r
-1 == 2                                # tester om 1 er lik 2
+1 == 2  # tester om 1 er lik 2
 ```
 
 ```
@@ -673,7 +665,7 @@ R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.
 ```
 
 ```r
-2 == 2                                # tester om 2 er lik 2
+2 == 2  # tester om 2 er lik 2
 ```
 
 ```
@@ -697,7 +689,7 @@ R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.
 ```
 
 ```r
-1 <= 2                                # Tester om 1 er mindre enn eller lik 2
+1 <= 2  # Tester om 1 er mindre enn eller lik 2
 ```
 
 ```
@@ -705,7 +697,7 @@ R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.
 ```
 
 ```r
-1 >= 2                                # Tester om 1 er større enn eller lik 2
+1 >= 2  # Tester om 1 er større enn eller lik 2
 ```
 
 ```
@@ -713,7 +705,7 @@ R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.
 ```
 
 ```r
-1 != 2                                # Tester om 1 er ulik 2
+1 != 2  # Tester om 1 er ulik 2
 ```
 
 ```
@@ -721,7 +713,7 @@ R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.
 ```
 
 ```r
-1 == 2 | 1 == 1                       # Tester om en av de to påstandene 1 er lik 2 eller 1 er lik 1 er sanne
+1 == 2 | 1 == 1  # Tester om en av de to påstandene 1 er lik 2 eller 1 er lik 1 er sanne
 ```
 
 ```
@@ -729,7 +721,7 @@ R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.
 ```
 
 ```r
-1 == 2 & 1 == 1                       # Tester om begge de to påstandene 1 er lik 2 og 1 er lik 1 er sanne
+1 == 2 & 1 == 1  # Tester om begge de to påstandene 1 er lik 2 og 1 er lik 1 er sanne
 ```
 
 ```
@@ -752,3 +744,5 @@ R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.
 
 
 Vi kommer til å bruke disse opearterne mye, spesielt når vi gjør endringer i datasett som å lage nye variabler.  Det er derfor viktig at dere forstår hvordan disse fungerer. Den beste måten å få denne foreståelse på er å øve.
+
+
