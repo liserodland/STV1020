@@ -91,25 +91,25 @@ Datasett kommer i mange ulike filformater. Noen vanlige formater er csv, dta (St
 datasett <- read_filtype("filbane/filnavn.filtype") 
 ```
 
-For eksempel så er datasettet vi skal bruke i dag en dta-fil. Pakken `foreign` inneholder funksjoner for å lese dta-filer og sav-filer. Det første vi gjør er derfor å installere og laste inn `foreign`. Et alternativ til `foreign` er `haven`. 
+For eksempel så er datasettet vi skal bruke i dag en dta-fil. Pakken `haven` inneholder funksjoner for å lese dta-filer og sav-filer. Det første vi gjør er derfor å installere og laste inn `haven`. 
 
 ```{r, eval = FALSE}
-install.packages("foreign")
+install.packages("haven")
 ```
 
 ```{r}
-library(foreign)
+library(haven)
 
-ess <- read.dta("../../data/ESS9NO.dta")
+ess <- read_dta("../../data/ESS9NO.dta")
 ```
 
 Her er eksempler på noen andre funksjoner for å laste inn data:
 
 ```{r, eval = FALSE}
-# For .csv:
-read_csv("data/filnavn.csv") 
+# For csv-format:
+datanavn <- read_csv("data/filnavn.csv") 
 
-# For filer i R-format:
+# For filer i Rdata-format:
 load("data/filnavn.Rdata")
 ```
 
@@ -120,7 +120,7 @@ install.packages("readxl")
 
 library(readxl)
 
-df <- read_excel("data/filnavn.xlsx")
+datanavn <- read_excel("data/filnavn.xlsx")
 ```
 
 # Organisering av data
@@ -174,10 +174,31 @@ Vi kan sjekke hvilken klasse variabelen har ved hjelp av `class()`
 ```{r}
 class(ess_subset$vote)
 ```
-Her får vi opp klassen "factor". Klassen i R samsvarer altså med variabelens målenivå. Vi kan bruke `levels()` til å sjekke hvilke nivåer eller kategorier som er registrert:
+Her får vi opp klassene `haven_labelled`, `vctrs_vctr` og `double`. `haven_labelled` indikerer at datasettet også inneholder informasjon om verdilabels, mens `double` betyr at variabelen nå er lagret som en numerisk variabel. På variabler med kategorisk eller ordinalt målenivå såkan vi bruke funksjonen `table()` til å få oversikt over verdiene: 
+
 ```{r}
-levels(ess_subset$vote)
+table(ess_subset$vote)
 ```
+Som vi ser her så fremstår variabelen som om den er kontinuerlig/numerisk med tallverdier, men vi har lest kodeboken og vet at den er kategorisk. Dersom vi vil endre klassen på variabelen til en faktor så det samsvarer bedre med målenivået så kan vi bruke funksjonen `as_factor()` for å opprette en ny variabel:
+
+```{r}
+# Lager en ny variabel i datasettet som heter vote_factor
+ess_subset$vote_factor <- as_factor(ess_subset$vote)
+```
+
+Vi kan nå se nærmere på hvilke verdier den nye variabelen `vote_factor` tar ved hjelp av `levels()` og klassen ved hjelp av `class()`:  
+
+```{r}
+# Sjekker faktornivåene:
+levels(ess_subset$vote_factor)
+
+# Sjekker klasse:
+class(ess_subset$vote_factor)
+```
+
+Nå samsvarer variabelens verdier (`Yes`, `No`, osv.) og klasse (`factor`) bedre med det faktiske målenivået til variabelen (kategorisk). 
+
+Merk at bruken av `as_factor()` er forbehold datasett som inneholder labels sånn som ESS-datasettet vi jobber med i dag. Vi skal jobbe mer med omkoding av variabler senere. 
 
 
 ## Ordinalnivå
@@ -192,12 +213,24 @@ Vi kan sjekke klasse til denne variabelen også:
 class(ess_subset$interest)
 
 ```
-Som vi ser er også denne variabelen registrert som en faktor av R. Igjen så kan vi bruke levels: 
+Som vi ser er også denne variabelen også registrert som klassene `haven_labelled`, `vctrs_vctr` og `double` av R. Dersom vi vil bruke denne variabelen som en kategorisk variabel så kan vi igjen bruke `as_factor` for å få variabelens klasse til å samsvare med målenivået: 
 
 ```{r}
-levels(ess_subset$interest)
+ess_subset$interest_factor <- as_factor(ess_subset$interest)
 ```
 
+
+Vi sjekker faktornivåer og klasse igjen:
+
+```{r}
+# Sjekker faktornivåene:
+levels(ess_subset$interest_factor)
+
+# Sjekker klasse:
+class(ess_subset$interest_factor)
+```
+
+Dette ser også fint ut. Som dere vet fra forelesning så er behandler man ofte variabler på ordinalnivå som enten kategorisk eller kontinuerlig målenivå. Dersom vi ville beholdt denne som en kontinuerlig variabel så hadde vi ikke trengt å omkode den ved hjelp av `as_factor()`. 
 
 ## Kontinuerlig
 
@@ -213,7 +246,7 @@ class(ess_subset$news)
 is.numeric(ess_subset$news)
 ```
 
-Denne variabelen er numerisk og skal være det så her er alt i orden. 
+Denne variabelen er `double` og skal være det så her er alt i orden. 
 
 Jeg vil oppfordre dere til å være obs og alltid sjekke at klassen på en variabel dere skal bruke stemmer overens med målenivået. I mange datasett får kategoriske og ordinale variabler ofte tall istedenfor kategorinavn som verdier og lastes inn som klassen numeric. Dette gjør at kategoriske variabler kan fremstå som at de har et høyere målenivå enn de faktisk har i R. Derfor er det alltid viktig å også sjekke kodeboken for å se hvilket målenivå variabelen faktisk har. Det kommer ikke til å stå "denne variabelen har kategorisk målenivå" så dere må gjøre en selvstendig vurdering basert på hvilke verdier variabelen har. 
 
@@ -276,16 +309,16 @@ Vi skal kort introdusere hvordan man kan visualisere data i dette seminaret, og 
 ## Kategoriske variabeler
 
 ### Søylediagram og kakediagram med en variabel
-Hvordan kan vi visualisere hvordan fordelingen av politisk interesse er? Her kan vi bruke `geom_bar` til å lage et søylediagram (bar chart). Et søylediagram viser antall observasjoner av hver verdi.
+Hvordan kan vi visualisere hvordan fordelingen av politisk interesse er? Her kan vi bruke `geom_bar` til å lage et søylediagram (bar chart). Et søylediagram viser antall observasjoner av hver verdi. Vi bruker her den variabelen vi lagde tidligere med "riktig" målenivå.
 
 ```{r, eval = FALSE}
-ggplot(data = ess_subset, aes(x = interest)) + 
+ggplot(data = ess_subset, aes(x = interest_factor)) + 
   geom_bar() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
 ```{r, include = FALSE}
-ggplot(data = ess_subset, aes(x = interest)) + 
+ggplot(data = ess_subset, aes(x = interest_factor)) + 
   geom_bar() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 
@@ -298,16 +331,16 @@ Dersom vi ikke ønsker å gi missingverdiene (NA) en egen søyle så kan vi bruk
 
 ```{r, eval = FALSE}
 ggplot(data = ess_subset %>% 
-         filter(!is.na(interest)), 
-       aes(x = interest)) + 
+         filter(!is.na(interest_factor)), 
+       aes(x = interest_factor)) + 
   geom_bar() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
 ```{r, include = FALSE}
 ggplot(data = ess_subset %>% 
-         filter(!is.na(interest)), 
-       aes(x = interest)) + 
+         filter(!is.na(interest_factor)), 
+       aes(x = interest_factor)) + 
   geom_bar() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 
@@ -319,7 +352,7 @@ ggsave("../../output/sem2_soyle2.png")
 Et alternativ til søylediagram er kakediagram (pie chart): 
 
 ```{r, eval = FALSE}
-ggplot(ess_subset, aes(x = "", y = interest, fill = interest)) + 
+ggplot(ess_subset, aes(x = "", y = interest, fill = interest_factor)) + 
   geom_bar(stat = "identity", width = 1) + 
   coord_polar("y", start = 0) +
   theme_void() +
@@ -327,7 +360,7 @@ ggplot(ess_subset, aes(x = "", y = interest, fill = interest)) +
 ```
 
 ```{r, include = FALSE}
-ggplot(ess_subset, aes(x = "", y = interest, fill = interest)) + 
+ggplot(ess_subset, aes(x = "", y = interest_factor, fill = interest_factor)) + 
   geom_bar(stat = "identity", width = 1) + 
   coord_polar("y", start = 0) +
   theme_void() +
@@ -344,16 +377,16 @@ Hvor mange innenfor hvert nivå av politisk interesse stemte? Vi kan bruke `geom
 
 ```{r, eval = FALSE}
 ggplot(data = ess_subset, 
-       aes(x = interest)) + 
-  geom_bar(aes(fill=vote),
+       aes(x = interest_factor)) + 
+  geom_bar(aes(fill=vote_factor),
            position = "dodge") +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
 ```{r, include = FALSE}
 ggplot(data = ess_subset, 
-       aes(x = interest)) + 
-  geom_bar(aes(fill=vote),
+       aes(x = interest_factor)) + 
+  geom_bar(aes(fill=vote_factor),
            position = "dodge") +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 
