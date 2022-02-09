@@ -28,7 +28,6 @@ Først installerer vi nye pakker og laster inn pakkene vi skal bruke i dagens se
 # Installerer nye pakker
 install.packages("stargazer")
 install.packages("gmodels")
-install.packages("ggthemes")
 install.packages("scales")
 ```
 
@@ -37,7 +36,6 @@ install.packages("scales")
 library(tidyverse)
 library(stargazer)
 library(gmodels)
-library(ggthemes)
 library(scales)
 ```
 

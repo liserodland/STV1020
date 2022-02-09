@@ -29,7 +29,6 @@ Først installerer vi nye pakker og laster inn pakkene vi skal bruke i dagens se
 # Installerer nye pakker
 install.packages("stargazer")
 install.packages("gmodels")
-install.packages("ggthemes")
 install.packages("scales")
 ```
 
@@ -40,18 +39,18 @@ library(tidyverse)
 ```
 
 ```
-## -- Attaching packages ----------------------------------------------------------------------------------------------- tidyverse 1.3.0 --
+## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 ```
 
 ```
-## v ggplot2 3.3.2     v purrr   0.3.4
-## v tibble  3.0.3     v dplyr   1.0.2
-## v tidyr   1.1.2     v stringr 1.4.0
-## v readr   1.4.0     v forcats 0.5.0
+## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.6     v dplyr   1.0.7
+## v tidyr   1.2.0     v stringr 1.4.0
+## v readr   2.1.2     v forcats 0.5.1
 ```
 
 ```
-## -- Conflicts -------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -75,7 +74,6 @@ library(stargazer)
 
 ```r
 library(gmodels)
-library(ggthemes)
 library(scales)
 ```
 
@@ -676,7 +674,7 @@ t.test(utdanning ~ as.factor(kjonn), data = data, var.equal = TRUE)
 ## 
 ## data:  utdanning by as.factor(kjonn)
 ## t = 2.7274, df = 2658, p-value = 0.006425
-## alternative hypothesis: true difference in means is not equal to 0
+## alternative hypothesis: true difference in means between group 1 and group 2 is not equal to 0
 ## 95 percent confidence interval:
 ##  0.1288003 0.7877442
 ## sample estimates:
@@ -702,7 +700,7 @@ t.test(utdanning ~ as.factor(kjonn),
 ## 
 ## data:  utdanning by as.factor(kjonn)
 ## t = 2.7274, df = 2658, p-value = 0.9968
-## alternative hypothesis: true difference in means is less than 0
+## alternative hypothesis: true difference in means between group 1 and group 2 is less than 0
 ## 95 percent confidence interval:
 ##       -Inf 0.7347443
 ## sample estimates:
@@ -725,7 +723,7 @@ t.test(utdanning ~ as.factor(kjonn),
 ## 
 ## data:  utdanning by as.factor(kjonn)
 ## t = 2.7274, df = 2658, p-value = 0.003213
-## alternative hypothesis: true difference in means is greater than 0
+## alternative hypothesis: true difference in means between group 1 and group 2 is greater than 0
 ## 95 percent confidence interval:
 ##  0.1818002       Inf
 ## sample estimates:
@@ -748,7 +746,7 @@ t.test(utdanning ~ as.factor(kjonn),
 ## 
 ## data:  utdanning by as.factor(kjonn)
 ## t = 2.7274, df = 2658, p-value = 0.006425
-## alternative hypothesis: true difference in means is not equal to 0
+## alternative hypothesis: true difference in means between group 1 and group 2 is not equal to 0
 ## 95 percent confidence interval:
 ##  0.1288003 0.7877442
 ## sample estimates:
