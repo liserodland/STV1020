@@ -1,7 +1,7 @@
 ---
 title: "Seminar 3"
-author: "Lise Rødland"
-date: "March 22, 2021"
+author: "Lise Rødland & to påhengsmotorer"
+date: '`r format(Sys.time(), "%d-%m-%Y")`'
 output:
   pdf_document: 
     keep_md: yes
@@ -23,29 +23,30 @@ På dette seminaret skal vi gjennom:
 # Laste inn data
 I dag skal vi bruke et datasett som ligger i en pakke som heter gapminder. For å gjøre det må vi først installere pakken og åpne den. 
 
-```{r, eval = FALSE}
+```{r installere_gapminder, eval = FALSE}
 install.packages("gapminder")
 library(gapminder)
 ```
 
-```{r, include  = FALSE}
+```{r laste_inn_gapminder, include  = FALSE}
 library(gapminder)
 ```
 
 Nå er datasettet tilgjengelig i R. For å lagre datasettet som et objekt i environment kjører vi denne koden: 
-```{r}
+```{r gapminder_data}
 data <- gapminder
+# data(gapminder, package = "gapminder")
 ```
 
 Nå er datasettet klart til bruk, men for å øve på å lagre og laste inn datasett skal vi lagre dette datasettet i et Rdata-format ved å bruke funksjonen `save()`. Husk at når man laster inn og lagrer data så vil koden være avhengig av hvilken type dataformat du har og den må tilpasses din mappestruktur. Dersom du ikke jobber i prosjekt så er det første du må gjøre å sette working directory ved å bruke koden `setwd("filbane")`. Deretter bruker du `save()` til å lagre datasettet.
 
-```{r, eval = FALSE}
+```{r lagre_gapminder, eval = FALSE}
 save(data, file = "gapminder.Rdata")
 ```
 
 Du vil nå se datasettet i den mappen du har bedt R om å lagre det i. Før vi laster inn datasettet på nytt så skal vi rydde litt i environment, altså vi skal fjerne noen objekter vi ikke har bruk for lengre for å få bedre oversikt. Det gjør vi ved hjelp av funksjonen `rm()`.  `rm()` kan brukes til å fjerne et objekt, flere objekter eller alle objektene fra environment:
 
-```{r, eval = FALSE}
+```{r fjerne_objekter, eval = FALSE}
 # Denne koden fjerner alt i environment
 rm(list=ls())
 
@@ -59,7 +60,7 @@ rm(objektnavn1, objektnavn2)
 
 For å fjerne alt så kan du også trykke på ikonet med en feiekost på i environment. Merk at dersom du ikke har lagret objektene på maskinen din så må du kjøre koden på nytt for å få tilbake de objektene du fjerner. Her fjerner jeg dataobjektet mitt før jeg laster det inn på nytt ved hjelp av `load()`:
 
-```{r}
+```{r, laste_Rdata}
 rm(data)
 
 load("../../data/gapminder.Rdata")
@@ -69,8 +70,9 @@ load("../../data/gapminder.Rdata")
 # Omkoding av variabler 
 Når vi omkoder variabler i et datasett, bør vi opprette en ny variabel. Dersom vi ikke gjør dette, erstatter vi informasjonen i den opprinnelige variabelen. Vi trenger informasjonen i den opprinnelige variabelen for å sjekke at omkodingen har fungert som vi ønsker. Vi kan også gjøre feil som vi ikke kan rette opp uten den opprinnelige variabelen. Først bruker jeg funksjonene `show()`, `head()` og `summary()` for å få litt oversikt over data. Du kan også trykke på datasettet i environment:
 
-```{r}
+```{r oversikt_gapminder}
 show(variable.names(gapminder))
+# fixme: `names(gapminder)` bedre?
 head(gapminder)
 summary(gapminder)
 ```
@@ -78,7 +80,7 @@ summary(gapminder)
 ## Matematisk omkoding
 Først skal vi lære å kode om variablene ved å bruke matematiske omkoding. For å vise dette bruker jeg variabelem `year`. Ved hjelp av `summary()` så finner jeg ut at den laveste verdien på variabelen er året 1952. Det er året observasjonen ble gjort. Jeg vil gjøre dette året til år null, mens de andre verdiene på variablen skal bli hvor mange år etter år null ble observasjonen gjort.
 
-```{r}
+```{r endre_årstallvariabel}
 # Sjekker summary for opprinnelige variabel
 summary(data$year)
 # spennet er 2007-1952, dvs. 55 år
@@ -94,7 +96,7 @@ summary(data$year_1952)
 
 Så undersøker jeg om omkodingen er blitt gjort riktig ved å bruke funksjonen table(). Jeg gjør dette på to måter. 
 
-```{r}
+```{r sjekke_variabel_med_tabell}
 # Lager en tabell med opprinnelig og ny variabel:
 table(data$year_1952, data$year, useNA = "always")
 
@@ -104,7 +106,7 @@ table((data$year_1952 + 1952) == data$year, useNA = "always")
 
 Jeg kan også endre retningen på verdienes ved matematisk omkoding. Da ganger jeg variablene med (-1) og plusser på antall verdier variablene har. Nå blir 2007 år null. 
 
-```{r}
+```{r baklengs_år}
 # Endrer retning på variabelen:
 data$year_2007 <- data$year_1952*(-1) + 55
 
@@ -118,7 +120,7 @@ table(data$year_1952, data$year_2007, useNA = "always")
 
 Den funksjonen jeg bruker mest til omkoding, er `ifelse()`. Funksjonen kan brukes på numeriske og kategoriske variabler. Syntaksen til denne funksjonen kan forklares som følger:
 
-```{r, eval=FALSE}
+```{r ifelse_eksempel, eval=FALSE}
 data$nyvar <- ifelse(test = my_data$my.variabel == "some logical condition",
                      yes  = "what to return if 'some condition' is TRUE",
                      no   = "what to return if 'some condition' is FALSE")
@@ -126,7 +128,7 @@ data$nyvar <- ifelse(test = my_data$my.variabel == "some logical condition",
 
 `ifelse()` kan for eksempel bruker til å lage en ny variabel som tar verdien 1 om observasjonen har en verdi som er større enn gjennomsnittet og null ellers. Gjennomsnittet finner du ved å bruke funksjonen `mean()`. Under fyller jeg inn betingelsen (condition), hvilken verdi ny variabel skal dersom betingelsen er oppfylt (yes) og hvilken verdi ny variabel skal ha dersom betingelsen ikke er oppfylt (no). Vanligvis vil vi ikke skrive `test =`, `yes =` og `no =`, men jeg har tatt det med her for å gjøre det lettere å koble de to:
 
-```{r}
+```{r ifelse_omkoding}
 data$lifeExp_2 <- ifelse(test = data$lifeExp > mean(data$lifeExp, na.rm = TRUE),
                          yes = 1,
                          no = 0)
@@ -135,14 +137,14 @@ data$lifeExp_2 <- ifelse(test = data$lifeExp > mean(data$lifeExp, na.rm = TRUE),
 
 Jeg bruker en kombinasjon av en tabell og en logisk test (se forklaringer fra første seminar om logiske tester) for å sjekke at det ble riktig: 
 
-```{r}
+```{r sjekke_variabel_med_tabell2}
 table(data$lifeExp_2, data$lifeExp > mean(data$lifeExp, na.rm = TRUE), useNA = "always")
 
 ```
 ## Omkoding med `recode()`
 Dersom vi vil omkode en variabel med flere variabler så kan vi gjøre det med flere `ifelse()` nøstet i hverandre. Det kan imidlertid bli veldig mye kode. Et alternativ er å kombinere `mutate()` og `recode()`. `mutate()` er en funksjon i tidyverse vi bruker for å lage nye variabler. `recode()` er også en del av tidyverse og den brukes til å endre verdier på variabler. Syntaksen til kombinasjonen av `mutate()` og `recode()` er:
 
-```{r, eval = FALSE}
+```{r mutate_eksempel, eval = FALSE}
 mutate(nyvariabel = recode(gammelvariabel, 
                            verdi1 = nyverdi1, 
                            verdi2 = nyverdi2))
@@ -151,7 +153,7 @@ mutate(nyvariabel = recode(gammelvariabel,
 
 I dette eksempelet skal vi lage en ny variabel `continent2` med tallverdier i steden for kontinentnavn. Ettersom funksjonen vi skal bruker ligger i pakken `tidyverse` så må vi aller først laste inn pakken med `library()`
 
-```{r}
+```{r mutate_omkoding}
 library(tidyverse)
 
 data <- data %>% 
@@ -165,7 +167,7 @@ data <- data %>%
 
 Vi sjekker med en tabell at det ble riktig: 
 
-```{r}
+```{r sjekke_variabel_med_tabell3}
 table(data$continent, data$continent2, useNA = "always")
 ```
 
@@ -174,13 +176,14 @@ table(data$continent, data$continent2, useNA = "always")
 
 Å subsette betyr å lage et nytt datasett basert på et gammelt. Dette gikk vi gjennom i seminar 2, men jeg repeterer det her. For å subsette så bruker vi funksjoner i pakken `tidyverse`. Vi bruker pipes angitt ved `%>%` for å binde sammen ulike operasjoner vi vil utføre på et datasett. Dette kalles for piping. Det er en effektiv og ryddig måte å kode på. Derfor kommer jeg ofte til å bruke pipes i seminarene. Pakken installerte vi i andre seminar, men vi må laste den inn for å bruke den: 
 
-```{r}
+```{r laste_inn_tidyverse}
+# install.packages("tidyverse")
 library(tidyverse)
 ```
 
 Den første funksjonen `select()` brukes til å velge ut hvilke variabler du vil ha med i det nye datasettet:
 
-```{r}
+```{r velge_variabler}
 data_pop <- data %>% 
   select(pop)
 
@@ -191,7 +194,7 @@ data_sub <- data %>%
 
 Du kan også bruke funksjonen `filter()` til å velge ut spesielle observasjoner som tilfredsstiller de kravene du setter. Under har jeg brukt funksjonen til å bare ta med observasjonene med verdien 1954 på variabelen `year` og som har en verdi høyere end gjennomsnittet på variablene `pop`:
 
-```{r}
+```{r subsette_datasett}
 data_1952 <- data %>%
   filter(year == 1952)
 
@@ -205,7 +208,7 @@ Nå har du fått fire nye objekter i environment; `data_pop`, `data_sub`, `data_
 
 Vi skal ikke bruke disse videre så vi fjerner dem med `rm()` for å rydde litt opp: 
 
-```{r}
+```{r fjerne_obkekter2}
 rm(data_pop, data_sub, data_1952, data_1952pop)
 ```
 
@@ -228,12 +231,12 @@ Vi kommer til å følge de fem stegene presentert på side 60 i Healy:
 ## Steg 1: Fortell ggplot() hvor vi vil hente data fra
 Steg 1 er å fortelle ggplot hvor den skal hente data fra. Det gjør vi ved å spesifisere `data = ` argumentet i funksjonen `ggplot()`. I vårt tilfelle heter datasettet data og vi skriver:
 
-```{r, eval = FALSE}
+```{r ggplot_fundament, eval = FALSE}
 ggplot(data = data)
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur1, include = FALSE}
 ggplot(data = data)
 
 ggsave("../../output/sem3_steg1.png")
@@ -248,11 +251,11 @@ Hva skjer når vi kjører koden nå? Vi får et helt tomt plott. Mer info må ti
 Det neste vi gjør er å fortelle ggplot hva vi vil måle på x- og y-aksen. Nå skal vi starte med et stolpediagram, der vi vil se hvor mange observasjoner det er i datasettet fordelt på de fem kontinentene. Da trenger vi bare å gi ggplot beskjed om at vi vil ha `continent` på x-aksen. Y-aksen vår blir automatisk til antall (count).  Senere i dette seminaret skal vi se på et eksempel hvor vi gir informasjon om begge aksene. 
 Inne i `ggplot()` hvor vi har fortalt hvilket datasett vi vil bruke, så legger vi til en `mapping`. `aes()` står for aestethics, og det vi gjør ved bruk av `aes()` er å fortelle ggplot hvilke variabler vi vil visualisere. Vi forteller ggplot at vi vil at variabelen `continent` skal vises på x-aksen.
 
-```{r, eval = FALSE}
+```{r ggplot_aes, eval = FALSE}
 ggplot(data = data, mapping = aes(x = continent))
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur2, include = FALSE}
 ggplot(data = data, mapping = aes(x = continent))
 
 ggsave("../../output/sem3_steg2.png")
@@ -267,13 +270,13 @@ Det vi skriver i `aes()` kobler variabler til ting du ser i plottet. Det kan for
 
 Når vi kjører koden, så ser vi at kontinentene er på plass, men vi får likevel ikke noe særlig informasjon fra plottet. Hva mangler? Vi må skrive hva slags plott vi vil lage. Vi vil lage et stolpediagram, og velger `geom_bar()`. Hvis du prøver å skrive inn `geom_` vil du se at du får en hel rekke forslag til ulike plott. Flere av disse skal vi komme tilbake til.
  
-```{r, eval = FALSE}
+```{r geom_bar, eval = FALSE}
 ggplot(data = data, aes(x=continent)) + 
   geom_bar()
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur3, include = FALSE}
 ggplot(data = data, aes(x=continent)) + 
   geom_bar()
 
@@ -284,21 +287,21 @@ ggsave("../../output/sem3_steg3.png")
 
 Da har vi fått opp et plott som viser observasjonene i datasettet fordelt på kontinenter. Vi kan dobbeltsjekke at dette ser riktig ut ved å lage et summary av variabelen. 
 
-```{r}
+```{r oversikt_continent}
 summary(data$continent)
 ```
 
 Det ser fint ut. Vi kan også legge inn andre typer av aestetics i mappingen. Her er det flere muligheter, som dere vil bli kjent med etter hvert. Én av dem er å bruke ulike farger for å gi informasjon. Hvis vi vil at hvert kontinent skal få sin egen farge, så kan vi gjøre det slik: 
 
 
-```{r, eval = FALSE}
+```{r geom_bar_fill, eval = FALSE}
 ggplot(data = data, aes(x = continent, fill = continent)) + 
   geom_bar()
 
 ```
 
 
-```{r, include=FALSE}
+```{r lagre_figur4, include=FALSE}
 ggplot(data = data, aes(x = continent, fill = continent)) + 
   geom_bar()
 
@@ -309,21 +312,21 @@ ggsave("../../output/sem3_steg3b.png")
 ## Steg 4: Legg til `geom_` etter behov en etter en.
 Vi kan legge til flere `geom_`-elementer i plottet vårt ved å bruke `+`. Jeg kan for eksempel legge til en linje som indikerer gjennomsnittlig antall observasjoner per land. Da legger vi først til en variabel som angir antall observasjoner per land i datasettet. Dette gjør vi ved hjelp av funksjonen `add_count()`:
 
-```{r}
+```{r legge_til_n}
 data <- data %>% 
   add_count(continent)
 ```
 
 Vi kan se i datasettet vårt at vi har fått en ny variabel `n`. Denne angir antall observasjoner per kontinent i datasettet vårt. For å legge til en linje som indikerer gjenomsnittlig antall observasjoner bruker vi `geom_hline()` (h for horisontal linje). I `aes()` gir vi ggplot informasjon om hvor denne linjen skal krysse y-aksen: 
 
-```{r, eval = FALSE}
+```{r geom_hline, eval = FALSE}
 ggplot(data = data, aes(x = continent, fill = continent)) + 
   geom_bar() +
   geom_hline(aes(yintercept = mean(n)))
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur5, include = FALSE}
 ggplot(data = data, aes(x = continent, fill = continent)) + 
   geom_bar() +
   geom_hline(aes(yintercept = mean(n)))
@@ -336,7 +339,7 @@ ggsave("../../output/sem3_steg4.png")
 
 Vi kan også endre teksten på x- og y-aksen, og gi plottet en tittel ved å legge til `labs()`, fjerne boksen med informasjon om farger og navn på høyre side ved hjelp av `theme(legend.position = "none")` og gjøre bakgrunnen litt penere med `theme_bw()`:
 
-```{r, eval = FALSE}
+```{r pynte_figur, eval = FALSE}
 ggplot(data, aes(x = continent, fill = continent)) + 
   geom_bar() +
   geom_hline(aes(yintercept = mean(n))) +
@@ -349,7 +352,7 @@ ggplot(data, aes(x = continent, fill = continent)) +
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur6, include = FALSE}
 ggplot(data, aes(x = continent, fill = continent)) + 
   geom_bar() +
   geom_hline(aes(yintercept = mean(n))) +
@@ -374,7 +377,7 @@ Nå skal vi lage ulike typer av plott ved brukt av ggplot. Hva slags plott du vi
 
 La oss i første omgang se på litt ulike varianter av plot for variabelen `lifeExp` som måler forventet levealder. Da lagrer vi først informasjon om data og verdier i et objekt så vi slipper å skrive det hver gang: 
 
-```{r}
+```{r plot_til_objekt}
 plot_le <- ggplot(data, aes(x = lifeExp))
 ```
 
@@ -383,13 +386,13 @@ plot_le <- ggplot(data, aes(x = lifeExp))
 
 Når vi undersøker ulike plot kan vi skrive `plot_le +` i stedet for `ggplot(data, aes(lifeExp)) +` fordi sistnevne informasjon er lagret i førstnevnte objekt. Dette sparer oss for en del kode. For en kontinuerlig variabel så kan det være mer nyttig med et histogram, som lager stolper for intervaller: 
 
-```{r, eval = FALSE}
+```{r geom_histogram, eval = FALSE}
 plot_le +
   geom_histogram()
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur7, include = FALSE}
 plot_le +
   geom_histogram()
 
@@ -399,13 +402,13 @@ ggsave("../../output/sem3_hist1.png")
 
 Hvis vi ikke sier noe annet, så kommer ggplot til å velge hvor stort hvert intervall skal være. Vi kan sette hver stolpe til å være ett år bred ved å skrive inn binwidth = 1: 
 
-```{r, eval = FALSE}
+```{r endre_binwidth, eval = FALSE}
 plot_le +
   geom_histogram(binwidth = 1)
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur8, include = FALSE}
 plot_le +
   geom_histogram(binwidth = 1)
 
@@ -416,7 +419,7 @@ ggsave("../../output/sem3_hist2.png")
 
 Hvis vi vil se hvordan dette fordeler seg på hvert kontinent, så kan vi legge inn fill: 
 
-```{r, eval = FALSE}
+```{r endre_tema, eval = FALSE}
 plot_le +
   geom_histogram(aes(fill=continent),
                  binwidth = 1, 
@@ -425,7 +428,7 @@ plot_le +
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur9, include = FALSE}
 plot_le +
   geom_histogram(aes(fill=continent),
                  binwidth = 1, 
@@ -445,12 +448,12 @@ Dette gir oss en viss oversikt over hvordan forventet levealder varierer mellom 
 
 for å lage et boxplot så spesifiserer vi y-aksen ved hjelp av `aes(y = continent)` i `geom_boxplot`:
 
-```{r, eval = FALSE}
+```{r geom_boxplot, eval = FALSE}
 plot_le + 
   geom_boxplot(aes(y = continent))
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur10, include = FALSE}
 plot_le + 
   geom_boxplot(aes(y = continent))
 
@@ -461,7 +464,7 @@ ggsave("../../output/sem3_box1.png")
 
 Her er et eksempel på hvor mye finere plottet kan bli med litt flere kodelinjer: 
 
-```{r, eval = FALSE}
+```{r pynte_boxplot, eval = FALSE}
 plot_le + 
   geom_boxplot(aes(y = continent)) +
   theme_bw() +
@@ -471,7 +474,7 @@ plot_le +
   theme(legend.position = "none")
 ```
 
-```{r, include = FALSE}
+```{rlagre_figur11, include = FALSE}
 plot_le + 
   geom_boxplot(aes(y = continent)) +
   theme_bw() +
@@ -488,12 +491,12 @@ ggsave("../../output/sem3_box2.png")
 ## Density plot/tettshetsplot
 En annen metode kan være å bruke et density plot/tetthetsplott: 
  
-```{r, eval = FALSE}
+```{r geom_density, eval = FALSE}
 plot_le + 
   geom_density()
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur12, include = FALSE}
 plot_le + 
   geom_density()
 
@@ -504,11 +507,12 @@ ggsave("../../output/sem3_dens1.png")
 
 Inne i parentesen til plottypen kan vi legge til spesifikasjoner om tykkelse på linja, farge osv.
 
-```{r, eval = FALSE}
+```{r size_fill_alpha, eval = FALSE}
 plot_le + 
   geom_density(size=1.5, fill="pink", alpha=0.3)
 ```
-```{r, include = FALSE}
+
+```{r lagre_figur13, include = FALSE}
 plot_le + 
   geom_density(size=1.5, fill="pink", alpha=0.3)
 
@@ -520,11 +524,12 @@ ggsave("../../output/sem3_dens2.png")
 Hva skjer hvis vi endrer 1) alpha til 1 og 2) size til 0.5?
 
 
-```{r, eval = FALSE}
+```{r tweeks_boxplot, eval = FALSE}
 plot_le + 
   geom_density(size=0.5, fill="pink", alpha=1)
 ```
-```{r, include = FALSE}
+
+```{r lagre_figur14, include = FALSE}
 plot_le + 
   geom_density(size=0.5, fill="pink", alpha=1)
 
@@ -536,7 +541,7 @@ ggsave("../../output/sem3_dens3.png")
 
 Hvis du ønsker å separere plottene, slik at de ulike kontinentene ikke ligger over hverandre, men får hvert sitt plott, så kan du legge til en facet_wrap: 
 
-```{r, eval = FALSE}
+```{r facet_wrap, eval = FALSE}
 plot_le + 
   geom_density(size=0.5, fill="pink", alpha=1) + 
   facet_wrap(vars(continent)) +
@@ -544,7 +549,7 @@ plot_le +
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur15, include = FALSE}
 plot_le + 
   geom_density(size=0.5, fill="pink", alpha=1) + 
   facet_wrap(vars(continent)) +
@@ -559,14 +564,14 @@ ggsave("../../output/sem3_dens4.png")
 ## Spredningsplot
 Med et spredningsplot (scatterplot) kan vi vise sammenhengen mellom to kontinuerlige variabler. Her må vi gi ggplot informasjon om hvilken variabel som skal mappes på x-aksen og på y-aksen. For å lage scatterplottet bruker vi geom_point.  
 
-```{r, eval = FALSE}
+```{r geom_point, eval = FALSE}
 ggplot(data, 
        aes(x=lifeExp, y=gdpPercap)) + 
   geom_point()
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur16, include = FALSE}
 ggplot(data, 
        aes(x=lifeExp, y=gdpPercap)) + 
   geom_point()
@@ -578,13 +583,14 @@ ggsave("../../output/sem3_scatt1.png")
 
 Vi kan legge til en linje som viser gjennomsnittet i observasjonene ved å bruke geom_smooth: 
 
-```{r, eval = FALSE}
+```{r geom_smooth, eval = FALSE}
 ggplot(data, aes(x=lifeExp, y=gdpPercap)) +
   geom_point() + 
   geom_smooth()
 
 ```
-```{r, include = FALSE}
+
+```{r lagre_figur17, include = FALSE}
 ggplot(data, aes(x=lifeExp, y=gdpPercap)) +
   geom_point() + 
   geom_smooth()
@@ -596,7 +602,7 @@ ggsave("../../output/sem3_scatt2.png")
  
 Skille kontinentene fra hverandre ved bruk av ulike farger: 
 
-```{r, eval = FALSE}
+```{r farge_points_smooth, eval = FALSE}
 ggplot(data, 
        aes(x=lifeExp, y=gdpPercap, col=continent)) +
   geom_point() + 
@@ -604,7 +610,7 @@ ggplot(data,
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur18, include = FALSE}
 ggplot(data, 
        aes(x=lifeExp, y=gdpPercap, col=continent)) +
   geom_point() + 
@@ -617,7 +623,7 @@ ggsave("../../output/sem3_scatt3.png")
 
 Vi kan legge inn en `facet_wrap()` for at det skal se litt ryddigere ut, og samtidig gi `geom_smooth()` en farge som vises bedre. 
 
-```{r, eval = FALSE}
+```{r tweeks_smooth_figur, eval = FALSE}
 ggplot(data, 
        aes(x = lifeExp, y = gdpPercap, col = continent)) +
   geom_point() + 
@@ -628,7 +634,7 @@ ggplot(data,
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur19, include = FALSE}
 ggplot(data, 
        aes(x = lifeExp, y = gdpPercap, col = continent)) +
   geom_point() + 
@@ -645,7 +651,7 @@ ggsave("../../output/sem3_scatt4.png")
 
 Her kan vi repetere hvordan vi legger til nye titler til x- og y-aksen, samt tittel for hele plottet: 
 
-```{r, eval = FALSE}
+```{r endre_titler_figur, eval = FALSE}
 ggplot(data, 
        aes(x = lifeExp, y = gdpPercap, col = continent)) +
   geom_point() + 
@@ -660,7 +666,7 @@ ggplot(data,
 ```
 
  
-```{r, include = FALSE}
+```{r lagre_figur20, include = FALSE}
 ggplot(data, 
        aes(x = lifeExp, y = gdpPercap, col = continent)) +
   geom_point() + 
@@ -679,7 +685,7 @@ ggsave("../../output/sem3_scatt5.png")
 # Lagring av plott
 Du kan lagre plottene dine i working directory ved å bruke `ggsave()`. For å lagre det siste plottet du har kjørt i R, gjør følgende: Bruk `ggsave()`, gi plottet et navn, og spesifiser filtypen du vil lagre som: 
 
-```{r, eval = FALSE}
+```{r faktisk_lagre_figur_eksempel, eval = FALSE}
 # For png-format:
 ggsave(filename = "gdplevealder.png")
  
@@ -696,7 +702,7 @@ ggsave("gdplevealder.png")
 
 
 For å lagre et plott som er et objekt gjør du følgende:
-```{r, eval = FALSE}
+```{r lagre_figur_objekt, eval = FALSE}
 ggsave(“navnpåplott.filtype”, plot = objektnavn)
 
 # For eksempel:
@@ -717,4 +723,8 @@ https://www.tidytuesday.com/
 
 https://twitter.com/hashtag/tidytuesday
  
- 
+```{r generere_script, eval=FALSE, echo=FALSE}
+knitr::purl("./doc/seminar3/seminar3.Rmd", 
+            output = "./script/seminar3.R", 
+            documentation = 1)
+```

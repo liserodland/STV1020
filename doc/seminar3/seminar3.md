@@ -1,7 +1,7 @@
 ---
 title: "Seminar 3"
-author: "Lise Rødland"
-date: "March 22, 2021"
+author: "Lise Rødland & to påhengsmotorer"
+date: '11-02-2022'
 output:
   pdf_document: 
     keep_md: yes
@@ -33,6 +33,7 @@ Nå er datasettet tilgjengelig i R. For å lagre datasettet som et objekt i envi
 
 ```r
 data <- gapminder
+# data(gapminder, package = "gapminder")
 ```
 
 Nå er datasettet klart til bruk, men for å øve på å lagre og laste inn datasett skal vi lagre dette datasettet i et Rdata-format ved å bruke funksjonen `save()`. Husk at når man laster inn og lagrer data så vil koden være avhengig av hvilken type dataformat du har og den må tilpasses din mappestruktur. Dersom du ikke jobber i prosjekt så er det første du må gjøre å sette working directory ved å bruke koden `setwd("filbane")`. Deretter bruker du `save()` til å lagre datasettet.
@@ -79,6 +80,7 @@ show(variable.names(gapminder))
 ```
 
 ```r
+# fixme: `names(gapminder)` bedre?
 head(gapminder)
 ```
 
@@ -273,18 +275,18 @@ library(tidyverse)
 ```
 
 ```
-## -- Attaching packages ----------------------------------------------------------------------- tidyverse 1.3.0 --
+## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 ```
 
 ```
-## v ggplot2 3.3.2     v purrr   0.3.4
-## v tibble  3.0.3     v dplyr   1.0.2
-## v tidyr   1.1.2     v stringr 1.4.0
-## v readr   1.4.0     v forcats 0.5.0
+## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.6     v dplyr   1.0.7
+## v tidyr   1.1.4     v stringr 1.4.0
+## v readr   2.1.1     v forcats 0.5.1
 ```
 
 ```
-## -- Conflicts -------------------------------------------------------------------------- tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -324,6 +326,7 @@ table(data$continent, data$continent2, useNA = "always")
 
 
 ```r
+# install.packages("tidyverse")
 library(tidyverse)
 ```
 
@@ -597,6 +600,7 @@ plot_le +
 ```
 
 
+
 ![](../../output/sem3_dens2.png) 
  
 Hva skjer hvis vi endrer 1) alpha til 1 og 2) size til 0.5?
@@ -607,6 +611,7 @@ Hva skjer hvis vi endrer 1) alpha til 1 og 2) size til 0.5?
 plot_le + 
   geom_density(size=0.5, fill="pink", alpha=1)
 ```
+
 
 
 ![](../../output/sem3_dens3.png)
@@ -647,6 +652,7 @@ ggplot(data, aes(x=lifeExp, y=gdpPercap)) +
   geom_point() + 
   geom_smooth()
 ```
+
 
 ![](../../output/sem3_scatt2.png)
  
@@ -742,4 +748,4 @@ https://www.tidytuesday.com/
 
 https://twitter.com/hashtag/tidytuesday
  
- 
+

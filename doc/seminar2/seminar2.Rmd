@@ -1,7 +1,7 @@
 ---
 title: "Seminar 2"
-author: "Lise Rødland"
-date: "March 15, 2021"
+author: "Lise Rødland & noen andre"
+date: '`r format(Sys.time(), "%d-%m-%Y")`'
 output:
   pdf_document: 
     keep_md: yes
