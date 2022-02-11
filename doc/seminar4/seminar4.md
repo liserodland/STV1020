@@ -1,7 +1,7 @@
 ---
 title: "Seminar 4"
-author: "Lise Rødland"
-date: "March 29, 2021"
+author: "Lise Rødland & fjols til fjells"
+date: '11-02-2022'
 output:
   pdf_document: 
     keep_md: yes
@@ -45,8 +45,8 @@ library(tidyverse)
 ```
 ## v ggplot2 3.3.5     v purrr   0.3.4
 ## v tibble  3.1.6     v dplyr   1.0.7
-## v tidyr   1.2.0     v stringr 1.4.0
-## v readr   2.1.2     v forcats 0.5.1
+## v tidyr   1.1.4     v stringr 1.4.0
+## v readr   2.1.1     v forcats 0.5.1
 ```
 
 ```
@@ -217,6 +217,7 @@ sum(2,2,6)
 ```
 ## [1] 10
 ```
+
 Når `sum()` kombineres med `is.na()` så kan vi tenke oss at `TRUE` gir verdien 1 og `FALSE` gir verdien 0. Det betyr at en observasjon får verdien 1 på en gitt variabel dersom informasjonen mangler og 0 om den ikke mangler. R summerer så opp alle disse verdiene og summen angir antall observasjoner med verdien 1, altså med manglende informasjon.  
 
 
@@ -863,6 +864,7 @@ ggplot(data = FairFPSR3,
   geom_point()
 ```
 
+
 ![](../../output/sem4_scatter.png)
 Vi kan også tilpasse plottet ved å endre form på punktene (`geom_point(shape = 1)`), endre bakgrunn (`theme_bw()`) og legge til titler på aksene: 
 
@@ -897,3 +899,5 @@ ggplot(FairFPSR3, aes(x=growth, y=inc_vote)) +
 ![](../../output/sem4_scatter3.png)
 
 Dette er begynnelsen på en regresjonsanalyse, som er tema for neste seminar. 
+
+
