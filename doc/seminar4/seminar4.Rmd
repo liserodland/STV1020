@@ -7,6 +7,13 @@ output:
     keep_md: yes
   github_document: default
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+
+```
+
 I løpet av dette seminaret skal vi: 
 
 1. Repetere litt om pakker og innlastning av data. 

@@ -1,12 +1,14 @@
 ---
 title: "Seminar 5: Regresjon med en uavhengig variabel"
-author: "Lise Rødland"
-date: "April 12, 2021"
+author: "Lise Rødland, Pompel og Pilt"
+date: '11-02-2022'
 output:
   pdf_document: 
     keep_md: yes
   github_document: default
 ---
+
+
 
 I dag skal vi se på fem ting:
 
@@ -23,7 +25,9 @@ på andel stemmer partiet til den sittende kandidaten får (`inc_vote`). Det fø
 
 
 ```r
-# Bestemmer working directory (om du ikke jobber i prosjekt). Bytt ut det som står mellom "" så det matcher din filbane:
+# Bestemmer working directory (om du ikke jobber i
+# prosjekt). Bytt ut det som står mellom '' så det matcher
+# din filbane:
 setwd("../STV1020/")
 ```
 
@@ -33,8 +37,8 @@ setwd("../STV1020/")
 library(tidyverse)
 library(stargazer)
 
-# Laster inn datasettet
-# Bytt ut det som står mellom "" til å passe din filbane:
+# Laster inn datasettet Bytt ut det som står mellom '' til
+# å passe din filbane:
 load("../../data/FairFPSR3.RData")
 ```
 
@@ -122,7 +126,8 @@ Det er også lurt å sjekke om mange observasjoner har manglende informasjon (mi
 
 
 ```r
-# Sjekker hvor mange observasjoner som vi har informasjon på alle variablene om:
+# Sjekker hvor mange observasjoner som vi har informasjon
+# på alle variablene om:
 table(complete.cases(FairFPSR3))
 ```
 
@@ -136,7 +141,8 @@ Vi ser at 35 av observasjonene våre ikke har noen missingverdier. Vi kan også 
 
 
 ```r
-# Sjekker hvor mange observasjoner som har missing på variabelen inflation
+# Sjekker hvor mange observasjoner som har missing på
+# variabelen inflation
 table(is.na(FairFPSR3$inflation))
 ```
 
@@ -152,9 +158,8 @@ Legg merke til at funksjonene `complete.cases()` og `is.na()` er logiske tester.
 
 
 ```r
-FairFPSR3 <- FairFPSR3 %>% 
-  mutate(complete = complete.cases(.),
-         inf_na = is.na(inflation))
+FairFPSR3 <- FairFPSR3 %>%
+    mutate(complete = complete.cases(.), inf_na = is.na(inflation))
 ```
 
 Bruk `view()` eller klikk på datasettet ditt for å se hvordan de nye variablene ser ut. Hva betyr `TRUE` og `FALSE` i de to kolonnene?
@@ -170,16 +175,17 @@ I `tidyverse` bruker man som regel `mutate()`sammen med andre funksjoner for å 
 
 ```r
 # Oppretter den nye variabelen og endrer referansekategori
-FairFPSR3 <- FairFPSR3 %>% 
-  mutate(growth_dich = ifelse(growth > 0, "Growth", "No growth"),
-         growth_dich = factor(growth_dich, levels = c("No growth", "Growth")))
+FairFPSR3 <- FairFPSR3 %>%
+    mutate(growth_dich = ifelse(growth > 0, "Growth", "No growth"),
+        growth_dich = factor(growth_dich, levels = c("No growth",
+            "Growth")))
 ```
 
 Hvordan `ifelse()` fungerer er nærmere beskrivet i seminar 3. Det neste vi gjør er å sjekke om omkodingen ble riktig: 
 
 
 ```r
-# Sjekker at det ser ok ut: 
+# Sjekker at det ser ok ut:
 class(FairFPSR3$growth_dich)
 ```
 
@@ -205,13 +211,9 @@ til observasjonene basert på om det var vekst eller ikke:
 
 
 ```r
-ggplot(data = FairFPSR3) +
-  geom_bar(aes(x=growth, fill = growth_dich),
-               binwidth = 1) +
-  theme_bw() +
-  theme(legend.title=element_blank()) +
-  labs(x = "Growth rate",
-       y = "No. of observations")
+ggplot(data = FairFPSR3) + geom_bar(aes(x = growth, fill = growth_dich),
+    binwidth = 1) + theme_bw() + theme(legend.title = element_blank()) +
+    labs(x = "Growth rate", y = "No. of observations")
 ```
 
 
@@ -227,11 +229,9 @@ Før du kjører en regresjon så kan det være lurt å plotte den avhengige og d
 
 
 ```r
-ggplot(data = FairFPSR3) +
-  geom_point(aes(x = growth, y = inc_vote)) +
-  theme_bw() +
-  labs(y = "Incumbent-Party Vote Percentage",
-       x = "Percentage change in Real GDP Per Capita")
+ggplot(data = FairFPSR3) + geom_point(aes(x = growth, y = inc_vote)) +
+    theme_bw() + labs(y = "Incumbent-Party Vote Percentage",
+    x = "Percentage change in Real GDP Per Capita")
 ```
 
 
@@ -254,9 +254,7 @@ I eksempelet fra kapittel ni i Kellsted og Whitten er vi interessert i effekten 
 
 
 ```r
-model <- lm(inc_vote ~ growth, 
-            data = FairFPSR3,
-            na.action = "na.exclude")
+model <- lm(inc_vote ~ growth, data = FairFPSR3, na.action = "na.exclude")
 ```
 
 Det finnes flere måter å undersøke resultatene på. Vi skal se på hvordan vi kan gjøre dette ved hjelp av `summary()`, `stargazer()` og `ggplot()`. Vi skal først se på `summary()`.
@@ -293,8 +291,7 @@ Ved å bruke `summary` får vi informasjon om koeffisienten (Estimate), standard
 
 
 ```r
-stargazer(model, 
-          type = "text")
+stargazer(model, type = "text")
 ```
 
 ```
@@ -326,9 +323,7 @@ eksempelet under. Den kan du høyreklikke på og velge åpne i word dersom du sk
 
 
 ```r
-stargazer(model,  
-          type = "html",
-          out = "model1_tab.htm")
+stargazer(model, type = "html", out = "model1_tab.htm")
 ```
 
 Informasjonen vi får ved hjelp av `summary()` og `stargazer()` er veldig nyttig.Vi får vite koeffisientene, standardfeilene og informasjon vi kan bruke til å evaluere modellen vår. I seminar skal vi bruke en del tid på å tolke disse tabellene.
@@ -338,11 +333,9 @@ Et alternativ til tabeller er å plotte resultatene fra regresjonen. Nå skal vi
 Først lager vi et plott med de observerte verdiene (dette er det samme plottet som vi lagde tidligere): 
 
 ```r
-ggplot(data = FairFPSR3) +
-  geom_point(aes(x = growth, y = inc_vote)) +
-  theme_bw() +
-  labs(y = "Incumbent-Party Vote Percentage",
-       x = "Percentage change in Real GDP Per Capita")
+ggplot(data = FairFPSR3) + geom_point(aes(x = growth, y = inc_vote)) +
+    theme_bw() + labs(y = "Incumbent-Party Vote Percentage",
+    x = "Percentage change in Real GDP Per Capita")
 ```
 
 
@@ -357,13 +350,10 @@ Den første måten er å bruke `geom_smooth(method = "lm")` for å plotte en reg
 
 
 ```r
-ggplot(data = FairFPSR3) +
-  geom_point(aes(x = growth, y = inc_vote)) +
-  theme_bw() +
-  labs(y = "Incumbent-Party Vote Percentage",
-       x = "Percentage change in Real GDP Per Capita") +
-  geom_smooth(aes(x = growth, y = inc_vote),
-              method = "lm", color = "goldenrod3")
+ggplot(data = FairFPSR3) + geom_point(aes(x = growth, y = inc_vote)) +
+    theme_bw() + labs(y = "Incumbent-Party Vote Percentage",
+    x = "Percentage change in Real GDP Per Capita") + geom_smooth(aes(x = growth,
+    y = inc_vote), method = "lm", color = "goldenrod3")
 ```
 
 
@@ -376,15 +366,12 @@ vise ved å legge til to linjer i koden vår:
 
 
 ```r
-ggplot(data = FairFPSR3) +
-  geom_point(aes(x = growth, y = inc_vote)) +
-  theme_bw() +
-  labs(y = "Incumbent-Party Vote Percentage",
-       x = "Percentage change in Real GDP Per Capita") +
-  geom_smooth(aes(x = growth, y = inc_vote),
-              method = "lm", color = "goldenrod3") +
-  geom_hline(yintercept=mean(FairFPSR3$inc_vote), linetype = "dashed") +
-  geom_vline(xintercept=mean(FairFPSR3$growth), linetype = "dashed")
+ggplot(data = FairFPSR3) + geom_point(aes(x = growth, y = inc_vote)) +
+    theme_bw() + labs(y = "Incumbent-Party Vote Percentage",
+    x = "Percentage change in Real GDP Per Capita") + geom_smooth(aes(x = growth,
+    y = inc_vote), method = "lm", color = "goldenrod3") + geom_hline(yintercept = mean(FairFPSR3$inc_vote),
+    linetype = "dashed") + geom_vline(xintercept = mean(FairFPSR3$growth),
+    linetype = "dashed")
 ```
 
 
@@ -399,9 +386,8 @@ R kan regne ut de predikerte verdiene for oss ved hjelp av funksjonen `fitted()`
 Her bruker vi funksjonene `fitted()` og `resid()` til å legge til predikerte verdier og residualer for de ulike variablene i datasettet vårt:
 
 ```r
-FairFPSR3 <- FairFPSR3 %>% 
-  mutate(fitted = fitted(model), 
-         residuals = resid(model))
+FairFPSR3 <- FairFPSR3 %>%
+    mutate(fitted = fitted(model), residuals = resid(model))
 ```
 
 Nå kan vi bruke denne informasjonen til å legge til en regresjonslinje i plottet vårt. Prikkene angir de ulike *observerte* verdikominasjonene, mens den rette
@@ -409,12 +395,10 @@ linjen gir oss den lineære sammenhengen fra modellen vår.
 
 
 ```r
-ggplot(data = FairFPSR3) +
-  geom_point(aes(x = growth, y = inc_vote)) +
-  theme_bw() +
-  labs(y = "Incumbent-Party Vote Percentage",
-       x = "Percentage change in Real GDP Per Capita") +
-  geom_line(aes(x = growth, y = fitted))
+ggplot(data = FairFPSR3) + geom_point(aes(x = growth, y = inc_vote)) +
+    theme_bw() + labs(y = "Incumbent-Party Vote Percentage",
+    x = "Percentage change in Real GDP Per Capita") + geom_line(aes(x = growth,
+    y = fitted))
 ```
 
 
@@ -425,14 +409,12 @@ Også her kan vi vise at regresjonslinjen krysser utvalgets gjennomsnittsverdier
 
 
 ```r
-ggplot(data = FairFPSR3) +
-  geom_point(aes(x = growth, y = inc_vote)) +
-  theme_bw() +
-  labs(y = "Incumbent-Party Vote Percentage",
-       x = "Percentage change in Real GDP Per Capita") +
-  geom_line(aes(x = growth, y = fitted)) +
-  geom_hline(yintercept=mean(FairFPSR3$inc_vote), linetype = "dashed") +
-  geom_vline(xintercept=mean(FairFPSR3$growth), linetype = "dashed")
+ggplot(data = FairFPSR3) + geom_point(aes(x = growth, y = inc_vote)) +
+    theme_bw() + labs(y = "Incumbent-Party Vote Percentage",
+    x = "Percentage change in Real GDP Per Capita") + geom_line(aes(x = growth,
+    y = fitted)) + geom_hline(yintercept = mean(FairFPSR3$inc_vote),
+    linetype = "dashed") + geom_vline(xintercept = mean(FairFPSR3$growth),
+    linetype = "dashed")
 ```
 
 
@@ -461,13 +443,10 @@ variabel og den dikotome vekst-variabelen vi lagde tidligere som uavhengig varia
 
 ```r
 # Lagrer modellen
-model_dich <- lm(inc_vote ~ growth_dich, 
-                 data = FairFPSR3,
-                 na.action = "na.exclude")
+model_dich <- lm(inc_vote ~ growth_dich, data = FairFPSR3, na.action = "na.exclude")
 
 # Undersøker resultatene
-stargazer(model_dich, 
-          type = "text")
+stargazer(model_dich, type = "text")
 ```
 
 ```
@@ -492,3 +471,5 @@ stargazer(model_dich,
 ## ===============================================
 ## Note:               *p<0.1; **p<0.05; ***p<0.01
 ```
+
+

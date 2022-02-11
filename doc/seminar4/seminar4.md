@@ -7,6 +7,9 @@ output:
     keep_md: yes
   github_document: default
 ---
+
+
+
 I løpet av dette seminaret skal vi: 
 
 1. Repetere litt om pakker og innlastning av data. 
@@ -34,7 +37,7 @@ install.packages("scales")
 
 
 ```r
-# Laster inn pakker 
+# Laster inn pakker
 library(tidyverse)
 ```
 
@@ -161,7 +164,7 @@ Vi kan bruke `summary()` på et datasett-objekt for å se målenivå, antall mis
 
 
 ```r
-summary(data) 
+summary(data)
 ```
 
 ```
@@ -192,8 +195,8 @@ Når vi skal finne missing er det mest vanlig er å bruke funksjonen `is.na()`. 
 
 
 ```r
-is.na(data %>% 
-        slice_head(n = 6))
+is.na(data %>%
+    slice_head(n = 6))
 ```
 
 ```
@@ -211,7 +214,7 @@ Vi kan kombinere `is.na()` med `sum()` for å finne totalt antall missingverdier
 
 
 ```r
-sum(2,2,6)
+sum(2, 2, 6)
 ```
 
 ```
@@ -252,7 +255,7 @@ Vi kan kombinere `sum()` og `is.na()` til å telle totalt antall missingverdier 
 
 
 ```r
-sum(is.na(data)) 
+sum(is.na(data))
 ```
 
 ```
@@ -263,7 +266,7 @@ Vi kan kombinere `sum()`, `is.na()` og indeksering ved hjelp av `$` til å hente
 
 
 ```r
-sum(is.na(data$internettbruk)) # Viser hvor mange missing det er på en variabel
+sum(is.na(data$internettbruk))  # Viser hvor mange missing det er på en variabel
 ```
 
 ```
@@ -274,8 +277,8 @@ Vi kan kombinere `sum()` med en funksjon som heter `complete.cases()` for å fin
 
 
 ```r
-complete.cases(data %>% 
-                 slice_head(n = 6)) # Henter ut informasjon om de seks første observasjonene
+complete.cases(data %>%
+    slice_head(n = 6))  # Henter ut informasjon om de seks første observasjonene
 ```
 
 ```
@@ -286,7 +289,7 @@ Fra dette kan vi lese at de tre første og de to siste observasjonene ikke har n
 
 
 ```r
-sum(complete.cases(data)) 
+sum(complete.cases(data))
 ```
 
 ```
@@ -338,15 +341,17 @@ Dersom en ønsker et datasett uten missingverdier så kan du bruke funksjonen `d
 
 
 ```r
-# Fjerne alle observajoner med minst en missing  
-data1 <- data %>% 
-  drop_na() 
+# Fjerne alle observajoner med minst en missing
+data1 <- data %>%
+    drop_na()
 
-# Fjerne alle observasjoner med missing på en variabel (eller fler) 
-data2 <- data %>% 
-  drop_na(internettbruk) # Du kan legge til flere variable med komma
+# Fjerne alle observasjoner med missing på en variabel
+# (eller fler)
+data2 <- data %>%
+    drop_na(internettbruk)  # Du kan legge til flere variable med komma
 
-# Vi skal ikke bruke data1 og data2 mer så jeg fjerner dem fra environment
+# Vi skal ikke bruke data1 og data2 mer så jeg fjerner dem
+# fra environment
 rm(data1, data2)
 ```
 
@@ -393,11 +398,11 @@ Vi kan bruke en logisk test for å sjekke om kvadratroten av variansen gir samme
 
 
 ```r
-# Lagrer først standardavviket i et objekt: 
+# Lagrer først standardavviket i et objekt:
 stdavvik <- sd(data$internettbruk, na.rm = TRUE)
 
-# Bruker logisk test for å spørre R om standardavviket er det samme som kvadrat-
-# roten (sqrt) av variansen
+# Bruker logisk test for å spørre R om standardavviket er
+# det samme som kvadrat- roten (sqrt) av variansen
 stdavvik == sqrt(varians)
 ```
 
@@ -416,8 +421,7 @@ I en større oppgave ønsker man ofte å presentere alle variablenes deskriptive
 
 
 ```r
-stargazer(data,
-          type = "text")
+stargazer(data, type = "text")
 ```
 
 ```
@@ -437,9 +441,7 @@ For å lagre en tabell med deskriptiv statistikk som vi kan bruke i for eksempel
 
 
 ```r
-stargazer(data,
-          type = "html",
-          out = "sem4_desktab.htm")
+stargazer(data, type = "html", out = "sem4_desktab.htm")
 ```
 
          
@@ -461,7 +463,8 @@ Det første vi gjør er å laste inn datasettet `ANES2016small`. Dette er samme 
 
 
 ```r
-# Bytt ut det som står i hermetegn med filbanen og filnavnet på din maskin:
+# Bytt ut det som står i hermetegn med filbanen og
+# filnavnet på din maskin:
 load("../../data/ANES2016small.RData")
 ```
 
@@ -469,13 +472,9 @@ Vi skal omkode variablene så verdiene blir litt mer intuitive. Det gjør vi ved
 
 
 ```r
-ANES2016small <- ANES2016small %>% 
-  mutate(vote = recode(V2Trump,
-                           `1` = "Trump",
-                           `0` = "Clinton"), 
-         gender = recode(female, 
-                         `0` = "Male", 
-                         `1` = "Female"))
+ANES2016small <- ANES2016small %>%
+    mutate(vote = recode(V2Trump, `1` = "Trump", `0` = "Clinton"),
+        gender = recode(female, `0` = "Male", `1` = "Female"))
 
 # Sjekker at omkodingen ble riktig:
 table(ANES2016small$female, ANES2016small$gender, useNA = "always")
@@ -614,13 +613,9 @@ Vi kan lage søylediagrammer for å presentere sammenhengen grafisk. Igjen, det 
 
 ```r
 # Absolutte tall:
-ggplot(ANES2016small, aes(x = vote,
-                          fill = gender)) + 
-  geom_bar(position = "dodge") +
-  labs(x = element_blank(),
-       y = "Antall") +
-  theme(legend.title = element_blank()) +
-  theme_bw()
+ggplot(ANES2016small, aes(x = vote, fill = gender)) + geom_bar(position = "dodge") +
+    labs(x = element_blank(), y = "Antall") + theme(legend.title = element_blank()) +
+    theme_bw()
 ```
 
 
@@ -631,17 +626,11 @@ ggplot(ANES2016small, aes(x = vote,
 
 ```r
 # Andeler:
-ggplot(ANES2016small, aes(x = vote,
-                          group = gender)) + 
-  geom_bar(aes(y = ..prop..),
-           position = "dodge") +
-  labs(x = element_blank(),
-       y = element_blank(),
-       title = "Stemmegivning og kjønn") +
-  theme(legend.title = element_blank()) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_bw() + 
-  facet_wrap(~gender)
+ggplot(ANES2016small, aes(x = vote, group = gender)) + geom_bar(aes(y = ..prop..),
+    position = "dodge") + labs(x = element_blank(), y = element_blank(),
+    title = "Stemmegivning og kjønn") + theme(legend.title = element_blank()) +
+    scale_y_continuous(labels = scales::percent) + theme_bw() +
+    facet_wrap(~gender)
 ```
 
 
@@ -654,8 +643,7 @@ Når den avhengige variabelen vår er kontinuerlig og den uavhengige er katerogi
 
 
 ```r
-ggplot(data, aes(x = utdanning, fill = as.factor(kjonn))) +
-  geom_boxplot()
+ggplot(data, aes(x = utdanning, fill = as.factor(kjonn))) + geom_boxplot()
 ```
 
 
@@ -687,12 +675,10 @@ Hva forteller p-verdien (p-value) oss her?
 Oversikt over t-tester:
 
 ```r
-# Enhalet test
-# Tester om menn (verdi 1) har signifikant mindre utdanning enn kvinner:
-t.test(utdanning ~ as.factor(kjonn), 
-       data = data, 
-       alternative = "less",
-       var.equal = TRUE)
+# Enhalet test Tester om menn (verdi 1) har signifikant
+# mindre utdanning enn kvinner:
+t.test(utdanning ~ as.factor(kjonn), data = data, alternative = "less",
+    var.equal = TRUE)
 ```
 
 ```
@@ -710,12 +696,10 @@ t.test(utdanning ~ as.factor(kjonn),
 ```
 
 ```r
-# Enhalet test
-# Tester om menn (verdi 1) har signifikant mer utdanning enn kvinner:
-t.test(utdanning ~ as.factor(kjonn), 
-       data = data, 
-       alternative = "greater",
-       var.equal = TRUE)
+# Enhalet test Tester om menn (verdi 1) har signifikant mer
+# utdanning enn kvinner:
+t.test(utdanning ~ as.factor(kjonn), data = data, alternative = "greater",
+    var.equal = TRUE)
 ```
 
 ```
@@ -733,12 +717,10 @@ t.test(utdanning ~ as.factor(kjonn),
 ```
 
 ```r
-# Tohalet test
-# Tester om menn (verdi 1) har signifikant forskjellig utdanning fra kvinner:
-t.test(utdanning ~ as.factor(kjonn), 
-       data = data, 
-       alternative = "two.sided",
-       var.equal = TRUE)
+# Tohalet test Tester om menn (verdi 1) har signifikant
+# forskjellig utdanning fra kvinner:
+t.test(utdanning ~ as.factor(kjonn), data = data, alternative = "two.sided",
+    var.equal = TRUE)
 ```
 
 ```
@@ -770,9 +752,7 @@ Kellstedt og Whitten skriver om kovarians og korrelasjon. Kovarians kan vi finne
 
 
 ```r
-cov(x = FairFPSR3$growth,
-    y = FairFPSR3$inc_vote, 
-    use = "pairwise.complete.obs")
+cov(x = FairFPSR3$growth, y = FairFPSR3$inc_vote, use = "pairwise.complete.obs")
 ```
 
 ```
@@ -785,8 +765,7 @@ Vi kan også hente ut en kovariansmatrise for alle variablene i datasettet:
 
 
 ```r
-cov(FairFPSR3,
-    use = "pairwise.complete.obs")
+cov(FairFPSR3, use = "pairwise.complete.obs")
 ```
 
 ```
@@ -805,9 +784,7 @@ Pearsons r beskriver styrken og retningen til korrelasjonen mellom to variabler.
 
 ```r
 # Korrelasjon mellom vekst og stemmeandel
-cor(x = FairFPSR3$growth,
-    y = FairFPSR3$inc_vote, 
-    use = "pairwise.complete.obs")
+cor(x = FairFPSR3$growth, y = FairFPSR3$inc_vote, use = "pairwise.complete.obs")
 ```
 
 ```
@@ -818,9 +795,7 @@ Hvordan kan vi tolke korrelasjonen?
 
 ```r
 # tester om korrelasojnen er statistisk signifikant
-cor.test(FairFPSR3$inc_vote, 
-         FairFPSR3$growth, 
-         use = "pairwise.complete.obs")
+cor.test(FairFPSR3$inc_vote, FairFPSR3$growth, use = "pairwise.complete.obs")
 ```
 
 ```
@@ -859,9 +834,7 @@ Til slutt skal vi se på hvordan et spredningsdiagram kan brukes til å undersø
 
 
 ```r
-ggplot(data = FairFPSR3, 
-       aes(x = growth, y = inc_vote)) +
-  geom_point()
+ggplot(data = FairFPSR3, aes(x = growth, y = inc_vote)) + geom_point()
 ```
 
 
@@ -870,11 +843,9 @@ Vi kan også tilpasse plottet ved å endre form på punktene (`geom_point(shape 
 
 
 ```r
-ggplot(FairFPSR3, aes(x=growth, y=inc_vote)) +
-  geom_point(shape=1) +
-  theme_bw() +
-  labs(x = "Percentage Change in Real DGP Per Capita",
-       y = "Incumbent Party Vote Percentage")
+ggplot(FairFPSR3, aes(x = growth, y = inc_vote)) + geom_point(shape = 1) +
+    theme_bw() + labs(x = "Percentage Change in Real DGP Per Capita",
+    y = "Incumbent Party Vote Percentage")
 ```
 
 
@@ -887,12 +858,10 @@ Til slutt så kan vi også legge til en prediksjonslinje ved hjelp av `geom_smoo
 
 
 ```r
-ggplot(FairFPSR3, aes(x=growth, y=inc_vote)) +
-  geom_point(shape=1) +
-  theme_bw() +
-  labs(x = "Percentage Change in Real DGP Per Capita",
-       y = "Incumbent Party Vote Percentage") +
-  geom_smooth(method = "lm", color = "black")
+ggplot(FairFPSR3, aes(x = growth, y = inc_vote)) + geom_point(shape = 1) +
+    theme_bw() + labs(x = "Percentage Change in Real DGP Per Capita",
+    y = "Incumbent Party Vote Percentage") + geom_smooth(method = "lm",
+    color = "black")
 ```
 
 

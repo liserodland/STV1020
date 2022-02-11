@@ -33,7 +33,7 @@ Nå er datasettet tilgjengelig i R. For å lagre datasettet som et objekt i envi
 
 ```r
 data <- gapminder
-# data(gapminder, package = "gapminder")
+# data(gapminder, package = 'gapminder')
 ```
 
 Nå er datasettet klart til bruk, men for å øve på å lagre og laste inn datasett skal vi lagre dette datasettet i et Rdata-format ved å bruke funksjonen `save()`. Husk at når man laster inn og lagrer data så vil koden være avhengig av hvilken type dataformat du har og den må tilpasses din mappestruktur. Dersom du ikke jobber i prosjekt så er det første du må gjøre å sette working directory ved å bruke koden `setwd("filbane")`. Deretter bruker du `save()` til å lagre datasettet.
@@ -48,7 +48,7 @@ Du vil nå se datasettet i den mappen du har bedt R om å lagre det i. Før vi l
 
 ```r
 # Denne koden fjerner alt i environment
-rm(list=ls())
+rm(list = ls())
 
 # Denne koden fjerner et objekt
 rm(objektnavn)
@@ -135,7 +135,7 @@ summary(data$year)
 
 ```r
 # spennet er 2007-1952, dvs. 55 år
-2007-1952
+2007 - 1952
 ```
 
 ```
@@ -197,7 +197,7 @@ Jeg kan også endre retningen på verdienes ved matematisk omkoding. Da ganger j
 
 ```r
 # Endrer retning på variabelen:
-data$year_2007 <- data$year_1952*(-1) + 55
+data$year_2007 <- data$year_1952 * (-1) + 55
 
 # Sjekker at det ble riktig med table():
 table(data$year_1952, data$year_2007, useNA = "always")
@@ -229,17 +229,15 @@ Den funksjonen jeg bruker mest til omkoding, er `ifelse()`. Funksjonen kan bruke
 
 ```r
 data$nyvar <- ifelse(test = my_data$my.variabel == "some logical condition",
-                     yes  = "what to return if 'some condition' is TRUE",
-                     no   = "what to return if 'some condition' is FALSE")
+    yes = "what to return if 'some condition' is TRUE", no = "what to return if 'some condition' is FALSE")
 ```
 
 `ifelse()` kan for eksempel bruker til å lage en ny variabel som tar verdien 1 om observasjonen har en verdi som er større enn gjennomsnittet og null ellers. Gjennomsnittet finner du ved å bruke funksjonen `mean()`. Under fyller jeg inn betingelsen (condition), hvilken verdi ny variabel skal dersom betingelsen er oppfylt (yes) og hvilken verdi ny variabel skal ha dersom betingelsen ikke er oppfylt (no). Vanligvis vil vi ikke skrive `test =`, `yes =` og `no =`, men jeg har tatt det med her for å gjøre det lettere å koble de to:
 
 
 ```r
-data$lifeExp_2 <- ifelse(test = data$lifeExp > mean(data$lifeExp, na.rm = TRUE),
-                         yes = 1,
-                         no = 0)
+data$lifeExp_2 <- ifelse(test = data$lifeExp > mean(data$lifeExp,
+    na.rm = TRUE), yes = 1, no = 0)
 ```
 
 
@@ -247,7 +245,8 @@ Jeg bruker en kombinasjon av en tabell og en logisk test (se forklaringer fra f�
 
 
 ```r
-table(data$lifeExp_2, data$lifeExp > mean(data$lifeExp, na.rm = TRUE), useNA = "always")
+table(data$lifeExp_2, data$lifeExp > mean(data$lifeExp, na.rm = TRUE),
+    useNA = "always")
 ```
 
 ```
@@ -262,9 +261,8 @@ Dersom vi vil omkode en variabel med flere variabler så kan vi gjøre det med f
 
 
 ```r
-mutate(nyvariabel = recode(gammelvariabel, 
-                           verdi1 = nyverdi1, 
-                           verdi2 = nyverdi2))
+mutate(nyvariabel = recode(gammelvariabel, verdi1 = nyverdi1,
+    verdi2 = nyverdi2))
 ```
 
 I dette eksempelet skal vi lage en ny variabel `continent2` med tallverdier i steden for kontinentnavn. Ettersom funksjonen vi skal bruker ligger i pakken `tidyverse` så må vi aller først laste inn pakken med `library()`
@@ -292,13 +290,9 @@ library(tidyverse)
 ```
 
 ```r
-data <- data %>% 
-  mutate(continent2 = recode(continent, 
-                             Africa = 1, 
-                             Americas = 2, 
-                             Asia = 3, 
-                             Europe = 4, 
-                             Oceania = 5))
+data <- data %>%
+    mutate(continent2 = recode(continent, Africa = 1, Americas = 2,
+        Asia = 3, Europe = 4, Oceania = 5))
 ```
 
 Vi sjekker med en tabell at det ble riktig: 
@@ -326,7 +320,7 @@ table(data$continent, data$continent2, useNA = "always")
 
 
 ```r
-# install.packages("tidyverse")
+# install.packages('tidyverse')
 library(tidyverse)
 ```
 
@@ -334,11 +328,11 @@ Den første funksjonen `select()` brukes til å velge ut hvilke variabler du vil
 
 
 ```r
-data_pop <- data %>% 
-  select(pop)
+data_pop <- data %>%
+    select(pop)
 
 data_sub <- data %>%
-  select(pop, country, year)
+    select(pop, country, year)
 ```
 
 Du kan også bruke funksjonen `filter()` til å velge ut spesielle observasjoner som tilfredsstiller de kravene du setter. Under har jeg brukt funksjonen til å bare ta med observasjonene med verdien 1954 på variabelen `year` og som har en verdi høyere end gjennomsnittet på variablene `pop`:
@@ -346,11 +340,10 @@ Du kan også bruke funksjonen `filter()` til å velge ut spesielle observasjoner
 
 ```r
 data_1952 <- data %>%
-  filter(year == 1952)
+    filter(year == 1952)
 
-data_1952pop <- data %>% 
-  filter(year == 1952, 
-         pop > mean(pop))
+data_1952pop <- data %>%
+    filter(year == 1952, pop > mean(pop))
 ```
 
 Nå har du fått fire nye objekter i environment; `data_pop`, `data_sub`, `data_1952` og `data_1952pop`. Legg merke til at disse har ulikt antall observasjoner (obs.) og variabler (variables).
@@ -415,8 +408,7 @@ Når vi kjører koden, så ser vi at kontinentene er på plass, men vi får like
  
 
 ```r
-ggplot(data = data, aes(x=continent)) + 
-  geom_bar()
+ggplot(data = data, aes(x = continent)) + geom_bar()
 ```
 
 
@@ -440,8 +432,7 @@ Det ser fint ut. Vi kan også legge inn andre typer av aestetics i mappingen. He
 
 
 ```r
-ggplot(data = data, aes(x = continent, fill = continent)) + 
-  geom_bar()
+ggplot(data = data, aes(x = continent, fill = continent)) + geom_bar()
 ```
 
 
@@ -453,17 +444,16 @@ Vi kan legge til flere `geom_`-elementer i plottet vårt ved å bruke `+`. Jeg k
 
 
 ```r
-data <- data %>% 
-  add_count(continent)
+data <- data %>%
+    add_count(continent)
 ```
 
 Vi kan se i datasettet vårt at vi har fått en ny variabel `n`. Denne angir antall observasjoner per kontinent i datasettet vårt. For å legge til en linje som indikerer gjenomsnittlig antall observasjoner bruker vi `geom_hline()` (h for horisontal linje). I `aes()` gir vi ggplot informasjon om hvor denne linjen skal krysse y-aksen: 
 
 
 ```r
-ggplot(data = data, aes(x = continent, fill = continent)) + 
-  geom_bar() +
-  geom_hline(aes(yintercept = mean(n)))
+ggplot(data = data, aes(x = continent, fill = continent)) + geom_bar() +
+    geom_hline(aes(yintercept = mean(n)))
 ```
 
 
@@ -475,15 +465,10 @@ Vi kan også endre teksten på x- og y-aksen, og gi plottet en tittel ved å leg
 
 
 ```r
-ggplot(data, aes(x = continent, fill = continent)) + 
-  geom_bar() +
-  geom_hline(aes(yintercept = mean(n))) +
-  labs(x = "", 
-       y = "Antall land-år-observasjoner", 
-       title = "Antall observasjoner per kontinent",
-       caption = "Gjennomsnittlig antall observasjoner er gitt ved den horisontale linjen") +
-  theme_bw() +
-  theme(legend.position = "none") 
+ggplot(data, aes(x = continent, fill = continent)) + geom_bar() +
+    geom_hline(aes(yintercept = mean(n))) + labs(x = "", y = "Antall land-år-observasjoner",
+    title = "Antall observasjoner per kontinent", caption = "Gjennomsnittlig antall observasjoner er gitt ved den horisontale linjen") +
+    theme_bw() + theme(legend.position = "none")
 ```
 
 
@@ -510,8 +495,7 @@ Når vi undersøker ulike plot kan vi skrive `plot_le +` i stedet for `ggplot(da
 
 
 ```r
-plot_le +
-  geom_histogram()
+plot_le + geom_histogram()
 ```
 
 
@@ -521,8 +505,7 @@ Hvis vi ikke sier noe annet, så kommer ggplot til å velge hvor stort hvert int
 
 
 ```r
-plot_le +
-  geom_histogram(binwidth = 1)
+plot_le + geom_histogram(binwidth = 1)
 ```
 
 
@@ -532,11 +515,8 @@ Hvis vi vil se hvordan dette fordeler seg på hvert kontinent, så kan vi legge 
 
 
 ```r
-plot_le +
-  geom_histogram(aes(fill=continent),
-                 binwidth = 1, 
-                 alpha = 0.5) +
-  theme_bw()
+plot_le + geom_histogram(aes(fill = continent), binwidth = 1,
+    alpha = 0.5) + theme_bw()
 ```
 
 
@@ -553,8 +533,7 @@ for å lage et boxplot så spesifiserer vi y-aksen ved hjelp av `aes(y = contine
 
 
 ```r
-plot_le + 
-  geom_boxplot(aes(y = continent))
+plot_le + geom_boxplot(aes(y = continent))
 ```
 
 
@@ -565,13 +544,8 @@ Her er et eksempel på hvor mye finere plottet kan bli med litt flere kodelinjer
 
 
 ```r
-plot_le + 
-  geom_boxplot(aes(y = continent)) +
-  theme_bw() +
-  labs(title = "Boxplot for forventet levealder per kontinent",
-       x = "Forventet levealder",
-       y = "") +
-  theme(legend.position = "none")
+plot_le + geom_boxplot(aes(y = continent)) + theme_bw() + labs(title = "Boxplot for forventet levealder per kontinent",
+    x = "Forventet levealder", y = "") + theme(legend.position = "none")
 ```
 
 
@@ -583,8 +557,7 @@ En annen metode kan være å bruke et density plot/tetthetsplott:
  
 
 ```r
-plot_le + 
-  geom_density()
+plot_le + geom_density()
 ```
 
 
@@ -595,8 +568,7 @@ Inne i parentesen til plottypen kan vi legge til spesifikasjoner om tykkelse på
 
 
 ```r
-plot_le + 
-  geom_density(size=1.5, fill="pink", alpha=0.3)
+plot_le + geom_density(size = 1.5, fill = "pink", alpha = 0.3)
 ```
 
 
@@ -608,8 +580,7 @@ Hva skjer hvis vi endrer 1) alpha til 1 og 2) size til 0.5?
 
 
 ```r
-plot_le + 
-  geom_density(size=0.5, fill="pink", alpha=1)
+plot_le + geom_density(size = 0.5, fill = "pink", alpha = 1)
 ```
 
 
@@ -620,10 +591,8 @@ Hvis du ønsker å separere plottene, slik at de ulike kontinentene ikke ligger 
 
 
 ```r
-plot_le + 
-  geom_density(size=0.5, fill="pink", alpha=1) + 
-  facet_wrap(vars(continent)) +
-  theme_bw()
+plot_le + geom_density(size = 0.5, fill = "pink", alpha = 1) +
+    facet_wrap(vars(continent)) + theme_bw()
 ```
 
 
@@ -635,9 +604,7 @@ Med et spredningsplot (scatterplot) kan vi vise sammenhengen mellom to kontinuer
 
 
 ```r
-ggplot(data, 
-       aes(x=lifeExp, y=gdpPercap)) + 
-  geom_point()
+ggplot(data, aes(x = lifeExp, y = gdpPercap)) + geom_point()
 ```
 
 
@@ -648,9 +615,8 @@ Vi kan legge til en linje som viser gjennomsnittet i observasjonene ved å bruke
 
 
 ```r
-ggplot(data, aes(x=lifeExp, y=gdpPercap)) +
-  geom_point() + 
-  geom_smooth()
+ggplot(data, aes(x = lifeExp, y = gdpPercap)) + geom_point() +
+    geom_smooth()
 ```
 
 
@@ -660,10 +626,8 @@ Skille kontinentene fra hverandre ved bruk av ulike farger:
 
 
 ```r
-ggplot(data, 
-       aes(x=lifeExp, y=gdpPercap, col=continent)) +
-  geom_point() + 
-  geom_smooth()
+ggplot(data, aes(x = lifeExp, y = gdpPercap, col = continent)) +
+    geom_point() + geom_smooth()
 ```
 
 
@@ -673,13 +637,9 @@ Vi kan legge inn en `facet_wrap()` for at det skal se litt ryddigere ut, og samt
 
 
 ```r
-ggplot(data, 
-       aes(x = lifeExp, y = gdpPercap, col = continent)) +
-  geom_point() + 
-  geom_smooth(colour="black") + 
-  facet_wrap(~continent) +
-  theme_bw() +
-  theme(legend.position = "none")
+ggplot(data, aes(x = lifeExp, y = gdpPercap, col = continent)) +
+    geom_point() + geom_smooth(colour = "black") + facet_wrap(~continent) +
+    theme_bw() + theme(legend.position = "none")
 ```
 
 
@@ -690,16 +650,10 @@ Her kan vi repetere hvordan vi legger til nye titler til x- og y-aksen, samt tit
 
 
 ```r
-ggplot(data, 
-       aes(x = lifeExp, y = gdpPercap, col = continent)) +
-  geom_point() + 
-  geom_smooth(colour="black") + 
-  facet_wrap(vars(continent)) +
-  labs(x = "Forventet levealder", 
-       y = "GDP per capita", 
-       title = "Et plot med Gapminderdata") +
-  theme_bw() +
-  theme(legend.position = "none")
+ggplot(data, aes(x = lifeExp, y = gdpPercap, col = continent)) +
+    geom_point() + geom_smooth(colour = "black") + facet_wrap(vars(continent)) +
+    labs(x = "Forventet levealder", y = "GDP per capita", title = "Et plot med Gapminderdata") +
+    theme_bw() + theme(legend.position = "none")
 ```
 
  
@@ -713,15 +667,16 @@ Du kan lagre plottene dine i working directory ved å bruke `ggsave()`. For å l
 ```r
 # For png-format:
 ggsave(filename = "gdplevealder.png")
- 
+
 # For pdf-format:
 ggsave(filename = "gdplevealder.pdf")
 
 # For jpeg-format:
 ggsave(filename = "gdplevealder.jpeg")
 
- 
-# Du trenger egentlig ikke skrive "filename" så lenge du bruker ggsave:
+
+# Du trenger egentlig ikke skrive 'filename' så lenge du
+# bruker ggsave:
 ggsave("gdplevealder.png")
 ```
 
