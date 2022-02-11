@@ -10,6 +10,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE)
+
 ```
 
 På seminar to skal vi se på det følgende: 
@@ -34,7 +36,7 @@ Working directory angir den mappen vi ønsker å hente og lagre filer til. Du ka
 Om du ikke jobber i prosjekt så kan du enten bruke `setwd("filbane")` eller trykke deg frem via verktøylinjen. Da velger du Session -> Set Working Directory -> Choose Directory og klikker deg frem til mappen din. 
 
 Her er et eksempel på bruk av `setwd()`:
-```{r, eval=FALSE}
+```{r sette_workingdirectory, eval=FALSE}
 setwd("~/Dokumenter/STV1020")
 ```
 
@@ -62,13 +64,13 @@ R-pakker er utvidelser til programmeringsspråket R. De inneholder kode, data, o
 
 Den første pakken vi skal installere er Tidyverse. Tidyverse er et sett med pakker som gjør databehandling mye, mye enklere. Føst installerer vi pakken. Om dere har gjort dette på forhånd trenger dere ikke gjøre dette på nytt. Å installere gjør vi kun en gang. Vi installerer pakker ved hjelp av funksjonen `install.packages("pakkenavn")`: 
 
-```{r, eval=FALSE}
+```{r installere_pakker, eval=FALSE}
 install.packages("tidyverse")
 ```
 
 Det neste vi gjør er å laste inn pakken ved hjelp av `library()`:
 
-```{r}
+```{r laste_inn_pakker}
 library(tidyverse)
 ```
 
@@ -80,32 +82,32 @@ Dersom dere skal gjøre statistisk analyse, er som regel den første seksjonen i
 
 Når du skal laste inn eller lagre noe lokalt på pc-en så vil R til enhver tid forvente at filen du refererer til befinner seg i working directory. Som vi husker så er working directory en mappe på pcen din; enten den du har lagret prosjektet ditt i eller den du har satt som working directory ved hjelp av `setwd()`. For å sjekke hva nåværende working directory er, og hvilke filer som finnes i den mappen, kan du skrive følgende kode:
 
-```{r}
+```{r sjekke_workingdirectory}
 getwd()
 list.files()
 ```
 Datasett kommer i mange ulike filformater. Noen vanlige formater er csv, dta (Stata-datasett), sav (SPSS-datasett) og Rdata. Hvilket format dataene dine har bestemmer hvilken funksjon du må bruke for å laste inn datasettet. For det meste så følger funksjonene dette formatet: 
 
-```{r, eval = FALSE}
+```{r lese_filer_til_objekt, eval = FALSE}
 # Laster inn og lagrer datasettet som et objekt:
 datasett <- read_filtype("filbane/filnavn.filtype") 
 ```
 
-For eksempel så er datasettet vi skal bruke i dag en dta-fil. Pakken `haven` inneholder funksjoner for å lese dta-filer og sav-filer. Det første vi gjør er derfor å installere og laste inn `haven`. 
+For eksempel så er datasettet vi skal bruke i dag en dta-fil (STATA filtype). Pakken `haven` inneholder funksjoner for å lese dta-filer og sav-filer. Det første vi gjør er derfor å installere og laste inn `haven`. 
 
-```{r, eval = FALSE}
+```{r haven, eval = FALSE}
 install.packages("haven")
 ```
 
-```{r}
+```{r lese_stata}
 library(haven)
 
-ess <- read_dta("../../data/ESS9NO.dta")
+ess <- read_dta("../../data/ESS9NO.dta", encoding = "UTF-8")
 ```
 
 Her er eksempler på noen andre funksjoner for å laste inn data:
 
-```{r, eval = FALSE}
+```{r lese_csv, eval = FALSE}
 # For csv-format:
 datanavn <- read_csv("data/filnavn.csv") 
 
@@ -115,7 +117,7 @@ load("data/filnavn.Rdata")
 
 For å laste inn en excel-filer bruker vi pakken `readxl`:
 
-```{r, eval = FALSE}
+```{r lese_excel, eval = FALSE}
 install.packages("readxl")
 
 library(readxl)
@@ -129,7 +131,7 @@ Når man bruker større datasett som ESS, så inneholder datasettet ofte mange f
 
 Når vi skal jobbe videre med data så kan det være lurt å fjerne de variablene vi ikke skal bruke og gi variablene navn som er lette for oss å forstå og huske. For å gjøre dette skal vi benytte oss av funksjoner i `tidyverse`. Først bruker vi `select()` til å velge de variablene vi vil beholde og så bruker vi `rename()` til å endre navnene. Vi bruker en pipe `%>%` mellom funksjonene, som tar outputen til et utsagn og gjør det til inputen til det neste utsagnet. Pipen kan sees på som ordet "så". `rename()` lar oss forandre navnet til variabler og bruker syntaksen `rename(nytt_navn = gammelt_navn)`.
 
-```{r}
+```{r velge_og_navngi_variabler}
 ess_subset <- ess %>% 
   select(nwspol, polintr, vote, yrbrn) %>% 
   rename(
@@ -142,7 +144,7 @@ ess_subset <- ess %>%
 
 Dersom du har sjekket kodeboken på forhånd så kan du også endre variablenavnene når du bruker `select()`:
 
-```{r}
+```{r velge_og_navngi_variabler2}
 ess_subset <- ess %>% 
   select(
     vote,
@@ -155,7 +157,7 @@ ess_subset <- ess %>%
 
 Vi kan regne oss frem til alder ved å bruke variabelen `year_born`og informasjonen om at undersøkelsen ble gjennomført i 2018:
 
-```{r}
+```{r konstruere_alder}
 ess_subset$age <- 2018 - ess_subset$year_born 
 ```
 
@@ -171,24 +173,24 @@ Når variabler er kategoriske så kan egenskapen deles i to eller flere gjensidi
 ![Utdrag fra ESS sin kodebok for variabelen vote](../../bilder/vote_skjermdump.JPG)
 
 Vi kan sjekke hvilken klasse variabelen har ved hjelp av `class()`
-```{r}
+```{r sjekke_klasse}
 class(ess_subset$vote)
 ```
 Her får vi opp klassene `haven_labelled`, `vctrs_vctr` og `double`. `haven_labelled` indikerer at datasettet også inneholder informasjon om verdilabels, mens `double` betyr at variabelen nå er lagret som en numerisk variabel. På variabler med kategorisk eller ordinalt målenivå såkan vi bruke funksjonen `table()` til å få oversikt over verdiene: 
 
-```{r}
+```{r variabeltabell}
 table(ess_subset$vote)
 ```
 Som vi ser her så fremstår variabelen som om den er kontinuerlig/numerisk med tallverdier, men vi har lest kodeboken og vet at den er kategorisk. Dersom vi vil endre klassen på variabelen til en faktor så det samsvarer bedre med målenivået så kan vi bruke funksjonen `as_factor()` for å opprette en ny variabel:
 
-```{r}
+```{r konvertere_til_faktor}
 # Lager en ny variabel i datasettet som heter vote_factor
 ess_subset$vote_factor <- as_factor(ess_subset$vote)
 ```
 
 Vi kan nå se nærmere på hvilke verdier den nye variabelen `vote_factor` tar ved hjelp av `levels()` og klassen ved hjelp av `class()`:  
 
-```{r}
+```{r lese_nivåer_faktor}
 # Sjekker faktornivåene:
 levels(ess_subset$vote_factor)
 
@@ -209,20 +211,20 @@ Når variabler er på ordinalnivå kan de deles i to eller flere gjensidig utelu
 
 Vi kan sjekke klasse til denne variabelen også:
 
-```{r}
+```{r sjekke_klasse2}
 class(ess_subset$interest)
 
 ```
 Som vi ser er også denne variabelen også registrert som klassene `haven_labelled`, `vctrs_vctr` og `double` av R. Dersom vi vil bruke denne variabelen som en kategorisk variabel så kan vi igjen bruke `as_factor` for å få variabelens klasse til å samsvare med målenivået: 
 
-```{r}
+```{r konvertere_til_faktor2}
 ess_subset$interest_factor <- as_factor(ess_subset$interest)
 ```
 
 
 Vi sjekker faktornivåer og klasse igjen:
 
-```{r}
+```{r sjekke_nivåer_faktor2}
 # Sjekker faktornivåene:
 levels(ess_subset$interest_factor)
 
@@ -240,7 +242,7 @@ Kontinuerlige variabler kan rangeres, har samme avstand mellom alle verdier og e
 
 Vi kan sjekke klassen her også: 
 
-```{r}
+```{r sjekke_klasse3}
 class(ess_subset$news)
 
 is.numeric(ess_subset$news)
@@ -254,14 +256,14 @@ Jeg vil oppfordre dere til å være obs og alltid sjekke at klassen på en varia
 Vi skal nå bli litt bedre kjent med dataene våre. Det er mange ulike måter å utforske datasett og variabler på. Vi skal se på funksjonene `summary()`, `str()`, `head()` og `tail()`. 
 
 For å få et deskriptivt sammendrag av et objekt kan vi bruke `summary()` eller str().
-```{r}
+```{r datasettoversikt}
 summary(ess_subset)
 str(ess_subset)
 ```
 
 Hvis man vil se de første eller siste radene i et datasett så kan man bruke henholdsvis `head()` og `tail()`.
 
-```{r}
+```{r datasettoversikt2}
 head(ess_subset)
 tail(ess_subset)
 ```
@@ -275,7 +277,7 @@ Som dere husker fra forelesning og fra kapittel seks i Kellsted og Whitten så e
 ## Kategoriske variabler 
 
 R har ingen innebygd funksjon for å finne modusverdien. Ved å søke på internett så finner du fort mange ulike funksjoner du kan bruke, men for å gjøre det enkelt bruker vi bare `table()`. Funksjonen `table()` gir oss en frekvenstabell, mens `prop.table` gjør om frekvenstabellen til andeler. ESS datasettet mangler data for noen observasjoner. Ved å ta med `useNA = "always"` i `table()` så får vi også denne informasjonen i tabellen:
-```{r}
+```{r variabeltabell_og_proporsjontabell}
 table(ess_subset$vote, useNA = "always")
 prop.table(table(ess_subset$vote))
 prop.table(table(ess_subset$vote, useNA = "always"))
@@ -283,7 +285,7 @@ prop.table(table(ess_subset$vote, useNA = "always"))
 
 ## Kontinuerlige variabler
 
-```{r}
+```{r sentraltendens_spredning_etc}
 # Finner minimumsverdi (det laveste antall minutter brukt på nyheter)
 min(ess_subset$news, na.rm = TRUE) # na.rm = TRUE sier at missing skal droppes i beregningen
 # Finner maksimumsveriden (den høyeste antall minutter brukt på nyheter)
@@ -311,13 +313,13 @@ Vi skal kort introdusere hvordan man kan visualisere data i dette seminaret, og 
 ### Søylediagram og kakediagram med en variabel
 Hvordan kan vi visualisere hvordan fordelingen av politisk interesse er? Her kan vi bruke `geom_bar` til å lage et søylediagram (bar chart). Et søylediagram viser antall observasjoner av hver verdi. Vi bruker her den variabelen vi lagde tidligere med "riktig" målenivå.
 
-```{r, eval = FALSE}
+```{r lage_figur, eval = FALSE}
 ggplot(data = ess_subset, aes(x = interest_factor)) + 
   geom_bar() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur, include = FALSE}
 ggplot(data = ess_subset, aes(x = interest_factor)) + 
   geom_bar() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
@@ -329,7 +331,7 @@ ggsave("../../output/sem2_soyle1.png")
 
 Dersom vi ikke ønsker å gi missingverdiene (NA) en egen søyle så kan vi bruke `filter()` til å fjerne disse: 
 
-```{r, eval = FALSE}
+```{r fjerne_NA_figur, eval = FALSE}
 ggplot(data = ess_subset %>% 
          filter(!is.na(interest_factor)), 
        aes(x = interest_factor)) + 
@@ -337,7 +339,7 @@ ggplot(data = ess_subset %>%
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur2, include = FALSE}
 ggplot(data = ess_subset %>% 
          filter(!is.na(interest_factor)), 
        aes(x = interest_factor)) + 
@@ -351,7 +353,7 @@ ggsave("../../output/sem2_soyle2.png")
 
 Et alternativ til søylediagram er kakediagram (pie chart): 
 
-```{r, eval = FALSE}
+```{r kakefigur, eval = FALSE}
 ggplot(ess_subset, aes(x = "", y = interest, fill = interest_factor)) + 
   geom_bar(stat = "identity", width = 1) + 
   coord_polar("y", start = 0) +
@@ -359,7 +361,7 @@ ggplot(ess_subset, aes(x = "", y = interest, fill = interest_factor)) +
   scale_fill_grey()
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur3, include = FALSE}
 ggplot(ess_subset, aes(x = "", y = interest_factor, fill = interest_factor)) + 
   geom_bar(stat = "identity", width = 1) + 
   coord_polar("y", start = 0) +
@@ -375,7 +377,7 @@ ggsave("../../output/sem2_kake.png")
 ### Søylediagram med to variabler
 Hvor mange innenfor hvert nivå av politisk interesse stemte? Vi kan bruke `geom_bar()` igjen, men vi sier at vi også vil se fordelingen av hvordan respondentene stemte innenfor hvert nivå av politisk interesse med `(aes(fill = vote))`. Så sier vi at vi vil at det skal være en søyle for de ulike alternativene for vote med `position = "dodge"`. 
 
-```{r, eval = FALSE}
+```{r søylediagram, eval = FALSE}
 ggplot(data = ess_subset, 
        aes(x = interest_factor)) + 
   geom_bar(aes(fill=vote_factor),
@@ -383,7 +385,7 @@ ggplot(data = ess_subset,
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur4, include = FALSE}
 ggplot(data = ess_subset, 
        aes(x = interest_factor)) + 
   geom_bar(aes(fill=vote_factor),
@@ -399,13 +401,13 @@ ggsave("../../output/sem2_soyle3.png")
 ### Histogram
 Hvordan fordeler respondentenes alder og tiden de bruker på nyheter seg? Disse variablene er kontinuerlige, så vi kan bruke `geom_histogram` for å lage et histogram. Her gjør jeg det med variabelen news. 
 
-```{r, eval = FALSE}
+```{r histogram, eval = FALSE}
 ggplot(data = ess_subset, aes(x = news)) +
  	  geom_histogram(bins = 5) +
   ggtitle("Histogram med fem søyler (bins) og frekvens")
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur5, include = FALSE}
 ggplot(data = ess_subset, aes(x = news)) +
  	  geom_histogram(bins = 5) +
   ggtitle("Histogram med fem søyler (bins) og frekvens")
@@ -415,13 +417,13 @@ ggsave("../../output/sem2_hist1.png")
 
 ![](../../output/sem2_hist1.png)
 
-```{r, eval = FALSE}
+```{r endre_bins_histogram, eval = FALSE}
 ggplot(data = ess_subset, aes(x = news)) +
   geom_histogram(binwidth = 10) +
   ggtitle("Histogram med søylebredde (binwidth) på 10 og frekvens")
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur6, include = FALSE}
 ggplot(data = ess_subset, aes(x = news)) +
   geom_histogram(binwidth = 10) +
   ggtitle("Histogram med søylebredde (binwidth) på 10 og frekvens")
@@ -434,13 +436,13 @@ ggsave("../../output/sem2_hist2.png")
 
 Et histogram viser hvor mange enheter det er i hver kategori. Vi kan enten spesifisere hvor mange søyler vi vil ha (bins) eller hvor stor hver søyle skal være (bindwidth). Vi kan også velge å plotte density fremfor count. Da får vi histogrammer tilsvarende figur 6.5 i Kellsted og Whitten: 
 
-```{r, eval = FALSE}
+```{r lage_histogram_density, eval = FALSE}
 ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
  	  geom_histogram(bins = 5) +
   ggtitle("Histogram med fem søyler (bins) og density")
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur7, include = FALSE}
 ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
  	  geom_histogram(bins = 5) +
   ggtitle("Histogram med fem søyler (bins) og density")
@@ -450,14 +452,14 @@ ggsave("../../output/sem2_hist3.png")
 ![](../../output/sem2_hist3.png)
 
 
-```{r, eval = FALSE}
+```{r endre_bins_histogram_density, eval = FALSE}
 ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
   geom_histogram(binwidth = 10) +
   ggtitle("Histogram med søylebredde (binwidth) 10 og density")
 
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur8, include = FALSE}
 ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
   geom_histogram(binwidth = 10) +
   ggtitle("Histogram med søylebredde (binwidth) 10 og density")
@@ -471,13 +473,13 @@ Vi kan lage et boksplott med `geom_boxplot.` Et boksplott viser hvordan en konti
 
 Prikkene i grafen angir uteliggere. Uteliggere er observasjoner som har enten veldig høye eller veldig lave verdier relativt til de andre observasjonene. I R beregnes disse utfra kvartilbredden. Kvartilbredden er differansen mellom tredje og første kvartil. Alle observasjoner som er lavere enn første kvartil minus 1,5 ganger kvartilbredden eller høyere enn tredje kvartil pluss 1,5 ganger kvartilbredden regnes som uteliggere. 
 
-```{r, eval = FALSE}
+```{r lage_boxplot, eval = FALSE}
 ggplot(data = ess_subset, aes(x = news)) +
   geom_boxplot() +
   theme_minimal()
 ```
 
-```{r, include = FALSE}
+```{r lagre_figur9, include = FALSE}
 ggplot(data = ess_subset, aes(x = news)) +
   geom_boxplot() +
   theme_minimal()
@@ -488,3 +490,9 @@ ggsave("../../output/sem2_box.png")
 ![](../../output/sem2_box.png)
 
 Hvis dere vil utforske hvordan man kan tilpasse de ulike diagrammene vi har sett på og mange andre, kan denne siden være nyttig: https://www.r-graph-gallery.com/index.html
+
+```{r generere_script, eval=FALSE, echo=FALSE}
+knitr::purl("./doc/seminar2/seminar2.Rmd", 
+            output = "./script/seminar2.R", 
+            documentation = 1)
+```

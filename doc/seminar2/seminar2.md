@@ -80,8 +80,8 @@ library(tidyverse)
 ```
 ## v ggplot2 3.3.5     v purrr   0.3.4
 ## v tibble  3.1.6     v dplyr   1.0.7
-## v tidyr   1.2.0     v stringr 1.4.0
-## v readr   2.1.2     v forcats 0.5.1
+## v tidyr   1.1.4     v stringr 1.4.0
+## v readr   2.1.1     v forcats 0.5.1
 ```
 
 ```
@@ -104,7 +104,7 @@ getwd()
 ```
 
 ```
-## [1] "C:/Users/liserod/OneDrive - Universitetet i Oslo/Projects/Undervisning/STV1020/doc/seminar2"
+## [1] "/home/martigso/Dropbox/postdoc/undervisning/stv1020/r_seminar/STV1020/doc/seminar2"
 ```
 
 ```r
@@ -112,17 +112,17 @@ list.files()
 ```
 
 ```
-## [1] "seminar2.md"    "seminar2.pdf"   "seminar2.Rmd"   "seminar2_files"
+## [1] "seminar2_files" "seminar2.md"    "seminar2.pdf"   "seminar2.Rmd"
 ```
 Datasett kommer i mange ulike filformater. Noen vanlige formater er csv, dta (Stata-datasett), sav (SPSS-datasett) og Rdata. Hvilket format dataene dine har bestemmer hvilken funksjon du må bruke for å laste inn datasettet. For det meste så følger funksjonene dette formatet: 
 
 
 ```r
 # Laster inn og lagrer datasettet som et objekt:
-datasett <- read_filtype("filbane/filnavn.filtype") 
+datasett <- read_filtype("filbane/filnavn.filtype")
 ```
 
-For eksempel så er datasettet vi skal bruke i dag en dta-fil. Pakken `haven` inneholder funksjoner for å lese dta-filer og sav-filer. Det første vi gjør er derfor å installere og laste inn `haven`. 
+For eksempel så er datasettet vi skal bruke i dag en dta-fil (STATA filtype). Pakken `haven` inneholder funksjoner for å lese dta-filer og sav-filer. Det første vi gjør er derfor å installere og laste inn `haven`. 
 
 
 ```r
@@ -133,7 +133,7 @@ install.packages("haven")
 ```r
 library(haven)
 
-ess <- read_dta("../../data/ESS9NO.dta")
+ess <- read_dta("../../data/ESS9NO.dta", encoding = "UTF-8")
 ```
 
 Her er eksempler på noen andre funksjoner for å laste inn data:
@@ -141,7 +141,7 @@ Her er eksempler på noen andre funksjoner for å laste inn data:
 
 ```r
 # For csv-format:
-datanavn <- read_csv("data/filnavn.csv") 
+datanavn <- read_csv("data/filnavn.csv")
 
 # For filer i Rdata-format:
 load("data/filnavn.Rdata")
@@ -166,26 +166,17 @@ Når vi skal jobbe videre med data så kan det være lurt å fjerne de variablen
 
 
 ```r
-ess_subset <- ess %>% 
-  select(nwspol, polintr, vote, yrbrn) %>% 
-  rename(
-    	news = nwspol,
-    	interest = polintr, 
-    	year_born = yrbrn
-  )
+ess_subset <- ess %>%
+    select(nwspol, polintr, vote, yrbrn) %>%
+    rename(news = nwspol, interest = polintr, year_born = yrbrn)
 ```
 
 Dersom du har sjekket kodeboken på forhånd så kan du også endre variablenavnene når du bruker `select()`:
 
 
 ```r
-ess_subset <- ess %>% 
-  select(
-    vote,
-    news = nwspol,
-    interest = polintr, 
-    year_born = yrbrn
-    )
+ess_subset <- ess %>%
+    select(vote, news = nwspol, interest = polintr, year_born = yrbrn)
 ```
 
 
@@ -193,7 +184,7 @@ Vi kan regne oss frem til alder ved å bruke variabelen `year_born`og informasjo
 
 
 ```r
-ess_subset$age <- 2018 - ess_subset$year_born 
+ess_subset$age <- 2018 - ess_subset$year_born
 ```
 
 
@@ -427,14 +418,14 @@ tail(ess_subset)
 
 ```
 ## # A tibble: 6 x 7
-##            vote        news interest year_born   age vote_factor interest_factor
-##       <dbl+lbl>   <dbl+lbl> <dbl+lb> <dbl+lbl> <dbl> <fct>       <fct>          
-## 1 1 [Yes]          90       1 [Very~      1955    63 Yes         Very interested
-## 2 3 [Not eligi~    20       2 [Quit~      2003    15 Not eligib~ Quite interest~
-## 3 1 [Yes]          30       3 [Hard~      1994    24 Yes         Hardly interes~
-## 4 1 [Yes]          60       2 [Quit~      1984    34 Yes         Quite interest~
-## 5 2 [No]        NA(c) [Don~ 3 [Hard~      1974    44 No          Hardly interes~
-## 6 1 [Yes]          30       3 [Hard~      1988    30 Yes         Hardly interes~
+##         vote         news  interest year_born   age vote_factor  interest_factor
+##    <dbl+lbl>    <dbl+lbl> <dbl+lbl> <dbl+lbl> <dbl> <fct>        <fct>          
+## 1 1 [Yes]       90        1 [Very ~      1955    63 Yes          Very interested
+## 2 3 [Not el~    20        2 [Quite~      2003    15 Not eligibl~ Quite interest~
+## 3 1 [Yes]       30        3 [Hardl~      1994    24 Yes          Hardly interes~
+## 4 1 [Yes]       60        2 [Quite~      1984    34 Yes          Quite interest~
+## 5 2 [No]     NA(c) [Don'~ 3 [Hardl~      1974    44 No           Hardly interes~
+## 6 1 [Yes]       30        3 [Hardl~      1988    30 Yes          Hardly interes~
 ```
 
 Alle disse funksjonene kan også brukes på enkeltvariabler. 
@@ -481,8 +472,9 @@ prop.table(table(ess_subset$vote, useNA = "always"))
 
 
 ```r
-# Finner minimumsverdi (det laveste antall minutter brukt på nyheter)
-min(ess_subset$news, na.rm = TRUE) # na.rm = TRUE sier at missing skal droppes i beregningen
+# Finner minimumsverdi (det laveste antall minutter brukt
+# på nyheter)
+min(ess_subset$news, na.rm = TRUE)  # na.rm = TRUE sier at missing skal droppes i beregningen
 ```
 
 ```
@@ -497,7 +489,8 @@ min(ess_subset$news, na.rm = TRUE) # na.rm = TRUE sier at missing skal droppes i
 ```
 
 ```r
-# Finner maksimumsveriden (den høyeste antall minutter brukt på nyheter)
+# Finner maksimumsveriden (den høyeste antall minutter
+# brukt på nyheter)
 max(ess_subset$news, na.rm = TRUE)
 ```
 
@@ -579,9 +572,8 @@ Hvordan kan vi visualisere hvordan fordelingen av politisk interesse er? Her kan
 
 
 ```r
-ggplot(data = ess_subset, aes(x = interest_factor)) + 
-  geom_bar() +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+ggplot(data = ess_subset, aes(x = interest_factor)) + geom_bar() +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
 
@@ -592,11 +584,10 @@ Dersom vi ikke ønsker å gi missingverdiene (NA) en egen søyle så kan vi bruk
 
 
 ```r
-ggplot(data = ess_subset %>% 
-         filter(!is.na(interest_factor)), 
-       aes(x = interest_factor)) + 
-  geom_bar() +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+ggplot(data = ess_subset %>%
+    filter(!is.na(interest_factor)), aes(x = interest_factor)) +
+    geom_bar() + theme(axis.text.x = element_text(angle = 60,
+    hjust = 1))
 ```
 
 
@@ -607,11 +598,9 @@ Et alternativ til søylediagram er kakediagram (pie chart):
 
 
 ```r
-ggplot(ess_subset, aes(x = "", y = interest, fill = interest_factor)) + 
-  geom_bar(stat = "identity", width = 1) + 
-  coord_polar("y", start = 0) +
-  theme_void() +
-  scale_fill_grey()
+ggplot(ess_subset, aes(x = "", y = interest, fill = interest_factor)) +
+    geom_bar(stat = "identity", width = 1) + coord_polar("y",
+    start = 0) + theme_void() + scale_fill_grey()
 ```
 
 
@@ -624,11 +613,9 @@ Hvor mange innenfor hvert nivå av politisk interesse stemte? Vi kan bruke `geom
 
 
 ```r
-ggplot(data = ess_subset, 
-       aes(x = interest_factor)) + 
-  geom_bar(aes(fill=vote_factor),
-           position = "dodge") +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+ggplot(data = ess_subset, aes(x = interest_factor)) + geom_bar(aes(fill = vote_factor),
+    position = "dodge") + theme(axis.text.x = element_text(angle = 60,
+    hjust = 1))
 ```
 
 
@@ -641,9 +628,8 @@ Hvordan fordeler respondentenes alder og tiden de bruker på nyheter seg? Disse 
 
 
 ```r
-ggplot(data = ess_subset, aes(x = news)) +
- 	  geom_histogram(bins = 5) +
-  ggtitle("Histogram med fem søyler (bins) og frekvens")
+ggplot(data = ess_subset, aes(x = news)) + geom_histogram(bins = 5) +
+    ggtitle("Histogram med fem søyler (bins) og frekvens")
 ```
 
 
@@ -652,9 +638,8 @@ ggplot(data = ess_subset, aes(x = news)) +
 
 
 ```r
-ggplot(data = ess_subset, aes(x = news)) +
-  geom_histogram(binwidth = 10) +
-  ggtitle("Histogram med søylebredde (binwidth) på 10 og frekvens")
+ggplot(data = ess_subset, aes(x = news)) + geom_histogram(binwidth = 10) +
+    ggtitle("Histogram med søylebredde (binwidth) på 10 og frekvens")
 ```
 
 
@@ -666,9 +651,8 @@ Et histogram viser hvor mange enheter det er i hver kategori. Vi kan enten spesi
 
 
 ```r
-ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
- 	  geom_histogram(bins = 5) +
-  ggtitle("Histogram med fem søyler (bins) og density")
+ggplot(data = ess_subset, aes(x = news, y = ..density..)) + geom_histogram(bins = 5) +
+    ggtitle("Histogram med fem søyler (bins) og density")
 ```
 
 
@@ -678,9 +662,8 @@ ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
 
 
 ```r
-ggplot(data = ess_subset, aes(x = news, y = ..density..)) +
-  geom_histogram(binwidth = 10) +
-  ggtitle("Histogram med søylebredde (binwidth) 10 og density")
+ggplot(data = ess_subset, aes(x = news, y = ..density..)) + geom_histogram(binwidth = 10) +
+    ggtitle("Histogram med søylebredde (binwidth) 10 og density")
 ```
 
 
@@ -694,9 +677,7 @@ Prikkene i grafen angir uteliggere. Uteliggere er observasjoner som har enten ve
 
 
 ```r
-ggplot(data = ess_subset, aes(x = news)) +
-  geom_boxplot() +
-  theme_minimal()
+ggplot(data = ess_subset, aes(x = news)) + geom_boxplot() + theme_minimal()
 ```
 
 
@@ -704,3 +685,5 @@ ggplot(data = ess_subset, aes(x = news)) +
 ![](../../output/sem2_box.png)
 
 Hvis dere vil utforske hvordan man kan tilpasse de ulike diagrammene vi har sett på og mange andre, kan denne siden være nyttig: https://www.r-graph-gallery.com/index.html
+
+
