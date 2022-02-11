@@ -1,12 +1,13 @@
 ---
 title: "Seminar 6: Multippel regresjon"
-author: "Lise Rødland"
-date: "April 12, 2021"
+author: "Lise Rødland, du og jeg og vi to"
+date: '11-02-2022'
 output:
   pdf_document: 
     keep_md: yes
   github_document: default
 ---
+
 
 I dag skal vi se på fem ting:
 
@@ -26,18 +27,18 @@ library(tidyverse)
 ```
 
 ```
-## -- Attaching packages --------------------------------------------- tidyverse 1.3.0 --
+## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 ```
 
 ```
-## v ggplot2 3.3.2     v purrr   0.3.4
-## v tibble  3.0.3     v dplyr   1.0.2
-## v tidyr   1.1.2     v stringr 1.4.0
-## v readr   1.4.0     v forcats 0.5.0
+## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.6     v dplyr   1.0.7
+## v tidyr   1.1.4     v stringr 1.4.0
+## v readr   2.1.1     v forcats 0.5.1
 ```
 
 ```
-## -- Conflicts ------------------------------------------------ tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 ```
@@ -66,7 +67,7 @@ Det neste vi skal gjøre er å laste inn datasettet vi skal jobbe med i dag. Vi 
 
 
 ```r
-# Bytt ut det som står i "" med din egen filbane:
+# Bytt ut det som står i '' med din egen filbane:
 ANES1996small <- read.csv("../../data/ANES1996small.csv")
 ```
 
@@ -152,12 +153,9 @@ Først endrer vi navnene på de variabelene vi vil bruke i datasettet vårt ved 
 
 
 ```r
-ANES1996small <- ANES1996small %>% 
-  rename(hillary_thermo = v960281,
-         income = v960701,
-         womenmvmt_thermo = v961039,
-         gender = v960066,
-         age = v960605)
+ANES1996small <- ANES1996small %>%
+    rename(hillary_thermo = v960281, income = v960701, womenmvmt_thermo = v961039,
+        gender = v960066, age = v960605)
 ```
 
 Vi kan bruke `names()` eller `head()` for å sjekke at omkodingen funket:
@@ -180,28 +178,24 @@ Det neste vi skal gjøre er å bruke `select()` til lage et subset. I `select()`
 
 
 ```r
-nydata <- data %>% 
-  select(var1, var2)
+nydata <- data %>%
+    select(var1, var2)
 ```
 
 Dersom jeg vil lage et nytt datasett som inneholder alle variabler bortsett fra var2 så kan jeg skrive: 
 
 
 ```r
-nydata <- data %>% 
-  select(-var2)
+nydata <- data %>%
+    select(-var2)
 ```
 
 Merk at jeg gir datasettet et nytt navn til høyre for assignment operatoren `<-`. Det gjør jeg for å beholde det opprinnelige datasettet i tilfelle jeg vil ha med noe mer eller koden ikke gjør det jeg forventet at den skulle gjøre. Vi vil lage et nytt datasett som bare inneholder de variablene vi ga nye navn. Vi kaller det nye datasettet `ANES1996small2` og fyller inn variablene vi vil beholde:
 
 
 ```r
-ANES1996small2 <- ANES1996small %>% 
-  select(hillary_thermo,
-         income,
-         womenmvmt_thermo,
-         gender,
-         age)
+ANES1996small2 <- ANES1996small %>%
+    select(hillary_thermo, income, womenmvmt_thermo, gender, age)
 ```
 
 Det siste vi skal gjøre er å legge til en ny variabel i datasettet vårt. Den skal hete `female` og ta verdien 1 dersom observasjonen har verdien 1 på `gender` og 0 ellers. Dette er en dummyvariabel og vi kan tenke oss at 0 står for nei og 1 står for ja. For å få til dette kombinerer vi `mutate()` som vi bruker for å opprette nye variabler og `ifelse()`:
@@ -209,7 +203,7 @@ Det siste vi skal gjøre er å legge til en ny variabel i datasettet vårt. Den 
 
 ```r
 ANES1996small2 <- ANES1996small2 %>%
-  mutate(female = ifelse(gender == 1, 0, 1))
+    mutate(female = ifelse(gender == 1, 0, 1))
 ```
 
 
@@ -250,10 +244,8 @@ Vi kan også lage et histogram over fordelingen:
 
 
 ```r
-ggplot(data = ANES1996small) +
-  geom_histogram(aes(x = hillary_thermo),
-                 binwidth = 10) +
-  theme_bw()
+ggplot(data = ANES1996small) + geom_histogram(aes(x = hillary_thermo), binwidth = 10) +
+    theme_bw()
 ```
 
 
@@ -277,8 +269,7 @@ Det betyr at vi vil ha med tre variabler i modellen vår: `hillary_thermo` er av
 
 
 ```r
-model1 <- lm(hillary_thermo ~ income + female, 
-             data = ANES1996small2, na.action = "na.exclude")
+model1 <- lm(hillary_thermo ~ income + female, data = ANES1996small2, na.action = "na.exclude")
 ```
 
 Vi kan bruke `summary()` og `stargazer()` for å undersøke resultatene: 
@@ -349,16 +340,14 @@ For å undersøke hva som skjer med koeffisienten til en uavhengig variabel så 
 
 
 ```r
-model0 <- lm(hillary_thermo ~ income, 
-             data = ANES1996small2, na.action = "na.exclude")
+model0 <- lm(hillary_thermo ~ income, data = ANES1996small2, na.action = "na.exclude")
 ```
 
 For å lage tabellen så bruker vi `stargazer()`:
 
 
 ```r
-stargazer(model0, model1, 
-          type = "text")
+stargazer(model0, model1, type = "text")
 ```
 
 ```
@@ -392,13 +381,8 @@ Vi kan legge til tittel og variabelnavn for at tabellen skal bli mer forståelig
 
 
 ```r
-stargazer(model0, model1, 
-          type = "text",
-          title = c("Results from regression analysis"),
-          covariate.labels = c("Income",
-                               "Female",
-                               "Intercept"),
-          dep.var.labels = "Hillary Clinton Thermometer score")
+stargazer(model0, model1, type = "text", title = c("Results from regression analysis"),
+    covariate.labels = c("Income", "Female", "Intercept"), dep.var.labels = "Hillary Clinton Thermometer score")
 ```
 
 ```
@@ -434,9 +418,8 @@ Før vi går videre til modelldiagnostikk så legger vi til en variabel med de p
 
 
 ```r
-ANES1996small2 <- ANES1996small2 %>% 
-  mutate(mod1fitted = fitted(model1),
-         mod1resid = resid(model1))
+ANES1996small2 <- ANES1996small2 %>%
+    mutate(mod1fitted = fitted(model1), mod1resid = resid(model1))
 ```
 
 
@@ -449,16 +432,16 @@ Modellene vi har laget til nå har vært additive modeller. Nå skal vi legge ti
 Først kjører vi den additive modellen:
 
 ```r
-model2additiv <- lm(hillary_thermo ~ female + womenmvmt_thermo, 
-                    data = ANES1996small2, na.action = "na.exclude")
+model2additiv <- lm(hillary_thermo ~ female + womenmvmt_thermo, data = ANES1996small2,
+    na.action = "na.exclude")
 ```
 
 Vi legger til samspillsledd i modellen vår ved å bruke `*` mellom de to variablene vi vil undersøke samspillet av:
 
 
 ```r
-model2samspill <- lm(hillary_thermo ~ female*womenmvmt_thermo, 
-                     data = ANES1996small2, na.action = "na.exclude")
+model2samspill <- lm(hillary_thermo ~ female * womenmvmt_thermo, data = ANES1996small2,
+    na.action = "na.exclude")
 
 summary(model2additiv)
 ```
@@ -522,13 +505,9 @@ Her skal vi se på hvordan vi kan sammenligne de to modellene i en fin tabell. V
 
 
 ```r
-stargazer(model2additiv, model2samspill, type = "text",
-          title = c("Tabell fra Kellstedt og Whitten s. 257"),
-          covariate.labels = c("Female",
-                               "Women's Movement Thermometer",
-                               "Women's Movement Thermometer x Female",
-                               "Intercept"),
-          dep.var.labels = "Hillary Clinton Thermometer score")
+stargazer(model2additiv, model2samspill, type = "text", title = c("Tabell fra Kellstedt og Whitten s. 257"),
+    covariate.labels = c("Female", "Women's Movement Thermometer", "Women's Movement Thermometer x Female",
+        "Intercept"), dep.var.labels = "Hillary Clinton Thermometer score")
 ```
 
 ```
@@ -565,14 +544,9 @@ Dersom vi vil lagre denne på PC-en og åpne den i word så byttr vi til `type =
 
 
 ```r
-stargazer(model2additiv, model2samspill, type = "html",
-          title = c("Tabell fra Kellstedt og Whitten s. 257"),
-          covariate.labels = c("Female",
-                               "Women's Movement Thermometer",
-                               "Women's Movement Thermometer x Female",
-                               "Intercept"),
-          dep.var.labels = "Hillary Clinton Thermometer score",
-          out = "mod2_tabell.htm")
+stargazer(model2additiv, model2samspill, type = "html", title = c("Tabell fra Kellstedt og Whitten s. 257"),
+    covariate.labels = c("Female", "Women's Movement Thermometer", "Women's Movement Thermometer x Female",
+        "Intercept"), dep.var.labels = "Hillary Clinton Thermometer score", out = "mod2_tabell.htm")
 ```
 
 
@@ -583,9 +557,7 @@ Det første vi skal se på er restleddenes fordeling. For å vurdere denne så b
 
 
 ```r
-ggplot(data = ANES1996small2, aes(x = mod1resid)) +
-  geom_histogram() +
-  theme_bw()
+ggplot(data = ANES1996small2, aes(x = mod1resid)) + geom_histogram() + theme_bw()
 ```
 
 
@@ -596,11 +568,8 @@ Vi kan også plotte restleddene mot modellens verdier. Dette gjør vi for å vur
 
 
 ```r
-ggplot(data = ANES1996small2 ,
-       aes(x = mod1fitted, y = mod1resid)) +
-  geom_point() + 
-  geom_smooth() + 
-  theme_bw()
+ggplot(data = ANES1996small2, aes(x = mod1fitted, y = mod1resid)) + geom_point() +
+    geom_smooth() + theme_bw()
 ```
 
 
@@ -623,4 +592,5 @@ plot(model1)
 ![](../../output/sem6_fig7.png)
 
 ![](../../output/sem6_fig8.png)
+
 

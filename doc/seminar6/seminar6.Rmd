@@ -1,13 +1,18 @@
 ---
 title: "Seminar 6: Multippel regresjon"
-author: "Lise Rødland"
-date: "April 12, 2021"
+author: "Lise Rødland, du og jeg og vi to"
+date: '`r format(Sys.time(), "%d-%m-%Y")`'
 output:
   pdf_document: 
     keep_md: yes
   github_document: default
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
+
+```
 I dag skal vi se på fem ting:
 
 1. Laste inn pakker og data (repetisjon)
@@ -20,7 +25,7 @@ I dag skal vi se på fem ting:
 # Laste inn pakker
 Det aller første vi gjør er å laste inn pakkene vi skal bruke i dag ved hjelp av `library(pakkenavn)`:
 
-```{r}
+```{r laste_pakker}
 library(tidyverse)
 library(stargazer)
 ```
@@ -30,7 +35,7 @@ Dersom du ikke har brukt disse pakkene før må du huske å kjøre `install.pack
 # Laste inn data
 Det neste vi skal gjøre er å laste inn datasettet vi skal jobbe med i dag. Vi skal jobbe videre med datasettet fra Kellstedt og Whitten som vi kikket litt på i seminar 4. Disse dataene er i `csv`-format og vi bruker derfor funksjonen `read.csv()`. Husk at hvilken funksjon du bruker for å laste inn data avhenger av hvilket format dataene har. Dersom du er usikker på hvilken funksjon du skal bruke så sjekk dokumentet jeg har lastet opp på Canvas. Vi laster inn data og lagrer som et objekt i environment: 
 
-```{r}
+```{r lese_data}
 # Bytt ut det som står i "" med din egen filbane:
 ANES1996small <- read.csv("../../data/ANES1996small.csv")
 
@@ -44,7 +49,7 @@ I dag skal vi teste to hypoteser fra kapittel 11 i Kellstedt og Whitten (side 24
 Det er alltid lurt å bli litt kjent med datasettet før en begynner å kjøre analyser. Vi har sett på flere koder for dette, blant annet i seminar fem, men vi gjentar noen av dem her. 
 
 Vi finner navnene på variablene: 
-```{r}
+```{r variabelnavn}
 names(ANES1996small)
 ```
 
@@ -52,13 +57,13 @@ Dette er ikke veldig intuitive variabelnavn så senere skal vi endre navn på de
 
 Vi kan bruke `View()` for å undersøke datasettet nærmere: 
 
-```{r, eval = FALSE}
+```{r se_på_data, eval = FALSE}
 View(ANES1996small)
 ```
 
 Et alternativ til view for å bare se noen observasjoner er `head()`:
 
-```{r}
+```{r dataoversikt}
 head(ANES1996small)
 ```
 
@@ -66,7 +71,7 @@ Ved å bruke for eksempel `View()` får vi mer informasjon om hva slags struktur
 
 For å titte på enkeltvariabler bruker vi syntaksen `datasett$variabel`. Det kan også være praktisk å se denne informasjonen i en tabell. Da kan vi bruke table(`datasett$variabel`). For eksempel så vet jeg at variabelen `v960066` er det man kaller en dikotom variabel for kjønn. At en variabel er dikotom betyr bare at den har to verdier. Denne variabelen tar verdien 1 dersom respondenten er en mann og 2 dersom respondenten er en kvinne. Vi kan undersøke den i en tabell:
 
-```{r}
+```{r variabeltabell}
 table(ANES1996small$v960066, useNA = "always")
 ```
 
@@ -75,7 +80,7 @@ Før vi begynner på regresjonsanalysen så skal vi endre navn på noen av varia
 
 Først endrer vi navnene på de variabelene vi vil bruke i datasettet vårt ved hjelp av `rename()`. `rename()` har syntaksen `rename(nyttnavn = gammeltnavn)`. I praksis blir det: 
 
-```{r}
+```{r nytt_navn_til_variabler}
 ANES1996small <- ANES1996small %>% 
   rename(hillary_thermo = v960281,
          income = v960701,
@@ -86,27 +91,27 @@ ANES1996small <- ANES1996small %>%
 
 Vi kan bruke `names()` eller `head()` for å sjekke at omkodingen funket:
 
-```{r}
+```{r variabelnavn2}
 names(ANES1996small)
 ```
 
 Det neste vi skal gjøre er å bruke `select()` til lage et subset. I `select()` fyller du ut navnet på de variablene du vil beholde og setter et `-` foran variabler du vil fjerne. Dersom jeg vil lage et nytt datasett med variable var1 og var2 kan jeg skrive:
 
-```{r, eval = FALSE}
+```{r velge_variabler, eval = FALSE}
 nydata <- data %>% 
   select(var1, var2)
 ```
 
 Dersom jeg vil lage et nytt datasett som inneholder alle variabler bortsett fra var2 så kan jeg skrive: 
 
-```{r, eval = FALSE}
+```{r fjerne_variabler, eval = FALSE}
 nydata <- data %>% 
   select(-var2)
 ```
 
 Merk at jeg gir datasettet et nytt navn til høyre for assignment operatoren `<-`. Det gjør jeg for å beholde det opprinnelige datasettet i tilfelle jeg vil ha med noe mer eller koden ikke gjør det jeg forventet at den skulle gjøre. Vi vil lage et nytt datasett som bare inneholder de variablene vi ga nye navn. Vi kaller det nye datasettet `ANES1996small2` og fyller inn variablene vi vil beholde:
 
-```{r}
+```{r velge_variabler2}
 ANES1996small2 <- ANES1996small %>% 
   select(hillary_thermo,
          income,
@@ -117,7 +122,7 @@ ANES1996small2 <- ANES1996small %>%
 
 Det siste vi skal gjøre er å legge til en ny variabel i datasettet vårt. Den skal hete `female` og ta verdien 1 dersom observasjonen har verdien 1 på `gender` og 0 ellers. Dette er en dummyvariabel og vi kan tenke oss at 0 står for nei og 1 står for ja. For å få til dette kombinerer vi `mutate()` som vi bruker for å opprette nye variabler og `ifelse()`:
 
-```{r}
+```{r omkode_kjønn}
 ANES1996small2 <- ANES1996small2 %>%
   mutate(female = ifelse(gender == 1, 0, 1))
 ```
@@ -127,7 +132,7 @@ I `ifelse()` sier vi at dersom variabelen `gender` har verdien 1, så skal den n
 
 Vi sjekker at omkodingen ble riktig ved hjelp av en krysstabell med ny og gammel variabel: 
 
-```{r}
+```{r sjekke_ny_variabel}
 table(ANES1996small2$female, ANES1996small2$gender, useNA = "always")
 ```
 
@@ -135,7 +140,7 @@ Før vi ser på multippel regresjonsanalyse så skal vi se litt nærmere på den
 
 Vi kan bruke `summary()` til å undersøke variabelen nærmere:
 
-```{r}
+```{r summerende_stat_variabel}
 summary(ANES1996small$hillary_thermo)
 ```
 
@@ -143,7 +148,7 @@ Fra summary kan vi lese at hele skalaen fra 0 (Min.) til 100 (Max.) er tatt i br
 
 Vi kan også lage et histogram over fordelingen:
 
-```{r, eval = FALSE}
+```{r histogram_variabel, eval = FALSE}
 ggplot(data = ANES1996small) +
   geom_histogram(aes(x = hillary_thermo),
                  binwidth = 10) +
@@ -151,7 +156,7 @@ ggplot(data = ANES1996small) +
   
 ```
 
-```{r, include = FALSE}
+```{r lagre_plot1, include = FALSE}
 ggplot(data = ANES1996small) +
   geom_histogram(aes(x = hillary_thermo),
                  binwidth = 10) +
@@ -164,7 +169,7 @@ ggsave("../../output/sem6_fig1.png")
 # Multippel regresjonanalyse
 Multippel regresjonsanalyse er regresjonanalyse med flere uavhengige variabler. De uavhengige variablene kan være forklaringsvariabler eller variabler du ønsker å kontrollere for. Vi bruker samme funksjon som vi brukte når vi kjørte en regresjonsanalyse med en uavhengig variabel i seminar 5, nemlig `lm()`. Syntaksen er også veldig lik. Vi skiller mellom avhengig variabel og uavhenig variable med `~` og legger til flere uavhengige variabler med `+`. Syntaksen der vi velger å lagre modellen som et objekt, av er avhengig variabel og uv er uavhengig variable blir:
 
-```{r, eval = FALSE}
+```{r multivariat_ols_eksempel, eval = FALSE}
 model <- lm(av ~ uv1 + uv2, data = data, na.action = "na.exclude")
 ```
 
@@ -176,40 +181,40 @@ For ordens skyld så gjentar vi hypotesene som vi vil teste som er beskrevet i K
 
 Det betyr at vi vil ha med tre variabler i modellen vår: `hillary_thermo` er avhengig variabel, mens `income` og `female` er de uavhengige variablene. For å kjøre modellen kjører vi følgende kode: 
 
-```{r}
+```{r multivariat_ols}
 model1 <- lm(hillary_thermo ~ income + female, 
              data = ANES1996small2, na.action = "na.exclude")
 ```
 
 Vi kan bruke `summary()` og `stargazer()` for å undersøke resultatene: 
 
-```{r}
+```{r se_på_modell}
 summary(model1)
 ```
 
 Ved å bruke `summary` får vi informasjon om koeffisienten (Estimate), standardfeilen (Std. Error), t-verdien (t-value) og p-verdien (Pr(>|t|)). Av summary kan vi derfor lese at koeffisienten til income når vi kontrollerer for female er -0.8408 og p-verdien er 0.00000000000150. P-verdien er lavere enn 0.01 og vi kan derfor si at koeffisienten er signifikant på 1 prosents nivå. Dersom du lurer på hva tallene med e- blir skrevet ut så kan du f.eks. bruke denne siden: [converthere.com/](https://converthere.com/numbers/10e+6-written-out)
 
-```{r}
+```{r lage_modelltabell}
 stargazer(model1, type = "text")
 ```
 
 For å undersøke hva som skjer med koeffisienten til en uavhengig variabel så kan vi kjøre en redusert modell og sammenligne disse i en tabell: 
 
-```{r}
+```{r bivariat_ols}
 model0 <- lm(hillary_thermo ~ income, 
              data = ANES1996small2, na.action = "na.exclude")
 ```
 
 For å lage tabellen så bruker vi `stargazer()`:
 
-```{r}
+```{r tabell_med_to_modell}
 stargazer(model0, model1, 
           type = "text")
 ```
 
 Vi kan legge til tittel og variabelnavn for at tabellen skal bli mer forståelig:
 
-```{r}
+```{r tweek_tabell}
 stargazer(model0, model1, 
           type = "text",
           title = c("Results from regression analysis"),
@@ -222,7 +227,7 @@ stargazer(model0, model1,
 Det er litt mer komplisert å plotte regresjonslinjer når vi har flere uavhengig variabler. Det er fordi verdien på avhengig variabel nå vil avehenge av en kombinasjon av ulike verdier på de uavhengige variablene. Det finnes måter å gjøre det på og det finnes pakker som forenkler denne jobben, men vi kommer ikke til å se på dette i seminar.  
 Før vi går videre til modelldiagnostikk så legger vi til en variabel med de predikerte verdiene i datasettet. Jeg lager også en variabel for residualene som vi skal se nærmere på senere:
 
-```{r}
+```{r legge_inn_pred_resid}
 ANES1996small2 <- ANES1996small2 %>% 
   mutate(mod1fitted = fitted(model1),
          mod1resid = resid(model1))
@@ -236,7 +241,7 @@ Modellene vi har laget til nå har vært additive modeller. Nå skal vi legge ti
 
 
 Først kjører vi den additive modellen:
-```{r}
+```{r enda_en_modell}
 model2additiv <- lm(hillary_thermo ~ female + womenmvmt_thermo, 
                     data = ANES1996small2, na.action = "na.exclude")
 
@@ -244,7 +249,7 @@ model2additiv <- lm(hillary_thermo ~ female + womenmvmt_thermo,
 
 Vi legger til samspillsledd i modellen vår ved å bruke `*` mellom de to variablene vi vil undersøke samspillet av:
 
-```{r}
+```{r samspillsmodell}
 model2samspill <- lm(hillary_thermo ~ female*womenmvmt_thermo, 
                      data = ANES1996small2, na.action = "na.exclude")
 
@@ -257,7 +262,7 @@ summary(model2samspill)
 
 Her skal vi se på hvordan vi kan sammenligne de to modellene i en fin tabell. Vi skal bruke `stargazer()`, men kommer til å spesifisere noen flere argumenter enn tidligere. Vi bruker `type =` til å spesifisere hvilket format vi vil ha tabellen i. `covariate.labels` bruker vi til å legge til nye navn til de uavhengige variablene i modellen. Det er veldig viktig å legge inn navnene i samme rekkefølge som i regresjonsmodellen, om ikke risikerer vi å gi feil navn til variablene. `Dep.var.labels` bruker til å gi navn til avhengig variabel:
 
-```{r}
+```{r enda_en_modelltabell}
 stargazer(model2additiv, model2samspill, type = "text",
           title = c("Tabell fra Kellstedt og Whitten s. 257"),
           covariate.labels = c("Female",
@@ -268,7 +273,7 @@ stargazer(model2additiv, model2samspill, type = "text",
 ```
 Dersom vi vil lagre denne på PC-en og åpne den i word så byttr vi til `type = "html"` og spesifiserer et filnavn i `out = `:
 
-```{r, eval = FALSE}
+```{r html_tabell, eval = FALSE}
 stargazer(model2additiv, model2samspill, type = "html",
           title = c("Tabell fra Kellstedt og Whitten s. 257"),
           covariate.labels = c("Female",
@@ -285,13 +290,13 @@ Videre skal vi se på noen grafiske verktøy for å vurdere om enkelteforutsetni
 
 Det første vi skal se på er restleddenes fordeling. For å vurdere denne så bruker vi restleddene/residualene som vi lagret i datasettet tidligere. Vi kan bruke `ggplot()` til å vurdere om restleddenes fordelingen: 
 
-```{r, eval = FALSE}
+```{r plot_residualer, eval = FALSE}
 ggplot(data = ANES1996small2, aes(x = mod1resid)) +
   geom_histogram() +
   theme_bw()
 ```
 
-```{r, include = FALSE}
+```{r lagre_plot2, include = FALSE}
 ggplot(data = ANES1996small2, aes(x = mod1resid)) +
   geom_histogram() +
   theme_bw()
@@ -303,7 +308,7 @@ ggsave("../../output/sem6_fig2.png")
 
 Vi kan også plotte restleddene mot modellens verdier. Dette gjør vi for å vurdere eventuell hetroskedastisitet. Vi bruker de predikerte verdiene som vi lagret i datasettet på x aksen og modellens restledd på y aksen. Vi legger til de ulike enhetene med `geom_point`, så trekker vi en linje gjennompunktene med `geom_smooth()`.
 
-```{r, eval = FALSE}
+```{r resid_vs_fitted, eval = FALSE}
 ggplot(data = ANES1996small2 ,
        aes(x = mod1fitted, y = mod1resid)) +
   geom_point() + 
@@ -311,7 +316,7 @@ ggplot(data = ANES1996small2 ,
   theme_bw()
 ```
 
-```{r, include = FALSE}
+```{r lagre_plot3, include = FALSE}
 ggplot(data = ANES1996small2 ,
        aes(x = mod1fitted, y = mod1resid)) +
   geom_point() + 
@@ -326,7 +331,7 @@ Slike plott kan være noe vanskelig å tolke. Hvor enkel eller vanskelig tolknin
 
 Vi kan også bruke plot() for å få ulike figurer for diagnosistikk, vi vil få 4 ulike plot med denne funksjonen. Disse plottene er ikke like fine som de vi lager i ggplot, men de kan hjelpe oss med å få en rask oversikt over ulike diagnosistikk:
 
-```{r, eval = FALSE}
+```{r innebygd_plot_modell, eval = FALSE}
 plot(model1)
 ```
 
@@ -339,3 +344,8 @@ plot(model1)
 
 ![](../../output/sem6_fig8.png)
 
+```{r generere_script, eval=FALSE, echo=FALSE}
+knitr::purl("./doc/seminar6/seminar6.Rmd", 
+            output = "./script/seminar6.R", 
+            documentation = 1)
+```
