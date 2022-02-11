@@ -28,13 +28,13 @@ Det dokumentet du leser nå er det som forklarer litt mer av scriptet. Dette dok
 
 I disse dokumentene vil dere finne noe tekst, noen figurer og tabeller, og noe kode. Innholdet reflekterer det jeg har planlagt at vi skal gå gjennom på seminaret. Koden vil ha en egen grå bakgrunn som her: 
 
-```{r}
+```{r chunk_eksempel}
 # Dette er kode.  
 ```
 
 Alt som er skrevet i grått kan dere kopiere inn i et R-script og kjøre for å se hva som skjer. Når jeg har # foran en tekstlinje så betyr det at jeg skriver en kommentar i scriptet mitt. Når vi setter en # foran teksten så skjønner R at dette ikke er vanlig kode, men en kommentar. Resultatene av faktisk kode vil komme i et eget felt med grå bakgrunn under. R sin respons kjennetegnes ved at linjene starter med ##. Se for eksempel her: 
 
-```{r}
+```{r kommentar_eksempel}
 # Dette er en kommentar. 
 # Nå skal vi gjøre et lite forsøk med noe enkel matte! 
 # For å kjøre koden setter dere musepekeren ved siden av, og trykker ctrl+enter (cmd+return på Mac). 
@@ -64,14 +64,14 @@ resultatene på en (vanligvis) lettleselig måte. Derfor er det alltid Rstudio v
 ## Hjelpefiler
 Ofte når vi bruker R er vi usikre på hvordan forskjellige funksjoner fungerer. Da kan det være nyttig å lese hjelpefilene som forteller hva en funksjon gjør, og hvordan en skal bruke den. For å gjøre dette skriver du et spørsmålstegn før navnet på funksjonen.
 
-```{r, eval=FALSE}
+```{r mean_funksjonen, eval=FALSE}
 #La oss prøve dette med "mean()" funksjonen, som logisk nok finner gjennomsnitt:
 ?mean
 ```
 
 Dersom du får et svar som under her så tyder det på at du ikke har installert pakken funksjonen ligger i. Da kan du legge til et spørsmålstegn til og kjøre kode `??vif`.  
 
-```{r}
+```{r hjeplefil_eksempel}
 ?vif
 
 ```
@@ -102,7 +102,7 @@ Det første vi skal se på er objekter. Objekter er i alle "ting" i R som kan in
 
 Vi skal i hovedsak forholde oss til to typer objekter;  vektorer og funksjoner. Hva disse er nok lettere å vise ved eksempel. La oss lage et objekt med informasjon om et tall. For å gjøre dette må vi først velge et objektnavn, så bruke `<-` (dette heter en "assignment operator"), og så skrive hva objektet skal inneholde. Her lager jeg en vektor som heter "To" og som inneholder tallet 2. 
 
-```{r}
+```{r lage_objekter}
 
 To <- 2
 
@@ -127,7 +127,7 @@ på, for eksempel så kan vi skrive 1:10 for å få alle heltallene mellom 1 og 
 
 La oss nå lage noen flere objekter:
 
-```{r}
+```{r lage_objekter2}
 en_til_hundre <- 1:100
 tall <- c(1,4,56,8,4,2,4)
 
@@ -136,7 +136,7 @@ tall
 
 Nå som vi har et script med flere elementer kan vi prøve å kjøre noen funksjoner på dem. Det kan nevnes at funksjoner faktisk er objekter de og, men det blir først interessant når du holder på med litt mer avansert kode. La oss se om vi kan finne gjennomsnittet av disse vektorene:
 
-```{r}
+```{r funksjon_eksempel}
 mean(en_til_hundre)
 mean(tall)
 ```
@@ -147,27 +147,27 @@ Om dere ser i environment så vil dere merke at etter navnet på vektoren `tall`
 
 For å få tak i et spesifikt element kan vi bruke disse klammeparanteser. La oss si at vi vil ha element nr. 5 i vektoren tall:
 
-```{r}
+```{r indeksering_eksempel}
 tall[5]
 ```
 
 Når vi kjører denne ser vi at vi får ut det femte tallet i tallrekka vi skreiv inn i stad. Dette kan vi også sjekke i environment for å se at stemmer. 
 
 På samme måte som vi definerte en rekke tall istad, kan vi også hente ut en rekke elementer. 
-```{r}
+```{r indeksering_eksempel2}
 tall[3:6]
 tall[c(3,5,3,6)]
 ```
 
 Vi kan også finne gjennomsnittet av utvalgte tall:
 
-```{r}
+```{r funksjon_indeksering}
 mean(tall[c(3,5,3,6)])
 ```
 
 Eller bruke disse som et nytt objekt:
 
-```{r}
+```{r nytt_objekt_indeksering}
 Ny_Vektor <- tall[c(3,5,3,6)]
 ```
 
@@ -176,14 +176,14 @@ Ny_Vektor <- tall[c(3,5,3,6)]
 
 Så langt har vi kun jobbet med tallverdier. Ofte har vi variabler som ikke er tall, men f.eks. tekst eller ordinalverdier. I R vil vi også se at visse funksjoner krever at dataene er i visse klasser. Hovedklassene vi kommer til å bruke er; numeric, character, logical og factor. Numeric er tall (logisk nok). De fleste mattefunksjoner krever at dataene er numeric. For å sjekke om noe er numeric kan vi bruke funksjonen `is.numeric()`.
 
-```{r}
+```{r sjekke_numeric}
 is.numeric(en_til_hundre)
 # Her ser vi at vi får opp "TRUE" som betyr at en_til_hundre er et numerisk objekt
 ```
 
 Vi kan også bruke funksjonen `class()` til å hente ut informasjon om klassen: 
 
-```{r}
+```{r sjekke_klasse}
 class(en_til_hundre)
 ```
 
@@ -193,7 +193,7 @@ inneholde heltall, mens numeric kan ha desimaler. Dette er svært sjeldent inter
 Når vi vil skrive tekst bruker vi klassen "character". En tekststring må alltid ha hermetegn ("") rundt seg, men
 ellers definerer vi den som vanlig: 
 
-```{r}
+```{r klasse_tekst_eksempel}
 Tekst <- "Hei, jeg elsker R! <3"
 # Denne klassen kan inneholde tekst, men vil f.eks. ikke kunne brukes til matte. 
 mean(Tekst)
@@ -203,7 +203,7 @@ Her ser dere at vi får en feilmelding, som sier at argumentet ikke er numerisk 
 
 Vi kan også kreve at et objekt skal ha en viss klasse. Det gjør vi med funksjonen `as."klassenavn"` (bytt ut "klassenavn" med for eksempel numeric eller character). Det kan føre til noen uforventede resultater. La oss gjøre om objektet tall til character: 
 
-```{r}
+```{r bytte_klasse}
 tall_ch <- as.character(tall)
 mean(tall_ch)
 ```
@@ -215,7 +215,7 @@ kan ha flere forhåndsdefinerte nivåer og brukes ofte når vi skal kjøre stati
 forstå faktorer på er å tenke på dem som ordinale variabler, hvor vi kan vite rekkefølgen på nivåene men ikke avstanden, som for eksempel utdanningsnivåene barneskole, ungdomskole, videregående skole. 
 
 For å lage en faktor bruker vi funksjonen `factor()`. La oss først lage en faktor med ulike utdanningsnivåer: 
-```{r}
+```{r faktor_eksempel}
 # Lager en faktorvariabel uten å sette nivåer
 skolenivaer <- factor(c("Barneskole", 
                         "Ungdomskole", 
@@ -235,7 +235,7 @@ levels(skolenivaer)
 
 I eksempelet her kan vi se at vi først definerer de forskjellige verdiene som er i variabelen. Vi har ikke spesifisert hvilken rekkefølge nivåene har. Når vi ikke gjør det så baserer R rekkefølgen på alfabetet. Derfor få vi rekkefølgen "Barneskole"   "Ungdomskole"  "Universitet"  "Videregaende". For å unngå dette så kan vi spesifisere faktornivåene: 
 
-```{r}
+```{r endre_faktornivå}
 # Endrer faktornivåene
 skolenivaer <- factor(skolenivaer,
                       levels = c("Barneskole",
@@ -248,7 +248,7 @@ levels(skolenivaer)
 
 I toppen her sa jeg at en vektor var et objekt som inneholdt elementer av *samme* klasse. Så langt har vi også holdt oss til det gjennom å kunne lage objekter med tekst eller tall. Hva skjer da om vi prøver å blande? Vi kan  lage et objekt som inneholder både tekst og tall:
 
-```{r}
+```{r blande_klasser_eksempel}
 teksttall <- c(1,4,0,4, "Bamse", "R", "R Seminarer er de BESTE seminarer", 42, "the answer")
 
 class(teksttall)
@@ -263,7 +263,7 @@ Noen ganger har vi lyst til å slå sammen data som er av forskjellige typer. F.
 
 Vi kan tenke på hver rad i en dataframe som en observasjon. En observasjon kan for eksempel være en person, et land i et gitt år eller en by. Når vi skal kjøre analyser i senere seminarer så vil vi som regel laste inn datasett/dataframes som andre har laget, men vi kan også lage dem selv. I dette eksempelet skal vi se på navnestatistikk i Oslo hentet fra [SSB.no](https://www.ssb.no/navn#renderAjaxBanner). Først lager vi vektorer som vi gir passende navn og lagrer i environment: 
 
-```{r}
+```{r eksempel_vektorer}
 navn <- c("Mohammed", "Jakob", "Olav", "Martin", 
           "Maja", "Sofia", "Iben", "Therese")
 
@@ -280,7 +280,7 @@ by <- c("Oslo")
 
 En viktig regel for dataframes er at alle vektorene må ha lik lengde. I eksempelet med navnestatistikk i Oslo så fantes det ikke data for navnene Martin og Therese (det finnes sikkert, men ikke i tabellen jeg så i). Om vi mangler data så må vi finne en måte å "fylle" disse tomme cellene på. Når vi setter verdien til `NA` så forteller vi R at vi mangler data om akkurat denne observasjonen på denne variabelen. Dette er nødvendig for at R skal klare å matche informasjonen i de ulike vektorene korrekt. For å sjekke lengden på vektoren så kan vi se i environment eller bruke funksjonen `length()`. 
 
-```{r}
+```{r lengde_vektor}
 
 length(navn)
 length(by)
@@ -289,13 +289,13 @@ length(by)
 
 Her ser vi at alle vektorer har lengde 8 med unntak av by som bare har en. Du kan også kombinere vektorer med enkeltverdier som med "Oslo" i eksempelet over. Når du gjør det vil alle observasjonene få verdien "Oslo" på variabelen "by". Dette kan vi se nærmere på ved å lage datasettet. Vi lager datasettet ved hjelp av funksjonen `data.frame()`:
 
-```{r}
+```{r datasett_eksempel}
 navnestat <- data.frame(navn, antall, per_tusen, kjonn, by)
 ```
 
 I environment vil dere nå se at det dukker opp en ny rad under "Data" som heter `navnestat`. Når det står 8 obs (observasjoner) av 5 variabler betyr dette at vi har et datasett/dataframe med 8 rader og 5 kolonner. Klikker dere på objektet så vil dere se dette. Vi kan utforske datasettet nærmere ved å bruke `View()` (obs! stor V): 
 
-```{r}
+```{r vise_datasett_spss_style}
 View(navnestat)
 ```
 
@@ -303,8 +303,9 @@ Første observasjonen her er rad 1. Det er navnet Mohammed. Det viktigste med en
 
 Til nå så har vi bare skrevet navnet på vektoren for å hente ut informasjon. Nå som vi har det i en dataframe, må vi først velge denne, og så kolonnen. Det er to måter vi kan gjøre dette på:
 
-```{r}
-# Med klammeparanteser kan vi velge rad og kolonne. Rad kommer først, og så kolonnen: 
+```{r indeksering_datasett}
+# Med klammeparanteser kan vi velge rad og kolonne. Rad kommer først, og så kolonnen:
+# `datasett[rader, kolonner]`
 navnestat[2,1] 
 
 # Skriver vi en tom får vi alle kollonene/radene 
@@ -315,7 +316,7 @@ navnestat[2,]
 
 Det blir det fort vanskelig å huske tallet til plasseringen til en variabel. En mer vanlig måte å hente ut kolonner på er med `$`:
 
-```{r}
+```{r trekke_ut_variabler}
 #Her skriver jeg først navnet på dataframen, og så variabelen: 
 navnestat$antall 
 
@@ -325,14 +326,14 @@ mean(navnestat$antall)
 
 Hm. Her ser dere at vi fikk `NA` til svar istedet for det gjennomsnittet vi ønsket. `NA` betyr som sagt bare missing, altså at vi ikke har informasjon om noe. Som dere husker så mangler vi informasjon om navnene Martin og Therese. Når minst en av verdiene er NA vil flere funksjoner returnere `NA` fordi vi strengt tatt ikke kan vite gjennomsnittet om vi ikke vet alle verdiene. For å få ut et resultat må vi derfor fortelle R at vi ønsker å fjerne `NA`-verdiene, og heller få gjenomsnittet av de verdiene som er tilstede. Det gjør vi ved å legge til argumentet `na.rm = TRUE` i funksjonen:  
 
-```{r}
+```{r gjennomsnitt_datasettvariabel}
 mean(navnestat$antall, na.rm = TRUE) 
 median(navnestat$antall, na.rm = TRUE)
 ```
 
 En lettere måte å få ut alle disse på er ved å bruke `summary()` funksjonen. Da trenger vi heller ikke bruke na.rm, fordi den heller sier hvor mange NA det er i vektoren. `summary()` kan også brukes for å hente ut informasjon om et helt datasett.
 
-```{r}
+```{r summerende_statistikk}
 summary(navnestat$antall)
 
 summary(navnestat)
@@ -344,19 +345,19 @@ Det siste vi skal gjøre i dag er å lage en veldig enkel figur - vi skal visual
 
 Tidyverse, som vi vil bruke mye, er et sett med pakker som gjør databehandling mye, mye enklere. For å bruke denne må vi først installere pakken. Om dere har gjort dette på forhånd trenger dere ikke gjøre dette på nytt. Å installere gjør vi kun en gang, og så evt. på nytt om det kommer en oppdatering. Vi installerer pakker ved hjelp av funksjonen `install.packages("pakkenavn")`: 
 
-```{r, eval=FALSE}
+```{r installere_pakker, eval=FALSE}
 install.packages("tidyverse")
 ```
 
 Vi trenger bare installere pakken en gang, men for å kunne bruke pakken må vi også laste den inn. Du må laste pakken inn hver gang du starter R på nytt. Vi laster inn pakken ved hjelp av `library()`:
 
-```{r}
+```{r laste_inn_pakker}
 library(tidyverse)
 ```
 
 Merk at pakkenavnet ikke står i hermetegn når vi bruker `library()`. Hermetegn rundt pakkenavnet er bare nødvendig når vi bruker `install.packages()`. Tidyverse skal vi bruke masse tid på nesten gang, men akkurat nå skal vi se på den delen som heter `ggplot`. GGplot er en pakke for å lage grafikk i R på. La oss lage et enkelt barplot:
 
-```{r, warning=FALSE}
+```{r ggplot_eksempel, warning=FALSE}
 # I første argument spesifiserer vi datasettet
 # og hvilken variabel vi vil plotte
 # Vi legger til en + på slutten av linjen for
@@ -378,7 +379,7 @@ Gleder meg til neste seminar!
 ## Ulike typer vektorer i R
 Det finnes flere ulike objekter i R. Til nå har vi blitt introdusert for to av dem: datasett og vektorer. Hva slags objekt det er har noe å si for hva du kan gjøre med det. I tillegg finnes det ulike typer, eller klasser som vi kaller det, av vektorer. I tabellen under finner dere en grov inndeling av ulike typer vektorer i R (se også s. 42-47 i Lær deg R):
 
-```{r, echo = FALSE, message=FALSE}
+```{r set_up_for_tabell, echo = FALSE, message=FALSE}
 "Atomic vector" <- c("numeric", "integer", "character", "factor", "logical")
 "List" <- c("blanding", "", "", "", "")
 tabell <- cbind(`Atomic vector`, List)
@@ -398,14 +399,14 @@ En hyppig årsak til at en funksjon ikke fungerer, er at en vektor/variabel ikke
 Hvilket format tror du navn, antall og by har? 
 
 Det kan vi sjekke med funksjonen `class()`.
-```{r}
+```{r klasser_i_datasett}
 class(navnestat$navn)
 class(navnestat$antall)
 class(navnestat$by)
 ```
 Som dere ser er antall numeric, mens navn og by er character. Her er det hva objektet er lagret som som teller, ikke hvordan det ser ut i datasettet. Selv om noe ser ut som tall i datasettet så er det ikke sikkert det er registrert som tall av R. Heldigvis kan dette ofte løses ved hjelp av en funksjoner som `as.numeric()`, `as.character()` og `as.factor()`.   
 
-```{r}
+```{r endre_klasse_i_datasett}
 # Her lager vi en ny variabel antall2 der vi ber R lagre alder som character
 navnestat$antall2 <- as.character(navnestat$antall)
 ```
@@ -416,7 +417,7 @@ Om vi ser på datasettet etter at vi har laget den nye variabelen så ser vi at 
 ## Logiske tester
 
 R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.   
-```{r logiske_ting}
+```{r logiske_operasjoner}
 1 == 2                                # tester om 1 er lik 2
 2 == 2                                # tester om 2 er lik 2
 "Statsvitenskap" == "statsvitenskap"  # Logiske tester kan også brukes på tekst
@@ -445,7 +446,7 @@ R kan evaluere logiske utsdagn og bedømme om de er ´TRUE´ eller ´FALSE´.
 
 Vi kommer til å bruke disse opearterne mye, spesielt når vi gjør endringer i datasett som å lage nye variabler.  Det er derfor viktig at dere forstår hvordan disse fungerer. Den beste måten å få denne foreståelse på er å øve.
 
-```{r # generere_script, eval=FALSE, echo=FALSE}
+```{r generere_script, eval=FALSE, echo=FALSE}
 knitr::purl("./doc/seminar1/seminar1.Rmd", 
             output = "./script/seminar1.R", 
             documentation = 1)

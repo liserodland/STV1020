@@ -1,7 +1,7 @@
 ---
 title: "Seminar 1"
 author: "Lise Rødland & co"
-date: '08-02-2022'
+date: '11-02-2022'
 output:
   pdf_document: 
     keep_md: yes
@@ -443,7 +443,7 @@ Til nå så har vi bare skrevet navnet på vektoren for å hente ut informasjon.
 
 ```r
 # Med klammeparanteser kan vi velge rad og kolonne. Rad kommer først, og så
-# kolonnen:
+# kolonnen: `datasett[rader, kolonner]`
 navnestat[2, 1]
 ```
 
@@ -590,7 +590,7 @@ Merk at pakkenavnet ikke står i hermetegn når vi bruker `library()`. Hermetegn
 ggplot(data = navnestat, aes(x = per_tusen)) + geom_bar(bins = 30)
 ```
 
-![](seminar1_files/figure-latex/unnamed-chunk-29-1.pdf)<!-- --> 
+![](seminar1_files/figure-latex/ggplot_eksempel-1.pdf)<!-- --> 
 
 Dette var bare en kort introduksjon. Som vi skal se på senere så finnes det utallige måter å fikse på plot på. 
 
