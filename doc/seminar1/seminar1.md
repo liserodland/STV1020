@@ -5,8 +5,7 @@ date: '14-02-2022'
 output:
   pdf_document: 
     keep_md: yes
-  github_document:
-    toc: false
+  github_document: default
 ---
 
 
