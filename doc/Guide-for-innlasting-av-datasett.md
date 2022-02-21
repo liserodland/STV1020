@@ -35,7 +35,7 @@ Her er de ulike kodene for å laste inn filtyper. Der det står "navn" er navnet
 Der det står "file" skal dere sette inn filnavnet. Altså det filen heter i mappen dere lagret den i. 
 
 
-# Excel-fil (slutter på f.eks. .xlsx)
+### Excel-fil (slutter på f.eks. .xlsx)
 
 
 ```r
@@ -46,7 +46,7 @@ navn <- read_excel("file")
 ```
 
 
-# CSV-fil (slutter på f.eks. .csv)
+### CSV-fil (slutter på f.eks. .csv)
 
 
 ```r
@@ -54,7 +54,7 @@ navn <- read.csv("file")
 navn <- read.csv2("file")
 ```
 
-# RData-fil (slutter på .Rdata)
+### RData-fil (slutter på .Rdata)
 
 
 ```r
@@ -62,7 +62,7 @@ load("file")
 # Merk at her gir du ikke datasettet et eget navn
 ```
 
-# Stata-fil (slutter på .dta)
+### Stata-fil (slutter på .dta)
 
 
 ```r
@@ -72,7 +72,7 @@ library(haven)
 navn <- read_dta("file")
 ```
 
-# SPSS-fil (slutter på .sav) 
+### SPSS-fil (slutter på .sav) 
 
 
 ```r
