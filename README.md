@@ -9,6 +9,8 @@ Her finner du undervisningsmateriell til R-seminarer i STV1020. Her finner du fl
 * mappen *fasit* inneholder løsningsforslag til seminaroppgaver. Disse prøver jeg å laste opp mandag etter seminar. Merk at det er mange måter å løse ting på i R så selv om du ikke har gjort det på samme måte som i løsningsforslaget så kan det forsatt være riktig.  
 * mappen *output* inneholder figurer, tabeller o.l. som jeg har laget i R på seminarene. 
 
+Lenke til tidligere R-prøver: https://github.com/martigso/stv1020R/tree/master/tidligere_prover 
+
 #### Noen nyttige lenker
 
 - [Coffee & Coding](https://www.sv.uio.no/isv/english/research/courses/)
