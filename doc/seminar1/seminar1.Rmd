@@ -85,6 +85,10 @@ Hjelpefilene er en flott måte å finne ut hva en funksjon gjør, og hvordan vi 
 ofte være litt kronglete å lese. Da hjelper det ofte å se på eksemplene som alltid er i bunn av teksten. Ellers beskriver også Healy hvordan man kan lese hjelpefilene i Appendix. Skulle det fortsatt være vanskelig er det viktig å huske at det finnes et stort miljø rundt R, og ofte er det mange som har opplevd samme problem som deg! Litt googling, og et søk på https://stackoverflow.com/ vil
 fort gi gode svar! Det er også mulig å spørre i [facebookgruppen R for statsvitenskap ved UiO](https://www.facebook.com/groups/427792970608618). 
 
+Under er et eksempel på hjelpefil for funksjonen `head()`:
+
+![Hjelpefileksempel](../../bilder/head_man.png){width=50%}
+
 ## Syntax-feil
 
 Når vi skriver kode vil vi fort gjøre en del feil. Det er helt vanlig og noe som er helt uungåelig! Dere vil nok fort merke at jeg gjør en hel del feil når jeg skal vise dere i seminaret. En type feil kan likevel være grei å merke seg med en gang - mest fordi jeg gjør den hver gang jeg skal skrive noe kode. "Syntax-feil" er skrivefeil vi gjør når vi skriver kode. F.eks. kan det være å skrive men() istedenfor mean(), glemme å lukke en parantes sånn at vi skriver mean( og liknende. Noe av det fine med RStudio er at den markere sånne feil for oss!
