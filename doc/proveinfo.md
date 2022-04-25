@@ -4,7 +4,7 @@ Informasjon om R-prøven
 ## Hvor finner jeg R- prøven?
 
 Prøven blir gjort tilgjengelig som en oppgave på i Canvas kl. 9 – 15
-prøvedage. Finner du den ikke så sjekk seminarsiden i Canvas. Selv om
+prøvedagen. Finner du den ikke så sjekk seminarsiden i Canvas. Selv om
 dere har seks timer så vil prøven ha samme omfang som en prøve som ville
 blitt løst på et to timers seminar dersom den var fysisk. Dere har altså
 god tid. Grunnen til at vi har satt av seks timer er at det skal være
@@ -41,6 +41,10 @@ opp.
 Ja, dere har lov til å samarbeide og diskutere oppgavene med
 medstudenter, men alle må levere sitt eget script med egne kommentarer.
 
+## Må jeg ha alltid riktig for å bestå?
+
+Nei. På prøven er det spesifisert hvor mange poeng du må få for å bestå.
+
 ## Hva skjer om jeg er syk?
 
 Hvis du er syk så må du søke om utsatt obligatorisk aktivitet her:
@@ -49,16 +53,16 @@ Hvis du er syk så må du søke om utsatt obligatorisk aktivitet her:
 Dersom du får godkjent utsatt obligatorisk aktivitet så vil du få en ny
 prøvedato.
 
-## Tips og triks
+## Tips og triks til prøvedagen
 
 Husk å laste inn de nødvendige pakkene ved hjelp av library(). Gjør det
-først i scriptet så er du ferdig med det.
+først i scriptet så er du ferdig med det. Om du ikke vet hvilken
+funksjon du skal bruke for å løse en oppgave så slå opp i materiale
+eller søk på nett.
 
 Om en kodesnutt ikke vil kjøre så:
 
 -   last inn nødvendige pakker igjen.
 -   kjør all koden før kodesnutten på ny.
--   om dette ikke virker så gå videre og kom tilbake til oppgaven dersom
-    du har tid. Da kan du søke på nett e.l. etter en løsning.
--   Om du ikke vet hvilken funksjon du skal bruke for å løse en oppgave
-    så slå opp i materiale eller søk på nett.
+-   om dette ikke virker så gå videre og kom tilbake til oppgaven senere
+    dersom du har tid. Da kan du søke på nett e.l. etter en løsning.
