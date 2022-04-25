@@ -40,7 +40,7 @@ av prøven så du vet hvor du skal slå opp.
 Ja, dere har lov til å samarbeide og diskutere oppgavene med medstudenter, men 
 alle må levere sitt eget script med egne kommentarer. 
 
-## Må jeg ha alltid riktig for å bestå?
+## Må jeg ha alt riktig for å bestå?
 
 Nei. På prøven er det spesifisert hvor mange poeng du må få for å bestå. 
 
