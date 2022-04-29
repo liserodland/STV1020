@@ -61,6 +61,11 @@ Om en kodesnutt ikke vil kjøre så:
 
 * last inn nødvendige pakker igjen.
 * kjør all koden før kodesnutten på ny.
+* prøv å forstå feilmeldingen. Får du f.eks. en feilmelding som sier "could not 
+find function" så kan dette tyde på at du kanskje har skrevet funksjonsnavnet feil
+eller at du må laste inn pakken funksjonen ligger i med `library()` først. Får 
+du en feilmelding om at "object x not found" så kan dette tyde på at du har en 
+skrivefeil i navnet på f.eks. et datasett eller et modellnavn. 
 * om dette ikke virker så gå videre og kom tilbake til oppgaven senere dersom du 
 har  tid. Da kan du søke på nett e.l. etter en løsning.
  
